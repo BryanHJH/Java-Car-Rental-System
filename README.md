@@ -21,15 +21,18 @@ This repository will be used for developing the Car Rental System for our OOD wi
 
 ## TODOS
 
-- [ ] Prepare UML Use Case and Class Diagrams
+- [x] Prepare UML Use Case and Class Diagrams
+  - [ ] Edit the UML based on completed code afterwards
+  - [ ] Prepare UML descriptions
 - [ ] Write out code for all the classes
   - [ ] Dealership/Store class
   - [ ] Car class, with inheritors
   - [ ] Customer class
   - [ ] Dealer/Worker class
+- [ ] Add a Test.java file to run tests for the functions of each class
 - [ ] Join all classes in the Main class
 - [ ] Write out Documentation
 
 ## Notes
 
-If there are anything you would like to update, Phin Shuen, you can just edit this README file, it can act as a note to ourselves whenever we want to work on this project
+1. Should do Test Driven Development, prepare separate Test cases based on the functions that are developed for each class.

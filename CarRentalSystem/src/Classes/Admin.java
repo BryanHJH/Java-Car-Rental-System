@@ -1,37 +1,52 @@
 package Classes;
 
+import java.util.ArrayList;
+
+import org.jasypt.util.password.BasicPasswordEncryptor;
+
 public class Admin extends User {
     
-    public Admin(String fullname, String identification, String dateOfBirth, String email, String contact, String username, String password) {
-        super(fullname, identification, dateOfBirth, email, contact, username, password);
+    public Admin(String fullname, String identification, String email, String contact, String username, String password) {
+        super(fullname, identification, email, contact, username, password);
     }
 
     @Override
-    public void login() {
-        // TODO Auto-generated method stub
-        
-    }
+    public boolean login(User[] arr, String username, String password) {
 
-    @Override
-    public void logout() {
-        // TODO Auto-generated method stub
-        
-    }
+        boolean result = false;
+        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
 
+        for (User user: arr) {
+            if (user.getUsername().toLowerCase().equals(username.toLowerCase())) {
+                if (passwordEncryptor.checkPassword(password, user.getPassword())) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        }
+        return result;
+    }
+    
     @Override
-    public void delete() {
+    public ArrayList<User> delete(User[] arr, String username) {
         // TODO Auto-generated method stub
+
+        ArrayList<User> newUserList = new ArrayList<>();
         
+        for (User user: arr) {
+            if (user.getUsername().toLowerCase().equals(username)) {
+                continue;
+            } else {
+                newUserList.add(user);
+            }
+        }
+
+        return newUserList;
     }
 
     @Override
     public void viewCatalog() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void saveData() {
         // TODO Auto-generated method stub
         
     }
@@ -69,5 +84,7 @@ public class Admin extends User {
     public void requestReports() {
         // TODO: Request reports generated from the Store
     }
+
+
 
 }
