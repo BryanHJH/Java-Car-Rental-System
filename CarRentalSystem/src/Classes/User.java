@@ -75,8 +75,6 @@ public abstract class User {
     }
     
     public abstract boolean login(User[] arr, String username, String password);
-    
-    public abstract ArrayList<User> delete(User[] arr, String username);
-    
+        
     public abstract void viewCatalog();
 }

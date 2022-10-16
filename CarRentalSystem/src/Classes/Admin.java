@@ -28,9 +28,7 @@ public class Admin extends User {
         return result;
     }
     
-    @Override
-    public ArrayList<User> delete(User[] arr, String username) {
-        // TODO Auto-generated method stub
+    public static ArrayList<User> delete(User[] arr, String username) {
 
         ArrayList<User> newUserList = new ArrayList<>();
         
@@ -44,41 +42,96 @@ public class Admin extends User {
 
         return newUserList;
     }
-
+    
     @Override
     public void viewCatalog() {
         // TODO Auto-generated method stub
         
     }
     
-    public void editCarInfo() {
+    /**
+     * Function name: findCustomer
+     * 
+     * @param username
+     * @return
+     * 
+     * What it does:
+     *  1. Get the customer username
+     *  2. Read the customer.txt file and find the matching customer record with the provided username.
+     *  3. Return the customer object
+     */
+    public Customer findCustomer(String username) {
+        // TODO: Finish the Customer class first
+    }
+
+    /**
+     * Function name: findCar
+     * 
+     * @param carID
+     * @return
+     * 
+     * What it does:
+     *  1. Get the Car ID
+     *  2. Read the Car.txt file and find the matching Car record with the provided Car ID
+     *  3. Return the Car object
+     */
+    public Car findCar(String carID) {
+        // TODO: Finish Car class first
+    }
+
+    public void editCarInfo(Car car) {
         // TODO: Access the Car profile and change the Car details, require the fields of the Car class
     }
 
-    public void checkRentalHistory() {
+    public void checkRentalHistory(Customer customer) {
         // TODO: Read Customer.txt and get the history section of the field
     }
 
     /**
      * Name: approve
      * 
-     * @param transactionType
+     * @param carCondition
      * 
      * What it does:
-     *  1. Check what type of transaction is being done, booking or car return
-     *  2. If booking, only approve if the car is actually available and is ready for rent, customer basic information are filled up, and customer have enough balance to pay for the entire rental period. Else reject
-     *  3. If car return, only approve if the car is not damaged in any way. Else, impose fines. 
+     *  1. Check whether is the car in good condition (true for good;false for bad)
+     *  2. To do 1., use findCar function to get the specific Car object
+     *  2. If true, returns true; If false, return false
      */
-    public void approve(String transactionType) {
-        // TODO: Approve either the booking or return of the car
+    public boolean approve(boolean carCondition) {
+
+        if (carCondition == true) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
-    public void imposeFines() {
+    /**
+     * Function name: imposeFines
+     * 
+     * @param username
+     * @param returnApproval
+     * @param damagedCar
+     * 
+     * What it does:
+     *  1. Use findCustomer function and username param to find the bad customer.
+     *  2. Impose 10% of the car's total rental as the fine
+     *  3. Return the total fines
+     */
+    public int imposeFines(Customer customer, Car damagedCar, boolean returnApproval) {
         // TODO: Get the result from approve, and if return car failed, impose fines to the customer, send notification and deduct from customer's balance
-    }
 
-    public void collectPayment() {
-        // TODO: If approve successful and is booking, collect payment from customer.
+        int fines;
+
+        if (returnApproval == true) {
+            fines = 0;
+        } else {
+            fines = 0;
+        }
+
+        return fines;
+
     }
 
     public void requestReports() {
@@ -86,5 +139,13 @@ public class Admin extends User {
     }
 
 
+    @Override
+    public String toString() {
+        return  "Name: " + this.getFullname() + "\n" +
+                "ID: " + this.getIdentification() + "\n" +
+                "Email: " + this.getEmail() + "\n" +
+                "Contact Number: " + this.getContact() + "\n" +
+                "Username: " + this.getUsername();
+    }
 
 }

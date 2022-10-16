@@ -49,6 +49,7 @@ public class SetUp {
         saveData(adminFile, adminArr);
         User[] testList = readFile(adminFile);
         User testUser = testList[0];
+        System.out.println(testUser);
         System.out.println(testUser.login(testList, "brian", "dfal;sdkfj"));
     }
 

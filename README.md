@@ -12,6 +12,7 @@ This repository will be used for developing the Car Rental System for our OOD wi
 4. Customers will need to enter basic personal information when they first register and can edit these information after registration.
 5. Customers will first book the car that they want to rent by browsing through the catalog. The catalog will only show Cars that can be booked.
 6. Dealers will need to approve the booking in order for the customer to collect the car in the appointed date. Once approved, the customer will receive a notification (either via email or text message) about the approval or rejection.
+   1. I think approval will be changed to be done automatically instead of being done by an admin/dealer. If the car is already booked, then the system will not show the car at all in the catalog.
 7. When customers return the rented car, the dealer will also need to approve the return. If approved, a notification is sent only. If rejected, a notification is sent and a fine is imposed on the customer.
 
 ## Collaborators
@@ -36,3 +37,23 @@ This repository will be used for developing the Car Rental System for our OOD wi
 ## Notes
 
 1. Should do Test Driven Development, prepare separate Test cases based on the functions that are developed for each class.
+
+### Text file formats
+
+   1. They will be stored as JSON strings, achieved by using GSON library
+
+#### Users data storage formats
+
+1. Information about admins are stored in this order:
+   1. Fullname
+   2. Identification Card no. (listed as Identification)
+   3. Email
+   4. Contact number (Phone number)
+   5. Username
+   6. Password
+
+2. Any extra information will be stored after the first 6 listed as above, the constructor method can be inherited from the User class.
+
+#### Car data storage formats
+
+Phin Shuen, you can add the format that you use to store the data here. 
