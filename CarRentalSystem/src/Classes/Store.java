@@ -70,15 +70,55 @@ public class Store {
 
     } 
 
+    /**
+     * Function name: addAdmin
+     * 
+     * @param admin
+     * @return
+     * 
+     * What it does:
+     *  1. Get a new Admin object
+     *  2. Append it to existing Admin (User) ArrayList
+     *  3. Return the ArrayList
+     */
     public ArrayList<User> addAdmin(Admin admin) {
         this.admins.add(admin);
         return this.admins;
     }
 
+    /**
+     * Function name: removeAdmin
+     * 
+     * @param username
+     * @return
+     * 
+     * What it does:
+     *  1. Get the username of the Admin to be removed.
+     *  2. Use the delete function in Admin class to remove the Admin.
+     */
     public ArrayList<User> removeAdmin(String username) {
         Admin[] adminArray = new Admin[this.admins.size()];
         ArrayList<User> newAdminList = Admin.delete(this.admins.toArray(adminArray), username);
         return newAdminList;
+    }
+
+    /**
+     * Function name: generateReport
+     * 
+     * @param reportType
+     * @return
+     * 
+     * What it does:
+     *  1. From the Admin class, get the String of the report type
+     *  2. Depending on th report type, read the necessary data from the text files
+     *  3. Format the data acquired from the text files in a readable format
+     */
+    public String generateReport(String reportType) {
+        switch (reportType) {
+            case "Type1": ;
+            case "Type2": ;
+            case "Type3": ;
+        }
     }
     
 }

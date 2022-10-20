@@ -134,8 +134,19 @@ public class Admin extends User {
 
     }
 
-    public void requestReports() {
-        // TODO: Request reports generated from the Store
+    /**
+     * Function name: requestReports
+     * 
+     * @param reportType
+     * @return
+     * 
+     * What it does:
+     *  1. From the GUI, a button will be selected
+     *  2. The text of the selected button will be extracted and passed through this function
+     *  3. This function will return the string and passed to the Store class as a String
+     */
+    public String requestReports(String reportType) {
+        return reportType;
     }
 
 
