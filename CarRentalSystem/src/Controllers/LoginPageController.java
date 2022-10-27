@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 
@@ -19,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginPageController {
@@ -56,9 +59,36 @@ public class LoginPageController {
      *  3. Use the login function written in their respective class (Admin or Customer class) to authenticate the user
      *  4. If authentication is successful, bring them to the landing page with the catalog (both Admin and Customer)
      *  5. If authentication fails, show a warning message, set the text of errorLabel to some type of warning.
+     * @throws FileNotFoundException
      */
-    public void login(ActionEvent event) {
+    public void login(ActionEvent event) throws FileNotFoundException {
 
+        // Setting up regex to identify Admin emails
+        Pattern emailPattern = Pattern.compile("[a-zA-Z0-9]*@staff\\.[a-z]{1,3}\b");
+        Matcher emailMatcher = emailPattern.matcher(usernameTextField.getText());
+        boolean matchFound = emailMatcher.find();
+
+        if (matchFound) { // Admin login
+
+            User[] adminList = readFile(adminFile);
+            for (Admin admin: (Admin[]) adminList) {
+
+                boolean loginAttempt = admin.login(adminList, usernameTextField.getText(), passwordTextField.getText());
+
+                if (loginAttempt) { // if login successful
+
+                    // TODO: Prepare the next page after successful login
+
+                } else { // if login unsuccessful
+
+                    errorLabel.setTextFill(Color.RED);
+                    errorLabel.setText("Email and/or Password is incorrect");
+                    
+                }   
+            }
+        } else { // Customer login
+            User[] customerList = readFile(customerFile);
+        }
     }
 
     /**

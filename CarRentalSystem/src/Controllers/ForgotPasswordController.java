@@ -32,7 +32,7 @@ public class ForgotPasswordController {
     private Parent root;
 
     public void sendLink(ActionEvent event) {
-        Pattern emailPattern = Pattern.compile("[a-zA-Z0-9]*@[a-z]{1,}.[a-z]{2, 3}\b");
+        Pattern emailPattern = Pattern.compile("[a-zA-Z0-9]*@[a-z]{1,}\\.[a-z]{2, 3}\b");
         Matcher emailMatcher = emailPattern.matcher(usernameTextField.getText());
         boolean matchFound = emailMatcher.find();
 

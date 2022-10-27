@@ -74,7 +74,7 @@ public abstract class User {
         this.password = passwordEncryptor.encryptPassword(password);
     }
     
-    public abstract boolean login(User[] arr, String username, String password);
+    public abstract boolean login(User[] arr, String email, String password);
         
     public abstract void viewCatalog();
 }

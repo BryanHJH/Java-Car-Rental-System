@@ -10,14 +10,15 @@ public class Admin extends User {
         super(fullname, identification, email, contact, username, password);
     }
 
+    // Use for reference for LoginController
     @Override
-    public boolean login(User[] arr, String username, String password) {
+    public boolean login(User[] arr, String email, String password) {
 
         boolean result = false;
         BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
 
         for (User user: arr) {
-            if (user.getUsername().toLowerCase().equals(username.toLowerCase())) {
+            if (user.getEmail().equals(email)) {
                 if (passwordEncryptor.checkPassword(password, user.getPassword())) {
                     result = true;
                 } else {
