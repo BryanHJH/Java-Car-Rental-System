@@ -1,6 +1,36 @@
+package Class;
+
+import java.util.ArrayList;
+
 public class Car{
+    private String carType;
+    private String carName;
+
+
+    private ArrayList<Car> bookingHistory;
+
+    public Car(String carType, String carName) {
+        this.carType = carType;
+        this.carName = carName;
+    }
     
-}
+    public String getCarType() {
+        return carType;
+    }
+
+    public void setCarType(String carType) {
+        this.carType = carType;
+    }
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public void setCarName(String carName) {
+        this.carName = carName;
+    }
+
+    
 
 /*
  * Function name: addDates
@@ -38,3 +68,4 @@ public class Car{
  *  4. Price (subject to how many days)
  *  5. Status (available or not available)
  */
+}

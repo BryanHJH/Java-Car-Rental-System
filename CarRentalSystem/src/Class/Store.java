@@ -17,15 +17,17 @@ public class Store {
 
     private Car[] cars;
     private ArrayList<User> admins;
+    private ArrayList<User> customers;
 
 
     public Store(Car[] cars) {
         this.cars = Arrays.copyOf(cars, cars.length);
-        this.admins = new ArrayList<Admin>();
+        this.admins = new ArrayList<>();
+        this.customers = new ArrayList<>();
     }
     
 
-    public Car[] getCars(int index) {
+    public Car getCars(int index) {
         return this.cars[index];
     }
 
@@ -86,6 +88,16 @@ public class Store {
         return this.admins;
     }
 
+    public ArrayList<User> addCustomer(Customer customer) {
+        this.customers.add(customer);
+        return this.customers;
+    }
+
+    public ArrayList<Customer> addBookingHistory() {
+        this.bookingHistory.add();
+        return this.bookingHistory;
+    }
+
     /**
      * Function name: removeAdmin
      * 
@@ -100,6 +112,12 @@ public class Store {
         Admin[] adminArray = new Admin[this.admins.size()];
         ArrayList<User> newAdminList = Admin.delete(this.admins.toArray(adminArray), username);
         return newAdminList;
+    }
+
+    public ArrayList<User> removeCustomer(String username) {
+        Customer[] customerArray = new Customer[this.customers.size()];
+        ArrayList<User> newCustomerList = Customer.delete(this.admins.toArray(customerArray), username);
+        return newCustomerList;
     }
 
     /**
