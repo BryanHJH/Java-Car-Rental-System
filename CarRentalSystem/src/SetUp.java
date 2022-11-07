@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 import com.google.gson.Gson;
 
-import Classes.Admin;
-import Classes.User;
+import Class.Admin;
+import Class.User;
 
 public class SetUp {
     

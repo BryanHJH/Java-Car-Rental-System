@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 
-import Classes.Admin;
-import Classes.User;
+import Class.Admin;
+import Class.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
