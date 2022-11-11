@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerPageController">
+  <tabs>
+    <Tab fx:id="catalog" text="Catolog">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="carTypeLabel" layoutX="55.0" layoutY="37.0" prefHeight="34.0" prefWidth="110.0" text="Type of Car">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="carTypeCombo" layoutX="264.0" layoutY="42.0" onAction="#listCars" prefWidth="150.0" />
+                  <Label fx:id="carNameLabel" layoutX="55.0" layoutY="88.0" prefHeight="31.0" prefWidth="111.0" text="Name of Car">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="carNameCombo" layoutX="264.0" layoutY="91.0" onAction="#listSeat" prefWidth="150.0" />
+                  <Label fx:id="rentDateLabel" layoutX="55.0" layoutY="137.0" prefHeight="31.0" prefWidth="111.0" text="Rent Date">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="rentDateDatePicker" layoutX="264.0" layoutY="140.0" />
+                  <Label fx:id="returnDateLabel" layoutX="55.0" layoutY="189.0" prefHeight="31.0" prefWidth="111.0" text="Return Date">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="returnDateDatePicker" layoutX="264.0" layoutY="192.0" />
+                  <Label fx:id="carSeatLabel" layoutX="55.0" layoutY="235.0" prefHeight="31.0" prefWidth="149.0" text="Number of Seat">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="carSeatLabel1" layoutX="264.0" layoutY="234.0" prefHeight="34.0" prefWidth="110.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="carPriceLabel" layoutX="55.0" layoutY="283.0" prefHeight="31.0" prefWidth="149.0" text="Price">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="carPriceLabel1" layoutX="265.0" layoutY="283.0" prefHeight="31.0" prefWidth="149.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="changePersonalInfo" text="Change Personal Info">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
