@@ -7,18 +7,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerPageController">
   <tabs>
     <Tab fx:id="catalog" text="Catolog">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label id="lblCarType" fx:id="carTypeLabel" layoutX="55.0" layoutY="37.0" prefWidth="75.0" text="Type of Car">
+                  <Label fx:id="carTypeLabel" layoutX="55.0" layoutY="37.0" prefWidth="75.0" text="Type of Car">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <ComboBox id="cmbCarType" fx:id="carTypeCombo" layoutX="288.0" layoutY="35.0" prefWidth="150.0" />
+                  <ComboBox fx:id="carTypeCombo" layoutX="288.0" layoutY="35.0" prefWidth="150.0" />
                </children></AnchorPane>
       </content>
     </Tab>
