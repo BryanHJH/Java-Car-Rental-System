@@ -32,14 +32,24 @@ public class ForgotPasswordController {
     private Parent root;
 
     public void sendLink(ActionEvent event) {
-        Pattern emailPattern = Pattern.compile("[a-zA-Z0-9]*@[a-z]{1,}\\.[a-z]{2, 3}\b");
+        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]*@[a-zA-Z]{1,}\\.[a-zA-Z]{2,3}$");
         Matcher emailMatcher = emailPattern.matcher(usernameTextField.getText());
         boolean matchFound = emailMatcher.find();
 
+        Pattern adminPattern = Pattern.compile("^[a-zA-Z0-9]*@staff\\.[a-zA-Z]{2,3}$");
+        Matcher adminMatcher = adminPattern.matcher(usernameTextField.getText());
+        boolean adminFound = adminMatcher.find();
+
         if (matchFound) {
-            successLabel.setTextFill(Color.GREEN);
-            successLabel.setText("Link sent");
+            if (adminFound) {
+                successLabel.setTextFill(Color.GREEN);
+                successLabel.setText("Please contact Admin for more instructions");
+            } else {
+                successLabel.setTextFill(Color.GREEN);
+                successLabel.setText("Link sent");
+            }
         } else {
+            usernameTextField.setStyle("-fx-text-box-border: #ff0000; -fx-focus-color: #ff0000");
             successLabel.setTextFill(Color.RED);
             successLabel.setText("Email format is wrong!");
         }

@@ -23,7 +23,7 @@ public class Customer extends User{
     
     public Customer(String fullname, String identification, String email, String contact, String username, String password) {
         super(fullname, identification, email, contact, username, password);
-        this.bookingHistory = new ArrayList<Customer>();
+        // this.bookingHistory = new ArrayList<Customer>();
     }
 
 

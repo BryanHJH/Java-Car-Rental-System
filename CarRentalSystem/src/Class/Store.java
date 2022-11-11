@@ -31,7 +31,7 @@ public class Store {
         return this.cars[index];
     }
 
-    public void setCars(int index) {
+    public void setCars(int index, Car car) {
         this.cars[index] = new Car(car);
     }
 
