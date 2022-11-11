@@ -23,7 +23,6 @@ public class Customer extends User{
     
     public Customer(String fullname, String identification, String email, String contact, String username, String password) {
         super(fullname, identification, email, contact, username, password);
-        this.bookingHistory = new ArrayList<Customer>();
     }
 
 
@@ -112,17 +111,6 @@ public class Customer extends User{
     */
 
         // after customer chose the car, read the car information and write into the booking history
-        File file = new File("C:\\Users\\PC\\OneDrive - Asia Pacific University\\Y2S1\\OODJ\\javafx\\project\\assignment\\assignment\\src\\databases\\customerHistory.txt");
-
-
-        FileWriter fwriter = new FileWriter(file);
-        
-        try (BufferedWriter writer = new BufferedWriter(fwriter)) {
-            Gson gson = new Gson();
-            gson.toJson(historyArr, writer);
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
     }
     
 
