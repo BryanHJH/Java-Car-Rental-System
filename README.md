@@ -56,4 +56,26 @@ This repository will be used for developing the Car Rental System for our OOD wi
 
 #### Car data storage formats
 
+1. Information about cars (include price per day, number of seats)
+   1. Hatchback
+      1. Perodua Myvi (150, 5)
+      2. Perodua Axia (140, 5)
+      3. Proton Iriz (170, 5)
+      4. Toyota Yaris (200, 5)
+   2. Minivan
+      1. Toyota Hiace (450, 10)
+      2. Proton Exora (370, 7)
+      3. Toyota Inova (400, 7)
+      4. Hyundai Starex (500, 8)
+   3. Sedan
+      1. Perodua Bezza (200, 5)
+      2. Honda City (260, 5)
+      3. Toyota Camry (320, 5)
+      4. Nissan Almera (250, 5)
+   4. SUV
+      1. Proton X50 (350, 5)
+      2. Honda CX-5 (500, 5)
+      3. Honda HR-V (390, 5)
+      4. Nissan X-Trail (370, 5)
+
 Phin Shuen, you can add the format that you use to store the data here. 

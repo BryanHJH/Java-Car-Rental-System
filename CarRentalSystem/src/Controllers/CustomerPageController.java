@@ -1,11 +1,8 @@
 package Controllers;
 
 import java.net.URL;
-import java.text.Format;
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -19,18 +16,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
 public class CustomerPageController implements Initializable {
     
     private int price = 150;
     private int finalPrice;
-
-    @FXML
-    private Button logoutButton;
-
-    @FXML
-    private Button confirmBookingButton;
 
     @FXML
     private ComboBox<String> carNameCombo;
@@ -61,6 +53,39 @@ public class CustomerPageController implements Initializable {
 
     @FXML
     private Tab changePersonalInfo;
+
+    @FXML
+    private Button confirmBookingButton;
+
+    @FXML
+    private Button confirmChangesButton;
+
+    @FXML
+    private Label custContact;
+
+    @FXML
+    private TextField custContactTextField;
+
+    @FXML
+    private Label custEmailLabel;
+
+    @FXML
+    private TextField custEmailTextField;
+
+    @FXML
+    private Label custPasswordLabel;
+
+    @FXML
+    private TextField custPasswordTextField;
+
+    @FXML
+    private Label custUsernameLabel;
+
+    @FXML
+    private TextField custUsernameTextField;
+
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private DatePicker rentDateDatePicker;
@@ -220,6 +245,11 @@ public class CustomerPageController implements Initializable {
 
     @FXML
     void confirmBooking(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void confirmChanges(ActionEvent event) {
 
     }
 

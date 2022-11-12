@@ -6,68 +6,123 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerPageController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="786.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerPageController">
   <tabs>
     <Tab fx:id="catalog" text="Catolog">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="carTypeLabel" layoutX="55.0" layoutY="37.0" prefHeight="34.0" prefWidth="110.0" text="Type of Car">
+                  <Label fx:id="carTypeLabel" layoutX="202.0" layoutY="95.0" prefHeight="34.0" prefWidth="152.0" text="Type of Car">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="carTypeCombo" layoutX="407.0" layoutY="100.0" onAction="#listCars" prefWidth="150.0" />
+                  <Label fx:id="carNameLabel" layoutX="202.0" layoutY="146.0" prefHeight="31.0" prefWidth="123.0" text="Name of Car">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="carNameCombo" layoutX="407.0" layoutY="149.0" onAction="#listSeat" prefWidth="150.0" />
+                  <Label fx:id="rentDateLabel" layoutX="202.0" layoutY="247.0" prefHeight="31.0" prefWidth="111.0" text="Rent Date">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="rentDateDatePicker" layoutX="406.0" layoutY="250.0" onAction="#checkvalidDate" />
+                  <Label fx:id="returnDateLabel" layoutX="202.0" layoutY="299.0" prefHeight="31.0" prefWidth="111.0" text="Return Date">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="returnDateDatePicker" layoutX="406.0" layoutY="302.0" onAction="#calculatePrice" />
+                  <Label fx:id="carSeatLabel" layoutX="202.0" layoutY="196.0" prefHeight="31.0" prefWidth="149.0" text="Number of Seat">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="carSeatLabel1" layoutX="406.0" layoutY="195.0" prefHeight="34.0" prefWidth="110.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="carTypeCombo" layoutX="264.0" layoutY="42.0" onAction="#listCars" prefWidth="150.0" />
-                  <Label fx:id="carNameLabel" layoutX="55.0" layoutY="88.0" prefHeight="31.0" prefWidth="111.0" text="Name of Car">
+                  <Label fx:id="carPriceLabel" layoutX="202.0" layoutY="349.0" prefHeight="31.0" prefWidth="149.0" text="Price">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="carPriceLabel1" layoutX="408.0" layoutY="349.0" prefHeight="31.0" prefWidth="149.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="carNameCombo" layoutX="264.0" layoutY="91.0" onAction="#listSeat" prefWidth="150.0" />
-                  <Label fx:id="rentDateLabel" layoutX="55.0" layoutY="189.0" prefHeight="31.0" prefWidth="111.0" text="Rent Date">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <DatePicker fx:id="rentDateDatePicker" layoutX="264.0" layoutY="192.0" onAction="#checkvalidDate" />
-                  <Label fx:id="returnDateLabel" layoutX="55.0" layoutY="241.0" prefHeight="31.0" prefWidth="111.0" text="Return Date">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <DatePicker fx:id="returnDateDatePicker" layoutX="264.0" layoutY="244.0" onAction="#calculatePrice" />
-                  <Label fx:id="carSeatLabel" layoutX="55.0" layoutY="138.0" prefHeight="31.0" prefWidth="149.0" text="Number of Seat">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="carSeatLabel1" layoutX="264.0" layoutY="137.0" prefHeight="34.0" prefWidth="110.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="carPriceLabel" layoutX="55.0" layoutY="291.0" prefHeight="31.0" prefWidth="149.0" text="Price">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="carPriceLabel1" layoutX="265.0" layoutY="291.0" prefHeight="31.0" prefWidth="149.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="logoutButton" layoutX="328.0" layoutY="383.0" mnemonicParsing="false" onAction="#logout" prefHeight="49.0" prefWidth="93.0" text="Clear" />
-                  <Button fx:id="confirmBookingButton" layoutX="130.0" layoutY="383.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="120.0" text="Confirm Booking" />
+                  <Button fx:id="logoutButton" layoutX="446.0" layoutY="441.0" mnemonicParsing="false" onAction="#logout" prefHeight="49.0" prefWidth="93.0" text="Logout" />
+                  <Button fx:id="confirmBookingButton" layoutX="248.0" layoutY="441.0" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="49.0" prefWidth="120.0" text="Confirm Booking" />
                </children></AnchorPane>
       </content>
     </Tab>
+      <Tab text="Return Car">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
     <Tab fx:id="changePersonalInfo" text="Change Personal Info">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="custUsernameLabel" layoutX="177.0" layoutY="127.0" prefHeight="34.0" prefWidth="152.0" text="Username">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="custPasswordLabel" layoutX="177.0" layoutY="179.0" prefHeight="34.0" prefWidth="142.0" text="Password">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="custEmailLabel" layoutX="177.0" layoutY="230.0" prefHeight="34.0" prefWidth="134.0" text="Email">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="custContact" layoutX="177.0" layoutY="287.0" prefHeight="34.0" prefWidth="152.0" text="Contact Number">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="custContactTextField" layoutX="385.0" layoutY="285.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="custEmailTextField" layoutX="385.0" layoutY="228.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="custPasswordTextField" layoutX="385.0" layoutY="177.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="custUsernameTextField" layoutX="385.0" layoutY="125.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="confirmChangesButton" layoutX="227.0" layoutY="411.0" mnemonicParsing="false" onAction="#confirmChanges" prefHeight="49.0" prefWidth="120.0" text="Confirm Changes" />
+                  <Button fx:id="logoutButton" layoutX="450.0" layoutY="411.0" mnemonicParsing="false" onAction="#logout" prefHeight="49.0" prefWidth="93.0" text="Logout" />
+               </children></AnchorPane>
       </content>
     </Tab>
+      <Tab text="Booking History">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
   </tabs>
 </TabPane>
