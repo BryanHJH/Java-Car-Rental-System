@@ -1,6 +1,11 @@
 package Controllers;
 
 import java.net.URL;
+import java.text.Format;
+import java.text.ParseException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -8,13 +13,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.Alert.AlertType;
 
 public class CustomerPageController implements Initializable {
     
+    private int price = 150;
+    private int finalPrice;
+
+    @FXML
+    private Button logoutButton;
+
+    @FXML
+    private Button confirmBookingButton;
+
     @FXML
     private ComboBox<String> carNameCombo;
 
@@ -59,34 +76,39 @@ public class CustomerPageController implements Initializable {
 
     @FXML
     void listCars(ActionEvent event) {
-        String carType = carTypeCombo.getSelectionModel().getSelectedItem().toString();
-
-        if (carType == "Hatchback") {
+        rentDateDatePicker.getEditor().clear();
+        returnDateDatePicker.getEditor().clear();
+        carPriceLabel1.setText("");
+        
+        if (carTypeCombo.getSelectionModel().getSelectedItem().equals("Hatchback")) {
             ObservableList<String> list = FXCollections.observableArrayList("Perodua Myvi", "Perodua Axia", "Proton Iriz", "Toyota Yaris");
             carNameCombo.setItems(list);
-            carNameCombo.getSelectionModel().selectFirst();
+            carNameCombo.getSelectionModel().select("Perodua Myvi");
         }
-        else if (carType == "Minivan") {
+        else if (carTypeCombo.getSelectionModel().getSelectedItem().equals("Minivan")) {
             ObservableList<String> list = FXCollections.observableArrayList("Toyota Hiace", "Proton Exora", "Toyota Inova", "Hyundai Starex");
             carNameCombo.setItems(list);
-            carNameCombo.getSelectionModel().selectFirst();
+            carNameCombo.getSelectionModel().select("Toyota Hiace");
         }
-        else if (carType == "Sedan") {
+        else if (carTypeCombo.getSelectionModel().getSelectedItem().equals("Sedan")) {
             ObservableList<String> list = FXCollections.observableArrayList("Perodua Bezza", "Honda City", "Toyota Camry", "Nissan Almera");
             carNameCombo.setItems(list);
-            carNameCombo.getSelectionModel().selectFirst();
+            carNameCombo.getSelectionModel().select("Perodua Bezza");
         }
-        else if (carType == "SUV") {
+        else if (carTypeCombo.getSelectionModel().getSelectedItem().equals("SUV")) {
             ObservableList<String> list = FXCollections.observableArrayList("Proton X50", "Mazda CX-5", "Honda HR-V", "Nissan X-Trail");
             carNameCombo.setItems(list);
-            carNameCombo.getSelectionModel().selectFirst();
+            carNameCombo.getSelectionModel().select("Proton X50");
         }
     }
     
     @FXML
     void listSeat(ActionEvent event) {
-        String carName = carNameCombo.getSelectionModel().getSelectedItem().toString();
-        int price = 150;
+        rentDateDatePicker.getEditor().clear();
+        returnDateDatePicker.getEditor().clear();
+        carPriceLabel1.setText("");
+
+        String carName = carNameCombo.getSelectionModel().getSelectedItem();
         int seat = 5;
 
         if (carName == "Perodua Myvi") {
@@ -143,6 +165,67 @@ public class CustomerPageController implements Initializable {
         }
 
         carSeatLabel1.setText(String.valueOf(seat));
+        
+    }
+
+    @FXML
+    void checkValidDate(ActionEvent event) throws NullPointerException{
+        try {
+            returnDateDatePicker.getEditor().clear();
+            LocalDate rentDate = rentDateDatePicker.getValue();
+            LocalDate today = LocalDate.now();
+            long validDate = Duration.between(rentDate.atStartOfDay(), today.atStartOfDay()).toDays();
+
+            if ((int)validDate > 0) {
+                Alert errorAlert = new Alert(AlertType.ERROR);
+                errorAlert.setHeaderText("Rent date not valid");
+                errorAlert.setContentText("Please select today or days after");
+                errorAlert.showAndWait();
+
+                rentDateDatePicker.getEditor().clear();
+                carPriceLabel1.setText("");
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @FXML
+    void calculatePrice(ActionEvent event) throws NullPointerException{
+        try {
+            LocalDate rentDate = rentDateDatePicker.getValue();
+            LocalDate returnDate = returnDateDatePicker.getValue();
+            long daysBetween = Duration.between(rentDate.atStartOfDay(), returnDate.atStartOfDay()).toDays();
+
+            if ((int)daysBetween <= 0) {
+                Alert errorAlert = new Alert(AlertType.ERROR);
+                errorAlert.setHeaderText("Return date not valid");
+                errorAlert.setContentText("Please select at least one day after the rent date");
+                errorAlert.showAndWait();
+
+                rentDateDatePicker.getEditor().clear();
+                returnDateDatePicker.getEditor().clear();
+                carPriceLabel1.setText("");
+            }
+            else {
+                finalPrice = price*(int)daysBetween;
+                carPriceLabel1.setText("RM " + String.valueOf(finalPrice));
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @FXML
+    void confirmBooking(ActionEvent event) {
+
+    }
+
+    @FXML
+    void logout(ActionEvent event) {
+
     }
 
 
@@ -150,12 +233,12 @@ public class CustomerPageController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){
         ObservableList<String> list = FXCollections.observableArrayList("Hatchback", "Minivan", "Sedan", "SUV");
         carTypeCombo.setItems(list);
-        carTypeCombo.getSelectionModel().selectFirst();
+        carTypeCombo.getSelectionModel().select(0);
         
-        //Set default values to avoid emptt fields
+        //Set default values to avoid empty fields
         ObservableList<String> list2 = FXCollections.observableArrayList("Perodua Myvi", "Perodua Axia", "Proton Iriz", "Toyota Yaris");
         carNameCombo.setItems(list2);
-        carNameCombo.getSelectionModel().selectFirst();
+        carNameCombo.getSelectionModel().select(0);
 
         carSeatLabel1.setText(String.valueOf(5));
     }
