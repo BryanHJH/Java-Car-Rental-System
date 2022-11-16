@@ -100,7 +100,7 @@ public class CustomerPageController implements Initializable {
     private Label returnDateLabel;
 
     @FXML
-    void listCars(ActionEvent event) {
+    public void listCars(ActionEvent event) {
         rentDateDatePicker.getEditor().clear();
         returnDateDatePicker.getEditor().clear();
         carPriceLabel1.setText("");
@@ -128,7 +128,7 @@ public class CustomerPageController implements Initializable {
     }
     
     @FXML
-    void listSeat(ActionEvent event) {
+    public void listSeat(ActionEvent event) {
         rentDateDatePicker.getEditor().clear();
         returnDateDatePicker.getEditor().clear();
         carPriceLabel1.setText("");
@@ -194,7 +194,7 @@ public class CustomerPageController implements Initializable {
     }
 
     @FXML
-    void checkValidDate(ActionEvent event) throws NullPointerException{
+    public void checkValidDate(ActionEvent event) throws NullPointerException{
         try {
             returnDateDatePicker.getEditor().clear();
             LocalDate rentDate = rentDateDatePicker.getValue();
@@ -217,7 +217,7 @@ public class CustomerPageController implements Initializable {
     }
 
     @FXML
-    void calculatePrice(ActionEvent event) throws NullPointerException{
+    public void calculatePrice(ActionEvent event) throws NullPointerException{
         try {
             LocalDate rentDate = rentDateDatePicker.getValue();
             LocalDate returnDate = returnDateDatePicker.getValue();
@@ -244,17 +244,17 @@ public class CustomerPageController implements Initializable {
     }
 
     @FXML
-    void confirmBooking(ActionEvent event) {
+    public void confirmBooking(ActionEvent event) {
 
     }
     
     @FXML
-    void confirmChanges(ActionEvent event) {
+    public void confirmChanges(ActionEvent event) {
 
     }
 
     @FXML
-    void logout(ActionEvent event) {
+    public void logout(ActionEvent event) {
 
     }
 

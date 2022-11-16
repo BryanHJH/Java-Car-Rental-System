@@ -5,7 +5,7 @@
         "email": "brian@car.com",
         "contact": "0192938202",
         "username": "brian",
-        "password": "aVQh36SzIxiRQo+ZNzOF1Bduw2IaVJ65"
+        "password": "hEL0kjqWjaUO1S8EgcEXHpfXvq7snsHU"
     },
     {
         "fullname": "Ryan",
@@ -13,7 +13,7 @@
         "email": "ryan@car.com",
         "contact": "2309423",
         "username": "ryan",
-        "password": "warSMGEBQrLlAfPsoYya+bIyqdWZ2kap"
+        "password": "RcXvauNs5TF3DKG411ptO5Omsi0yyukH"
     },
     {
         "fullname": "Taran",
@@ -21,7 +21,7 @@
         "email": "taran@car.com",
         "contact": "0192938202",
         "username": "taran",
-        "password": "ATaPmaPq0M3jd8Kgmdvmtl4tS/Fgym1F"
+        "password": "b8lgiuJsC4IWsZQOGHQm0wNgioVVhkYP"
     },
     {
         "fullname": "Rana",
@@ -29,6 +29,6 @@
         "email": "rana@car.com",
         "contact": "0192938202",
         "username": "rana",
-        "password": "DPkD2ywRYMZGdJ/ZVRHULLLVOIkWbait"
+        "password": "jZ6LUIK68WoqkASyIQow/IhmTH45qK5M"
     }
 ]

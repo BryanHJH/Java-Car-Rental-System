@@ -9,6 +9,20 @@
             "name": "Launch Main",
             "request": "launch",
             "mainClass": "Main",
+            "projectName": "Java-Car-Rental-System_cdc382bd"
+        },
+        {
+            "type": "java",
+            "name": "Launch SetUp",
+            "request": "launch",
+            "mainClass": "SetUp",
+            "projectName": "Java-Car-Rental-System_cdc382bd"
+        },
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "Main",
             "projectName": "Java-Car-Rental-System_ba9456c"
         },
         {

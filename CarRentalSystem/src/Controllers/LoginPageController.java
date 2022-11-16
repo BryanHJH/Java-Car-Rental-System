@@ -54,17 +54,17 @@ public class LoginPageController {
      * @param event
      * 
      * What it does:
-     *  1. First check the username that is input (use regex) - as long as the email format is xxxx@staff.com then it means its an Admin, otherwise they're customers
+     *  1. First check the username that is input (use regex) - as long as the email format is xxxx@car.com then it means its an Admin, otherwise they're customers
      *  2. Then depending on their role (Admin or Customer) read the correct file and store it as a User[] using readFile function above
      *  3. Use the login function written in their respective class (Admin or Customer class) to authenticate the user
      *  4. If authentication is successful, bring them to the landing page with the catalog (both Admin and Customer)
      *  5. If authentication fails, show a warning message, set the text of errorLabel to some type of warning.
-     * @throws FileNotFoundException
+     * @throws IOException
      */
-    public void login(ActionEvent event) throws FileNotFoundException {
+    public void login(ActionEvent event) throws Exception {
 
         // Setting up regex to identify Admin emails
-        Pattern emailPattern = Pattern.compile("[a-zA-Z0-9]*@staff\\.[a-z]{1,3}\b");
+        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]*@car\\.[a-zA-Z]{2,3}$");
         Matcher emailMatcher = emailPattern.matcher(usernameTextField.getText());
         boolean matchFound = emailMatcher.find();
 
@@ -76,6 +76,12 @@ public class LoginPageController {
                 boolean loginAttempt = admin.login(adminList, usernameTextField.getText(), passwordTextField.getText());
 
                 if (loginAttempt) { // if login successful
+                    
+                    Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminPage.fxml"));
+                    stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
 
                     // TODO: Prepare the next page after successful login
 

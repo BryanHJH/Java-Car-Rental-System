@@ -33,7 +33,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="rentDateDatePicker" layoutX="406.0" layoutY="250.0" onAction="#checkvalidDate" />
+                  <DatePicker fx:id="rentDateDatePicker" layoutX="406.0" layoutY="250.0" onAction="#checkValidDate" />
                   <Label fx:id="returnDateLabel" layoutX="202.0" layoutY="299.0" prefHeight="31.0" prefWidth="111.0" text="Return Date">
                      <font>
                         <Font size="20.0" />

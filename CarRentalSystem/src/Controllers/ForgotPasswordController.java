@@ -36,7 +36,7 @@ public class ForgotPasswordController {
         Matcher emailMatcher = emailPattern.matcher(usernameTextField.getText());
         boolean matchFound = emailMatcher.find();
 
-        Pattern adminPattern = Pattern.compile("^[a-zA-Z0-9]*@staff\\.[a-zA-Z]{2,3}$");
+        Pattern adminPattern = Pattern.compile("^[a-zA-Z0-9]*@car\\.[a-zA-Z]{2,3}$");
         Matcher adminMatcher = adminPattern.matcher(usernameTextField.getText());
         boolean adminFound = adminMatcher.find();
 
