@@ -21,10 +21,12 @@ public class Store {
     private Car[] cars;
     private ArrayList<User> admins;
     private ArrayList<User> customers;
+    private ArrayList<Booking> bookings;
 
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
+    static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
 
     public Store(Car[] cars) {
         this.cars = Arrays.copyOf(cars, cars.length);
@@ -82,6 +84,17 @@ public class Store {
         }
     }
 
+    public static void saveBookings(File file, ArrayList<Booking> arr) throws IOException {
+        FileWriter fwriter = new FileWriter(file);
+        
+        try (BufferedWriter writer = new BufferedWriter(fwriter)) {
+            Gson gson = new Gson();
+            gson.toJson(arr, writer);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * Name: readUserFile
      * @param file
@@ -100,6 +113,13 @@ public class Store {
         Reader reader = new FileReader(file);
         Car[] carList = gson.fromJson(reader, Car[].class);
         return carList;
+    }
+
+    public static Booking[] readBookingFile(File file) throws FileNotFoundException {
+        Gson gson = new Gson();
+        Reader reader = new FileReader(file);
+        Booking[] bookingList = gson.fromJson(reader, Booking[].class);
+        return bookingList;
     }
 
     public void rentCar(Car car, String date) throws ParseException, FileNotFoundException, IOException {
@@ -138,9 +158,50 @@ public class Store {
         saveUsers(adminFile, admins);
     }
 
+    /**
+     * Function name: addCustomer
+     * 
+     * @param customer
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Get a new Admin object
+     *  2. Append it to existing Admin (User) ArrayList
+     *  3. Return the ArrayList
+     */
     public void addCustomer(Customer customer) throws IOException {
         this.customers.add(customer);
         saveUsers(customerFile, customers);
+    }
+
+    /**
+     * Function name: addBooking
+     * 
+     * @param b
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Create a temporary Booking Array with all current Bookings
+     *  2. Create a new Booking ArrayList
+     *  3a. Move all current Bookings from the Array to the ArrayList
+     *  3b. If no current Bookings, meaning the Array is empty, just add the new Booking to the ArrayList
+     *  4. Add the new Booking to the ArrayList
+     *  5. Write the ArrayList to the text file
+     */
+    public void addBooking(Booking b) throws IOException {
+        Booking[] oldBookings = readBookingFile(bookingFile);
+        ArrayList<Booking> newBookings = new ArrayList<>();
+
+        if (oldBookings != null) {
+            for (Booking booking: oldBookings) {
+                newBookings.add(booking);
+            }
+            newBookings.add(b);
+        } else {
+            newBookings.add(b);
+        }
+
+        saveBookings(bookingFile, newBookings);
     }
 
     /**
@@ -148,11 +209,11 @@ public class Store {
      * 
      * @param username
      * @return
+     * @throws IOException
      * 
      * What it does:
      *  1. Get the username of the Admin to be removed.
      *  2. Use the delete function in Admin class to remove the Admin.
-     * @throws IOException
      */
     public void removeAdmin(String username) throws IOException {
         Admin[] adminArray = new Admin[this.admins.size()];
@@ -160,10 +221,33 @@ public class Store {
         saveUsers(adminFile, newAdminList);
     }
 
+    /**
+     * Function name: removeCustomer
+     * 
+     * @param username
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Get the username of the Admin to be removed.
+     *  2. Use the delete function in Admin class to remove the Admin.
+     */
     public void removeCustomer(String username) throws IOException {
         Customer[] customerArray = new Customer[this.customers.size()];
         ArrayList<User> newCustomerList = Customer.delete(this.admins.toArray(customerArray), username);
         saveUsers(customerFile, newCustomerList);
+    }
+
+    public void removeBooking(Booking b) throws IOException {
+        Booking[] currentBookings = readBookingFile(bookingFile);
+        ArrayList<Booking> newBookings = new ArrayList<Booking>(Arrays.asList(currentBookings));
+
+        for (int i = 0; i < newBookings.size(); i++) {
+            if (newBookings.get(i).equals(b)) {
+                newBookings.remove(i);
+            }
+        }
+
+        saveBookings(bookingFile, newBookings);
     }
 
     /**
@@ -209,6 +293,18 @@ public class Store {
         }
 
         return null;
+    }
+
+    public Booking findBooking(String id) throws FileNotFoundException {
+        Booking[] bookingList = readBookingFile(bookingFile);
+        for (Booking booking: bookingList) {
+            if (booking.getId().toString().equals(id)) {
+                return booking;
+            }
+        }
+
+        return null;
+        
     }
 
     /**
