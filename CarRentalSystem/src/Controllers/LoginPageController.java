@@ -72,19 +72,31 @@ public class LoginPageController {
 
             User[] adminList = readFile(adminFile);
             for (Admin admin: (Admin[]) adminList) {
+                
+                // TODO: rewrite the logic for this function
+                // 1. First check whether the userlist match any of the Admin in the list
+                // 2. Create a temp user for any matched user and check the password
+                // 3. If successful, go to the next page, else show errorLabel
 
-                boolean loginAttempt = admin.login(adminList, usernameTextField.getText(), passwordTextField.getText());
+                if (admin.getEmail().equals(usernameTextField.getText())) {
 
-                if (loginAttempt) { // if login successful
+                    boolean loginAttempt = admin.login(admin, passwordTextField.getText());
+
+                    if (loginAttempt) { // if login successful
+                        
+                        Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminMainPage.fxml"));
+                        stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+
+                    } else {
+
+                        errorLabel.setTextFill(Color.RED);
+                        errorLabel.setText("Email and/or Password is incorrect");
+
+                    }
                     
-                    Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminPage.fxml"));
-                    stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-
-                    // TODO: Prepare the next page after successful login
-
                 } else { // if login unsuccessful
 
                     errorLabel.setTextFill(Color.RED);

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="Controllers.AdminPageController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AdminMainPageController">
   <tabs>
     <Tab text="Car Information">
       <content>
@@ -52,7 +52,7 @@
                <children>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0">
                      <children>
-                        <TableView fx:id="carTable1" layoutX="166.0" layoutY="140.0" prefHeight="440.0" prefWidth="948.0">
+                        <TableView fx:id="customerTable" layoutX="166.0" layoutY="140.0" prefHeight="440.0" prefWidth="948.0">
                            <columns>
                               <TableColumn fx:id="customerNameColumn" prefWidth="110.66669082641602" text="Name" />
                               <TableColumn fx:id="identificationCardColumn" prefWidth="163.99998474121094" text="Identification Card Number" />

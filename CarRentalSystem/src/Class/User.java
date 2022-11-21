@@ -74,7 +74,18 @@ public abstract class User {
         this.password = passwordEncryptor.encryptPassword(password);
     }
     
-    public abstract boolean login(User[] arr, String username, String password);
+    public boolean login(User user, String password) {
+        boolean result = false;
+        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+
+        if (passwordEncryptor.checkPassword(password, user.getPassword())) {
+            result = true;
+        } else {
+            result = false;
+        }
+
+        return result;
+    };
         
     public abstract void viewCatalog();
 }

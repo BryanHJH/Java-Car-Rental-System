@@ -11,7 +11,7 @@ public class Admin extends User {
     }
 
     // Use for reference for LoginController
-    @Override
+    /** @Override
     public boolean login(User[] arr, String email, String password) {
 
         boolean result = false;
@@ -27,7 +27,7 @@ public class Admin extends User {
             }
         }
         return result;
-    }
+    } **/
     
     public static ArrayList<User> delete(User[] arr, String username) {
 
