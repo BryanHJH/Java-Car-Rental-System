@@ -26,6 +26,15 @@ public abstract class User {
         this.password = passwordEncryptor.encryptPassword(password);
     }
 
+    public User(User source) {
+        this.fullname = source.getUsername();
+        this.identification = source.getIdentification();
+        this.email = source.getEmail();
+        this.contact = source.getContact();
+        this.username = source.getUsername();
+        this.password = source.getPassword();
+    }
+
     public String getFullname() {
         return this.fullname;
     }

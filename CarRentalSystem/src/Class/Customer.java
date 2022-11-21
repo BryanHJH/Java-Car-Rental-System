@@ -1,18 +1,8 @@
 package Class;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import org.jasypt.util.password.BasicPasswordEncryptor;
-
-import com.google.gson.Gson;
 
 public class Customer extends User{
     
@@ -25,27 +15,11 @@ public class Customer extends User{
         super(fullname, identification, email, contact, username, password);
     }
 
-
-
-    //used for login
-    @Override
-    public boolean login(User[] arr, String email, String password) {
-
-        boolean result = false;
-        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
-
-        for (User user: arr) {
-            if (user.getEmail().equals(email)) {
-                if (passwordEncryptor.checkPassword(password, user.getPassword())) {
-                    result = true;
-                } else {
-                    result = false;
-                }
-            }
-        }
-        return result;
+    public Customer(Customer source) {
+        super(source);
     }
-    
+
+    // Delete user
     public static ArrayList<User> delete(User[] arr, String username) {
 
         ArrayList<User> newUserList = new ArrayList<>();

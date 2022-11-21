@@ -2,12 +2,14 @@ package Class;
 
 import java.util.ArrayList;
 
-import org.jasypt.util.password.BasicPasswordEncryptor;
-
 public class Admin extends User {
     
     public Admin(String fullname, String identification, String email, String contact, String username, String password) {
         super(fullname, identification, email, contact, username, password);
+    }
+
+    public Admin(Admin source) {
+        super(source);
     }
 
     // Use for reference for LoginController
@@ -48,40 +50,6 @@ public class Admin extends User {
     public void viewCatalog() {
         // TODO Auto-generated method stub
         
-    }
-    
-    /**
-     * Function name: findCustomer
-     * 
-     * @param username
-     * @return
-     * 
-     * What it does:
-     *  1. Get the customer username
-     *  2. Read the customer.txt file and find the matching customer record with the provided username.
-     *  3. Return the customer object
-     */
-    public Customer findCustomer(String username) {
-        // TODO: Finish the Customer class first
-    }
-
-    /**
-     * Function name: findCar
-     * 
-     * @param carID
-     * @return
-     * 
-     * What it does:
-     *  1. Get the Car ID
-     *  2. Read the Car.txt file and find the matching Car record with the provided Car ID
-     *  3. Return the Car object
-     */
-    public Car findCar(String carID) {
-        // TODO: Finish Car class first
-    }
-
-    public void editCarInfo(Car car) {
-        // TODO: Access the Car profile and change the Car details, require the fields of the Car class
     }
 
     public void checkRentalHistory(Customer customer) {
