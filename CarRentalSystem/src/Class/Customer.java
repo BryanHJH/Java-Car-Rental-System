@@ -1,15 +1,16 @@
 package Class;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Customer extends User{
-    
-    private String rentDate;
-    private String returnDate;
 
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy");
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy", Locale.US);
     
     public Customer(String fullname, String identification, String email, String contact, String username, String password) {
         super(fullname, identification, email, contact, username, password);
@@ -36,42 +37,6 @@ public class Customer extends User{
     }
 
     /*
-    * Function name: viewCatalog
-    * 
-    * What it does:
-    * 1. Let Customer to browse available car
-    */
-    @Override
-    public void viewCatalog() {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    public void changePersonalInfo() {
-    /*
-    * Function name: changePersonalInfo
-    * 
-    * Discuss with Bryan: 2 ways to change info
-    *    First: Use buttons to let customer choose what info to change
-    *    
-    *    Second: Use a single page to let customer change every info, but maybe
-    *    we can set the text field to contain the old information so customer can leave
-    *    it if they only want to change certain info
-    * 
-    * What it does:
-    *  1. Read Customer.txt
-    *  2. Overwrite the old information to new information into Customer.txt
-    */
-        
-        // set the text field to contain old information using get method
-
-        // then overwrite old information with new information with identification as reference (meaning identification can't be changed)
-        
-    }
-
-    public void bookCar() throws IOException{
-    /*
     * Function name: bookCar
     * 
     * Discuss with Bryan: According to README.MD, you mentioned that we can try to 
@@ -85,18 +50,35 @@ public class Customer extends User{
     */
 
         // after customer chose the car, read the car information and write into the booking history
+    public ArrayList<LocalDate> bookCar(Car car, String bookingStart, String bookingEnd) throws IOException{
+        LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
+        LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
+        ArrayList<LocalDate> bookedDates = new ArrayList<>();
+        List<LocalDate> dates = bookingStartDate.datesUntil(bookingEndDate).collect(Collectors.toList());
+
+        for (LocalDate date: dates) {
+            if (car.checkAvailability(date)) {
+                bookedDates.add(date);
+            } else {
+                bookedDates.clear();
+            }
+        }
+
+        return bookedDates;
     }
     
 
-/*
- * Function name: returnCar
- * 
- * What it does:
- *  1. Let the dealer approve the return
- *  2. If approved, send a notification, then, add the date to car catalog?
- *  3. If rejected, semd a notification with a fine imposed
- */
+    /*
+    * Function name: returnCar
+    * 
+    * What it does:
+    *  1. Let the dealer approve the return
+    *  2. If approved, send a notification, then, add the date to car catalog?
+    *  3. If rejected, semd a notification with a fine imposed
+    */
+    public void returnCar() {
 
+    }
 
     
 

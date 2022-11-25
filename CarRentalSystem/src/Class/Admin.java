@@ -46,12 +46,6 @@ public class Admin extends User {
         return newUserList;
     }
     
-    @Override
-    public void viewCatalog() {
-        // TODO Auto-generated method stub
-        
-    }
-
     public void checkRentalHistory(Customer customer) {
         // TODO: Read Customer.txt and get the history section of the field
     }
@@ -100,6 +94,40 @@ public class Admin extends User {
         }
 
         return fines;
+
+    }
+
+    /**
+     * Function name: approveBooking
+     * @return
+     * 
+     * What it does:
+     *  1. Admin will decide whether to approve the booking or not
+     */
+    public boolean approveBooking() {
+
+    }
+
+    /**
+     * Function name: imposeFines
+     * @return
+     * 
+     * What it does:
+     *  1. Returns a double that will be added to the price for Damaged Booking record
+     */
+    public double imposeFines() {
+
+    }
+
+    /**
+     * Function name: approveReturn
+     * @return
+     * 
+     * What it does:
+     *  1. If admin approves nothing happens
+     *  2. If admin rejects, imposeFines() is run
+     */
+    public boolean approveReturn() {
 
     }
 

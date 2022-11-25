@@ -127,22 +127,22 @@ public class Car{
     * What it does:
     *  1. Add dates after the return car is approved
     */
-    public void addDates(String date) throws ParseException {
-        LocalDate newDate = LocalDate.parse(date, dateFormatter);
+    public void addDates(LocalDate date) throws ParseException {
+        //LocalDate newDate = LocalDate.parse(date, dateFormatter);
 
         if (this.bookedDates.size() == 0) {
-            this.bookedDates.add(newDate);
+            this.bookedDates.add(date);
         } else {
             int lastIndex = this.bookedDates.size() - 1;
             LocalDate lastDate = this.bookedDates.get(lastIndex);
-            int comparisonResults = newDate.compareTo(lastDate);
-            if (comparisonResults > 0) { // Meaning newDate is after the last item in this.availableDate
-                this.bookedDates.add(newDate);
-            } else if (comparisonResults == 0) { // Meaning newDate is the same as the current date and replaces the one in the ArrayList
+            int comparisonResults = date.compareTo(lastDate);
+            if (comparisonResults > 0) { // Meaning date is after the last item in this.availableDate
+                this.bookedDates.add(date);
+            } else if (comparisonResults == 0) { // Meaning date is the same as the current date and replaces the one in the ArrayList
                 this.bookedDates.remove(lastIndex);
-                this.bookedDates.add(newDate);
-            } else { // Meaning newDate is before the last index and is now being placed as the second last item in the ArrayList
-                this.bookedDates.add(lastIndex - 2, newDate);
+                this.bookedDates.add(date);
+            } else { // Meaning date is before the last index and is now being placed as the second last item in the ArrayList
+                this.bookedDates.add(lastIndex - 2, date);
             }
 
             this.bookedDates.sort(Comparator.naturalOrder());
@@ -184,11 +184,11 @@ public class Car{
      *  1. Loop through the ArrayList of bookedDates
      *  2. return false if the car is already booked else true
      */
-    public boolean checkAvailability(String date) {
-        LocalDate bookingDate = LocalDate.parse(date, dateFormatter);
+    public boolean checkAvailability(LocalDate date) {
+        // LocalDate bookingDate = LocalDate.parse(date, dateFormatter);
 
         for (LocalDate bookedDates: this.bookedDates) {
-            if (bookedDates.isEqual(bookingDate)) {
+            if (bookedDates.isEqual(date)) {
                 return false; // Means the car is booked at that date
             }
         }

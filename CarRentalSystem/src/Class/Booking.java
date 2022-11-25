@@ -10,15 +10,21 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Booking {
     
     private AtomicLong id;
-    private String email, identification, plateNumber;
+    private String bookingType, bookingStatus, email, identification, plateNumber;
     private int carPrice, bookingPeriod;
     private LocalDate bookingStart, bookingEnd;
 
     static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.US);
 
 
-    public Booking(AtomicLong id, String email, String identification, String plateNumber, int carPrice, String bookingStart, String bookingEnd) {
+    public Booking(AtomicLong id, String bookingType, String bookingStatus, String email, String identification, String plateNumber, int carPrice, String bookingStart, String bookingEnd) {
         this.id = id;
+
+        if (!bookingType.toLowerCase().equals("rental") || !bookingType.toLowerCase().equals("return")) throw new IllegalArgumentException("Wrong booking type given");
+        if (bookingStatus.toLowerCase().equals("approved") || bookingStatus.toLowerCase().equals("rejected") || bookingStatus.toLowerCase().equals("pending") || bookingStatus.toLowerCase().equals("damaged") || bookingStatus.toLowerCase().equals("paid")) throw new IllegalArgumentException("Invalid booking status");
+
+        this.bookingType = bookingType;
+        this.bookingStatus = bookingStatus;
         this.email = email;
         this.identification = identification;
         this.plateNumber = plateNumber;
@@ -30,6 +36,8 @@ public class Booking {
 
     public Booking(Booking source) {
         this.id = source.getId();
+        this.bookingType = source.getBookingType();
+        this.bookingStatus = source.getBookingStatus();
         this.email = source.getEmail();
         this.identification = source.getIdentification();
         this.plateNumber = source.getPlateNumber();
@@ -46,6 +54,23 @@ public class Booking {
     public void setId(AtomicLong id) {
         this.id = id;
     }
+
+    public String getBookingType() {
+        return this.bookingType;
+    }
+
+    public void setBookingType(String bookingType) {
+        this.bookingType = bookingType;
+    }
+
+    public String getBookingStatus() {
+        return this.bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
     
     public String getEmail() {
         return this.email;

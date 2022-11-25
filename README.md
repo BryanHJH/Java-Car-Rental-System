@@ -78,4 +78,6 @@ This repository will be used for developing the Car Rental System for our OOD wi
       3. Honda HR-V (390, 5)
       4. Nissan X-Trail (370, 5)
 
-Phin Shuen, you can add the format that you use to store the data here. 
+### Customer Change Personal info
+
+This will be done directly in the controller using getter and setter methods

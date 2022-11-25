@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
-public abstract class User {
+public class User {
 
     private String fullname;
     private String identification;
@@ -95,6 +95,4 @@ public abstract class User {
 
         return result;
     };
-        
-    public abstract void viewCatalog();
 }

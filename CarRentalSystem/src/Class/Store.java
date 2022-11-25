@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -122,23 +123,27 @@ public class Store {
         return bookingList;
     }
 
-    public void rentCar(Car car, String date) throws ParseException, FileNotFoundException, IOException {
-        if (car.checkAvailability(date)) {
-            car.addDates(date);
-        }
-
-        Car[] currentCarList = readCarFile(carFile);
-        ArrayList<Car> newCarList = new ArrayList<>();
-
-        for (Car currentCar: currentCarList) {
-            if (currentCar.equals(car)) {
-                newCarList.add(currentCar);
-            } else {
-                newCarList.add(car);
+    public void rentCar(Car car, ArrayList<LocalDate> bookedDates) throws ParseException, FileNotFoundException, IOException {
+        
+        if (bookedDates.size() != 0) {
+            for (LocalDate date: bookedDates) {
+                car.addDates(date);
             }
+            
+            Car[] currentCarList = readCarFile(carFile);
+            ArrayList<Car> newCarList = new ArrayList<>();
+    
+            for (Car currentCar: currentCarList) {
+                if (currentCar.equals(car)) {
+                    newCarList.add(currentCar);
+                } else {
+                    newCarList.add(car);
+                }
+            }
+    
+            saveCars(carFile, newCarList);
         }
 
-        saveCars(carFile, newCarList);
     } 
 
     /**
