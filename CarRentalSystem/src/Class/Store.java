@@ -9,45 +9,68 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Store
  */
 public class Store {
 
-    private Car[] cars;
+    private ArrayList<Car> cars;
     private ArrayList<User> admins;
     private ArrayList<User> customers;
     private ArrayList<Booking> bookings;
+
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy", Locale.US);
 
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
 
-    public Store(Car[] cars) {
-        this.cars = Arrays.copyOf(cars, cars.length);
-        this.admins = new ArrayList<>();
-        this.customers = new ArrayList<>();
+    public Store(ArrayList<User> admins, ArrayList<User> customers, ArrayList<Car> cars) {
+        this.cars = new ArrayList<>(cars);
+        this.admins = new ArrayList<>(admins);
+        this.customers = new ArrayList<>(customers);
     }
 
-    public Car getCars(int index) {
-        return this.cars[index];
+    public ArrayList<Car> getCars() {
+        return this.cars;
     }
 
-    public void setCars(int index, Car car) {
-        this.cars[index] = new Car(car);
+    public ArrayList<User> getAdmins() {
+        return this.admins;
     }
 
-    public User getAdmins(int index) {
+    public ArrayList<User> getCustomers() {
+        return this.customers;
+    }
+
+    public ArrayList<Booking> getBookings() {
+        return this.bookings;
+    }
+
+    public Car getCar(int index) {
+        return this.cars.get(index);
+    }
+
+    public void setCar(int index, Car car) {
+        this.cars.set(index, car);
+    }
+
+    public User getAdmin(int index) {
         return this.admins.get(index);
     }
 
-    public void setAdmins(int index, Admin admin) {
+    public void setAdmin(int index, Admin admin) {
         this.admins.set(index, admin);
     }
 
@@ -67,7 +90,9 @@ public class Store {
         FileWriter fwriter = new FileWriter(file);
         
         try (BufferedWriter writer = new BufferedWriter(fwriter)) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
             gson.toJson(arr, writer);
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
@@ -78,7 +103,9 @@ public class Store {
         FileWriter fwriter = new FileWriter(file);
         
         try (BufferedWriter writer = new BufferedWriter(fwriter)) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
             gson.toJson(arr, writer);
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
@@ -89,7 +116,9 @@ public class Store {
         FileWriter fwriter = new FileWriter(file);
         
         try (BufferedWriter writer = new BufferedWriter(fwriter)) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
             gson.toJson(arr, writer);
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
@@ -102,29 +131,63 @@ public class Store {
      * @return
      * @throws FileNotFoundException
      */
-    public static User[] readUserFile(File file) throws FileNotFoundException {
-        Gson gson = new Gson();
+    public static User[] readAdminFile(File file) throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+        Reader reader = new FileReader(file);
+        User[] customerList = (User[]) gson.fromJson(reader, Admin[].class);
+        return customerList;
+    }
+    
+    /**
+     * Name: readUserFile
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static User[] readCustomerFile(File file) throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
         Reader reader = new FileReader(file);
         User[] customerList = (User[]) gson.fromJson(reader, Customer[].class);
         return customerList;
     }
 
     public static Car[] readCarFile(File file) throws FileNotFoundException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
         Reader reader = new FileReader(file);
         Car[] carList = gson.fromJson(reader, Car[].class);
         return carList;
     }
 
     public static Booking[] readBookingFile(File file) throws FileNotFoundException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
         Reader reader = new FileReader(file);
         Booking[] bookingList = gson.fromJson(reader, Booking[].class);
         return bookingList;
     }
 
-    public void rentCar(Car car, ArrayList<LocalDate> bookedDates) throws ParseException, FileNotFoundException, IOException {
+    public void rentCar(Car car, String bookingStart, String bookingEnd) throws ParseException, FileNotFoundException, IOException {
         
+        LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
+        LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
+        ArrayList<LocalDate> bookedDates = new ArrayList<>();
+        List<LocalDate> dates = bookingStartDate.datesUntil(bookingEndDate).collect(Collectors.toList());
+
+        for (LocalDate date: dates) {
+            if (car.checkAvailability(date)) {
+                bookedDates.add(date);
+            } else {
+                bookedDates.clear();
+            }
+        }
+
         if (bookedDates.size() != 0) {
             for (LocalDate date: bookedDates) {
                 car.addDates(date);
@@ -135,16 +198,47 @@ public class Store {
     
             for (Car currentCar: currentCarList) {
                 if (currentCar.equals(car)) {
-                    newCarList.add(currentCar);
-                } else {
                     newCarList.add(car);
+                } else {
+                    newCarList.add(currentCar);
                 }
             }
     
             saveCars(carFile, newCarList);
         }
 
-    } 
+    }
+
+    public void returnCar(Car car, String bookingStart, String bookingEnd) throws IOException {
+        LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
+        LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
+        ArrayList<LocalDate> dates = (ArrayList<LocalDate>) bookingStartDate.datesUntil(bookingEndDate).collect(Collectors.toList());
+        ArrayList<LocalDate> bookedDates = car.getBookedDates();
+        ArrayList<LocalDate> datesToBeRemoved = new ArrayList<>();
+
+        for (LocalDate date: dates) {
+            for (LocalDate carDate: bookedDates) {
+                if (date.isEqual(carDate)) {
+                    datesToBeRemoved.add(date);
+                }
+            }
+        }
+
+        car.removeDate(datesToBeRemoved);
+
+        Car[] currentCarList = readCarFile(carFile);
+        ArrayList<Car> newCarList = new ArrayList<>();
+
+        for (Car currentCar: currentCarList) {
+            if (currentCar.equals(car)) {
+                newCarList.add(car);
+            } else {
+                newCarList.add(currentCar);
+            }
+        }
+
+        saveCars(carFile, newCarList);
+    }
 
     /**
      * Function name: addAdmin
@@ -177,6 +271,11 @@ public class Store {
     public void addCustomer(Customer customer) throws IOException {
         this.customers.add(customer);
         saveUsers(customerFile, customers);
+    }
+
+    public void addCar(Car car) throws IOException {
+        this.cars.add(car);
+        saveCars(carFile, cars);
     }
 
     /**
@@ -256,6 +355,28 @@ public class Store {
     }
 
     /**
+     * Function name: findAdmin
+     * 
+     * @param username
+     * @return
+     * 
+     * What it does:
+     *  1. Get the admin username
+     *  2. Read the admin.txt file and find the matching admin record with the provided username.
+     *  3. Return the admin object
+     * @throws FileNotFoundException
+     */
+    public Admin findAdmin(String username) throws FileNotFoundException {
+        User[] adminList = readAdminFile(adminFile);
+        for (Admin admin: (Admin[]) adminList) {
+            if (admin.getUsername().toLowerCase().equals(username.toLowerCase())) {
+                return admin;
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Function name: findCustomer
      * 
      * @param username
@@ -268,7 +389,7 @@ public class Store {
      * @throws FileNotFoundException
      */
     public Customer findCustomer(String username) throws FileNotFoundException {
-        User[] customerList = readUserFile(customerFile);
+        User[] customerList = readCustomerFile(customerFile);
         for (Customer customer: (Customer[]) customerList) {
             if (customer.getUsername().toLowerCase().equals(username.toLowerCase())) {
                 return customer;
@@ -303,7 +424,7 @@ public class Store {
     public Booking findBooking(String id) throws FileNotFoundException {
         Booking[] bookingList = readBookingFile(bookingFile);
         for (Booking booking: bookingList) {
-            if (booking.getId().toString().equals(id)) {
+            if (booking.getIdentifier().toString().equals(id)) {
                 return booking;
             }
         }

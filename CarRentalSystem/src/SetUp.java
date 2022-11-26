@@ -5,37 +5,68 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import Class.Admin;
+import Class.Booking;
+import Class.Car;
+import Class.Customer;
+import Class.GsonLocalDateAdapter;
+import Class.Store;
 import Class.User;
 
 public class SetUp {
+
     
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
+    static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
+    static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
+    static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
 
-    public static User[] readFile(File file) throws FileNotFoundException {
-        Gson gson = new Gson();
-        Reader reader = new FileReader(file);
-        User[] adminList = (User[]) gson.fromJson(reader, Admin[].class);
-        return adminList;
-    }
-
-    public static void saveData(File file, ArrayList<User> arr) throws IOException {
+    public static void saveUserData(File file, ArrayList<User> arr) throws IOException {
         FileWriter fwriter = new FileWriter(file);
         
         try (BufferedWriter writer = new BufferedWriter(fwriter)) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
             gson.toJson(arr, writer);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void saveCarData(ArrayList<Car> car) throws IOException {
+        FileWriter fwriter = new FileWriter(carFile);
+        
+        try (BufferedWriter writer = new BufferedWriter(fwriter)) {
+            Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+                .create();
+            gson.toJson(car, writer);
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public static void main(String[] args) throws IOException {
+    
 
         User[] admins = {
             new Admin("Brian", "1111120293", "brian@car.com", "0192938202", "brian", "brian"),
@@ -43,16 +74,79 @@ public class SetUp {
             new Admin("Taran", "32453242134", "taran@car.com", "0192938202", "taran", "taran"),
             new Admin("Rana", "r43534234", "rana@car.com", "0192938202", "rana", "rana")
         };
+        
+        User[] customers = {
+            new Customer("Bryan", "1111120293", "bryan@gmail.com", "0192938202", "bryan", "bryan"),
+            new Customer("Damian", "23948723987", "damian@yahoo.com", "2309423", "damian", "damian"),
+            new Customer("Derek", "32453242134", "derek@hotmail.com", "0192938202", "derek", "derek"),
+            new Customer("Lemon", "r43534234", "lemon@gmail.com", "0192938202", "lemon", "lemon")
+        };
+        
+        Car[] cars = {
+            new Car("BNY1122", "Toyota", 5, "Sedan", 25, "AUTO"),
+            new Car("WYY2349", "Proton", 7, "SUV", 45, "AUTO"),
+            new Car("W2349", "Porshe", 2, "Sports Car", 99, "MANUAL"),
+            new Car("A1", "Ferari", 2, "Sports Car", 150, "MANUAL"),
+            new Car("RRE1233", "Nissan", 15, "Minivan", 60, "MANUAL"),
+            new Car("YYU3291", "Mercedes Benz", 5, "Sedan", 50, "AUTO")
+        };
 
         ArrayList<User> adminArr = new ArrayList<>(Arrays.asList(admins));
+        ArrayList<User> custArr = new ArrayList<>(Arrays.asList(customers));
+        ArrayList<Car> carArr = new ArrayList<>(Arrays.asList(cars));
+        saveUserData(adminFile, adminArr);
+        saveUserData(customerFile, custArr);
+        saveCarData(carArr);
 
-        saveData(adminFile, adminArr);
-        User[] testList = readFile(adminFile);
-        System.out.println(Arrays.toString(testList));
+        Store testStore = new Store(adminArr, custArr, carArr);
+
+        testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
+        testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
+
+        Admin tmpAdmin = testStore.findAdmin("brian");
+        Car tmpCar = testStore.findCar("BNY1122");
+        Customer tmpCustomer = testStore.findCustomer("bryan");
+
+        System.out.println(tmpCar);
+        System.out.println();
+        System.out.println(tmpCustomer);
+        System.out.println();
+
+        String bookingStart = "12-12-2022";
+        String bookingEnd = "16-12-2022";
+
+        Booking tmpBooking = tmpCustomer.bookCar(tmpCar, bookingStart, bookingEnd);
+        try {
+            tmpBooking = tmpAdmin.approve(tmpBooking, true);
+            testStore.rentCar(tmpCar, bookingStart, bookingEnd);
+            System.out.println(tmpCar);
+            System.out.println();
+            System.out.println("Before Returning: \n");
+            System.out.println(tmpBooking);
+            tmpBooking = tmpCustomer.returnCar(tmpBooking);
+            System.out.println("After Returning: \n");
+            System.out.println(tmpBooking);
+            System.out.println();
+            tmpBooking = tmpAdmin.approveReturn(tmpBooking, true);
+            System.out.println("After approving Return: \n");
+            System.out.println(tmpBooking);
+            System.out.println();
+            //testStore.returnCar(tmpCar, bookingStart, bookingEnd);
+            //System.out.println("After removing dates: \n");
+            //System.out.println(tmpCar);
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         //User testUser = testList[1];
         //System.out.println(testUser);
         //System.out.println(testUser.getClass());
         //System.out.println(testUser.login(testList, "brian@staff.com", "dfal;sdkfj"));
     }
 
+    
 }

@@ -14,15 +14,14 @@ public class Car{
     private String carBrand;
     private String carType;
     private int carSeat;
-    private double carPrice;
-    private String carStatus;
+    private int carPrice;
     private ArrayList<LocalDate> bookedDates;
     private String carTransmission;
 
     static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.US);
 
-    public Car(String plateNumber, String carBrand, int carSeat, String carType, double carPrice, String carStatus, String carTransmission) {
-        if (carTransmission.toUpperCase().equals("AUTO") || carTransmission.toUpperCase().equals("MANUAL") ) {
+    public Car(String plateNumber, String carBrand, int carSeat, String carType, int carPrice, String carTransmission) {
+        if (!(carTransmission.toUpperCase().equals("AUTO") || carTransmission.toUpperCase().equals("MANUAL"))) {
             throw new IllegalArgumentException("Transmission can only be AUTO or MANUAL");
         }
 
@@ -34,12 +33,8 @@ public class Car{
         this.carBrand = carBrand;
         this.carSeat = carSeat;
         this.carType = carType;
-        
         this.carPrice = carPrice;
-        
-        this.carStatus = carStatus;
         this.bookedDates = new ArrayList<>();
-
         this.carTransmission = carTransmission; 
 
     }
@@ -50,7 +45,6 @@ public class Car{
         this.carSeat = source.getCarSeat();
         this.carType = source.getCarType();
         this.carPrice = source.getCarPrice();
-        this.carStatus = source.getCarStatus();
         this.carTransmission = source.getCarTransmission();
         this.bookedDates = source.getBookedDates();
     }
@@ -89,20 +83,12 @@ public class Car{
         this.carSeat = carSeat;
     }
 
-    public double getCarPrice() {
+    public int getCarPrice() {
         return this.carPrice;
     }
 
-    public void setCarPrice(double carPrice) {
+    public void setCarPrice(int carPrice) {
         this.carPrice = carPrice;
-    }
-
-    public String getCarStatus() {
-        return this.carStatus;
-    }
-
-    public void setCarStatus(String carStatus) {
-        this.carStatus = carStatus;
     }
 
     public ArrayList<LocalDate> getBookedDates() {
@@ -163,16 +149,12 @@ public class Car{
     * What it does:
     *  1. Remove dates when payment for booking car is done
     */
-    public void removeDate(String date) {
+    public void removeDate(ArrayList<LocalDate> datesToBeRemoved) {
         if (this.bookedDates.size() == 0) {
             throw new IllegalStateException("You cannot remove anything anymore!");
         }
 
-        for (int i = 0; i < this.bookedDates.size(); i++) {
-            if (LocalDate.parse(date, dateFormatter).isEqual(this.bookedDates.get(i))) {
-                this.bookedDates.remove(i);
-            }
-        }
+        this.bookedDates.removeAll(datesToBeRemoved);
     }
 
     /**
@@ -205,12 +187,12 @@ public class Car{
             return false;
         }
         Car car = (Car) o;
-        return Objects.equals(plateNumber, car.plateNumber) && Objects.equals(carBrand, car.carBrand) && Objects.equals(carType, car.carType) && carSeat == car.carSeat && carPrice == car.carPrice && Objects.equals(carStatus, car.carStatus) && Objects.equals(bookedDates, car.bookedDates) && Objects.equals(carTransmission, car.carTransmission);
+        return Objects.equals(plateNumber, car.plateNumber) && Objects.equals(carBrand, car.carBrand) && Objects.equals(carType, car.carType) && carSeat == car.carSeat && carPrice == car.carPrice && Objects.equals(bookedDates, car.bookedDates) && Objects.equals(carTransmission, car.carTransmission);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(plateNumber, carBrand, carType, carSeat, carPrice, carStatus, bookedDates, carTransmission);
+        return Objects.hash(plateNumber, carBrand, carType, carSeat, carPrice, bookedDates, carTransmission);
     }
 
 
@@ -232,7 +214,6 @@ public class Car{
             "Car Type:" + getCarType() + "\n" +
             "Car Seat:" + getCarSeat() + "\n" +
             "Car Price:" + getCarPrice() + "\n" +
-            "Car Status:" + getCarStatus() + "\n" +
             "Booked Dates:" + getBookedDates() + "\n" +
             "Car Transmission:" + getCarTransmission() + "\n" ;
     }

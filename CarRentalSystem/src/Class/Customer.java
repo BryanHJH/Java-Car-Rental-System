@@ -1,11 +1,8 @@
 package Class;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Customer extends User{
@@ -50,21 +47,8 @@ public class Customer extends User{
     */
 
         // after customer chose the car, read the car information and write into the booking history
-    public ArrayList<LocalDate> bookCar(Car car, String bookingStart, String bookingEnd) throws IOException{
-        LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
-        LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
-        ArrayList<LocalDate> bookedDates = new ArrayList<>();
-        List<LocalDate> dates = bookingStartDate.datesUntil(bookingEndDate).collect(Collectors.toList());
-
-        for (LocalDate date: dates) {
-            if (car.checkAvailability(date)) {
-                bookedDates.add(date);
-            } else {
-                bookedDates.clear();
-            }
-        }
-
-        return bookedDates;
+    public Booking bookCar(Car car, String bookingStart, String bookingEnd) throws IOException{
+        return new Booking("Booking", "Pending", this.getEmail(), this.getIdentification(), car.getPlateNumber(), bookingStart, bookingEnd);
     }
     
 
@@ -76,10 +60,12 @@ public class Customer extends User{
     *  2. If approved, send a notification, then, add the date to car catalog?
     *  3. If rejected, semd a notification with a fine imposed
     */
-    public void returnCar() {
-
+    public Booking returnCar(Booking booking) {
+        Booking changedBookingState = new Booking(booking);
+        changedBookingState.setBookingType("Return");
+        changedBookingState.setBookingStatus("Pending");
+        return changedBookingState;
     }
-
     
 
 }

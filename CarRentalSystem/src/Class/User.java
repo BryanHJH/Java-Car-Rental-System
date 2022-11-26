@@ -1,8 +1,6 @@
 package Class;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
 public class User {
@@ -95,4 +93,13 @@ public class User {
 
         return result;
     };
+
+    @Override
+    public String toString() {
+        return  "Name: " + this.getFullname() + "\n" +
+                "ID: " + this.getIdentification() + "\n" +
+                "Email: " + this.getEmail() + "\n" +
+                "Contact Number: " + this.getContact() + "\n" +
+                "Username: " + this.getUsername();
+    }
 }

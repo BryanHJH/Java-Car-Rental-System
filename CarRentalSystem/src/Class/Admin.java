@@ -45,57 +45,6 @@ public class Admin extends User {
 
         return newUserList;
     }
-    
-    public void checkRentalHistory(Customer customer) {
-        // TODO: Read Customer.txt and get the history section of the field
-    }
-
-    /**
-     * Name: approve
-     * 
-     * @param carCondition
-     * 
-     * What it does:
-     *  1. Check whether is the car in good condition (true for good;false for bad)
-     *  2. To do 1., use findCar function to get the specific Car object
-     *  2. If true, returns true; If false, return false
-     */
-    public boolean approve(boolean carCondition) {
-
-        if (carCondition == true) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    /**
-     * Function name: imposeFines
-     * 
-     * @param username
-     * @param returnApproval
-     * @param damagedCar
-     * 
-     * What it does:
-     *  1. Use findCustomer function and username param to find the bad customer.
-     *  2. Impose 10% of the car's total rental as the fine
-     *  3. Return the total fines
-     */
-    public int imposeFines(Customer customer, Car damagedCar, boolean returnApproval) {
-        // TODO: Get the result from approve, and if return car failed, impose fines to the customer, send notification and deduct from customer's balance
-
-        int fines;
-
-        if (returnApproval == true) {
-            fines = 0;
-        } else {
-            fines = 0;
-        }
-
-        return fines;
-
-    }
 
     /**
      * Function name: approveBooking
@@ -103,9 +52,26 @@ public class Admin extends User {
      * 
      * What it does:
      *  1. Admin will decide whether to approve the booking or not
+     * @throws IllegalAccessException
      */
-    public boolean approveBooking() {
+    public Booking approve(Booking booking, boolean approval) throws IllegalAccessException {
+        if (booking.getBookingType().toLowerCase().equals("booking") || booking.getBookingType().toLowerCase().equals("return")) {
+            if (approval) {
+                booking.setBookingStatus("Approved");
+            } else {
+                booking.setBookingStatus("Rejected");
+            }
+        } else if (booking.getBookingType().toLowerCase().equals("damaged")) {
+            if (approval) {
+                booking.setBookingStatus("Paid");
+            }  else {
+                booking.setBookingStatus("Pending");
+            }
+        } else {
+            throw new IllegalAccessException("Unknown booking type");
+        }
 
+        return booking;
     }
 
     /**
@@ -115,8 +81,8 @@ public class Admin extends User {
      * What it does:
      *  1. Returns a double that will be added to the price for Damaged Booking record
      */
-    public double imposeFines() {
-
+    public int imposeFines(Booking booking) {
+        return (int) Math.round(booking.getBookingPeriod() * booking.getTotalPrice() * 0.35);
     }
 
     /**
@@ -127,8 +93,15 @@ public class Admin extends User {
      *  1. If admin approves nothing happens
      *  2. If admin rejects, imposeFines() is run
      */
-    public boolean approveReturn() {
+    public Booking approveReturn(Booking booking, boolean approval) {
+        if (!approval) {
+            booking.setBookingStatus("Rejected");
+            booking.setTotalPrice(booking.getTotalPrice() + imposeFines(booking));
+        } else {
+            booking.setBookingStatus("Returned");
+        }
 
+        return booking;
     }
 
     /**
@@ -144,16 +117,6 @@ public class Admin extends User {
      */
     public String requestReports(String reportType) {
         return reportType;
-    }
-
-
-    @Override
-    public String toString() {
-        return  "Name: " + this.getFullname() + "\n" +
-                "ID: " + this.getIdentification() + "\n" +
-                "Email: " + this.getEmail() + "\n" +
-                "Contact Number: " + this.getContact() + "\n" +
-                "Username: " + this.getUsername();
     }
 
 }
