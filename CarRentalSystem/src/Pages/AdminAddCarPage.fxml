@@ -2,12 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AdminAddCarPageController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="720.0" style="-fx-background-color: #ffbf1f;" text="New Car Information" textAlignment="CENTER">
          <font>
@@ -29,17 +31,12 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="64.0" layoutY="251.0" prefHeight="35.0" prefWidth="158.0" text="Transmission:" textAlignment="RIGHT">
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="64.0" layoutY="246.0" prefHeight="35.0" prefWidth="158.0" text="No of seats:" textAlignment="RIGHT">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="64.0" layoutY="300.0" prefHeight="35.0" prefWidth="158.0" text="No of seats:" textAlignment="RIGHT">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="64.0" layoutY="347.0" prefHeight="35.0" prefWidth="158.0" text="Price per day:" textAlignment="RIGHT">
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="64.0" layoutY="293.0" prefHeight="35.0" prefWidth="158.0" text="Price per day:" textAlignment="RIGHT">
          <font>
             <Font size="24.0" />
          </font>
@@ -47,10 +44,20 @@
       <TextField fx:id="plateNumberTextField" layoutX="265.0" layoutY="113.0" prefHeight="25.0" prefWidth="290.0" />
       <TextField fx:id="carBrandTextField" layoutX="265.0" layoutY="158.0" prefHeight="25.0" prefWidth="290.0" />
       <TextField fx:id="carTypeTextField" layoutX="265.0" layoutY="207.0" prefHeight="25.0" prefWidth="290.0" />
-      <TextField fx:id="carTransmissionTextField" layoutX="265.0" layoutY="256.0" prefHeight="25.0" prefWidth="290.0" />
-      <TextField fx:id="carSeatTextField" layoutX="265.0" layoutY="305.0" prefHeight="25.0" prefWidth="290.0" />
-      <TextField fx:id="carPriceTextField" layoutX="265.0" layoutY="352.0" prefHeight="25.0" prefWidth="290.0" />
-      <Button fx:id="addButton" layoutX="436.0" layoutY="444.0" mnemonicParsing="false" onAction="#add" prefHeight="50.0" prefWidth="75.0" text="Add" />
-      <Button fx:id="cancelButton" layoutX="525.0" layoutY="444.0" mnemonicParsing="false" onAction="#cancel" prefHeight="50.0" prefWidth="75.0" text="Cancel" />
+      <TextField fx:id="carSeatTextField" layoutX="265.0" layoutY="251.0" prefHeight="25.0" prefWidth="290.0" />
+      <TextField fx:id="carPriceTextField" layoutX="265.0" layoutY="298.0" prefHeight="25.0" prefWidth="290.0" />
+      <Button fx:id="addButton" layoutX="435.0" layoutY="522.0" mnemonicParsing="false" onAction="#add" prefHeight="50.0" prefWidth="75.0" text="Add" />
+      <Button fx:id="cancelButton" layoutX="524.0" layoutY="522.0" mnemonicParsing="false" onAction="#cancel" prefHeight="50.0" prefWidth="75.0" text="Cancel" />
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="67.0" layoutY="340.0" prefHeight="35.0" prefWidth="158.0" text="Transmission:" textAlignment="RIGHT">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="autoRadioButton" layoutX="265.0" layoutY="345.0" mnemonicParsing="false" text="AUTO">
+         <toggleGroup>
+            <ToggleGroup fx:id="carTransmissionGroup" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="manualRadioButton" layoutX="400.0" layoutY="345.0" mnemonicParsing="false" text="MANUAL" toggleGroup="$carTransmissionGroup" />
    </children>
 </AnchorPane>

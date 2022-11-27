@@ -102,12 +102,19 @@ public class AdminMainPageController implements Initializable {
         tblCol.setCellFactory(TextFieldTableCell.forTableColumn());
     } **/
 
-    private Admin receiveData(ActionEvent event) {
+    private Admin receiveAdminData(ActionEvent event) {
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         Admin admin = (Admin) stage.getUserData();
         return admin;
     }
+
+    /** private Car receiveCarData(ActionEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        Car car = (Car) stage.getUserData();
+        return car;
+    } **/
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -423,8 +430,19 @@ public class AdminMainPageController implements Initializable {
         carTable.getItems().addAll(tmpCars);
     }
 
-    public void addCar(ActionEvent e) {
-        Admin tmpAdmin = receiveData(e);
+    public void addCar(ActionEvent e) throws IOException {
+        Admin tmpAdmin = receiveAdminData(e);
+        // Car newCar = receiveCarData(e);
+        Node node = (Node) e.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+
+        Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminAddCarPage.fxml"));
+        stage.setUserData(tmpAdmin);
+        stage =  (Stage)((Node) e.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void removeCar(ActionEvent e) {
