@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
 import Class.Admin;
+import Class.Store;
 import Class.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,8 +40,13 @@ public class LoginPageController {
     private Scene scene;
     private Parent root;
 
+    AdminMainPageController controller = new AdminMainPageController();
+
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
+    static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
+    static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
+    Store store = new Store(adminFile, customerFile, carFile, bookingFile);
 
     public static User[] readFile(File file) throws FileNotFoundException {
         Gson gson = new Gson();
@@ -83,8 +89,16 @@ public class LoginPageController {
                     boolean loginAttempt = admin.login(admin, passwordTextField.getText());
 
                     if (loginAttempt) { // if login successful
-                        
+                          // Step 1
+                        Admin tmpAdmin = store.findAdmin(usernameTextField.getText());
+                        // Step 2
+                        Node node = (Node) event.getSource();
+                        // Step 3
+                        Stage stage = (Stage) node.getScene().getWindow();
+                        stage.close();
+
                         Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminMainPage.fxml"));
+                        stage.setUserData(tmpAdmin);
                         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
                         scene = new Scene(root);
                         stage.setScene(scene);
@@ -123,6 +137,10 @@ public class LoginPageController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public String returnUsername() {
+        return usernameTextField.getText();
     }
 
 }

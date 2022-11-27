@@ -26,7 +26,7 @@
                         <TableColumn fx:id="carTransmissionColumn" prefWidth="182.00003051757812" text="Car Transmission Type" />
                     </columns>
                   </TableView>
-                  <Label fx:id="adminLabel" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
+                  <Label fx:id="adminLabelCar" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -38,7 +38,7 @@
                   </Label>
                   <TextField fx:id="searchCarTextField" layoutX="786.0" layoutY="107.0" prefHeight="25.0" prefWidth="223.0" />
                   <Button fx:id="searchCarButton" layoutX="1036.0" layoutY="105.0" mnemonicParsing="false" onAction="#searchCar" prefWidth="75.0" text="Search" />
-                  <Button fx:id="clearButton" layoutX="1128.0" layoutY="105.0" mnemonicParsing="false" onAction="#clear" prefWidth="75.0" text="Clear" />
+                  <Button fx:id="clearButton" layoutX="1128.0" layoutY="105.0" mnemonicParsing="false" onAction="#clearCar" prefWidth="75.0" text="Clear" />
                   <Button fx:id="addCarButton" layoutX="933.0" layoutY="605.0" mnemonicParsing="false" onAction="#addCar" prefHeight="50.0" prefWidth="75.0" text="ADD" />
                   <Button fx:id="removeCarButton" layoutX="1036.0" layoutY="605.0" mnemonicParsing="false" onAction="#removeCar" prefHeight="50.0" prefWidth="75.0" text="REMOVE" />
                   <Button fx:id="logoutButton" layoutX="1128.0" layoutY="18.0" mnemonicParsing="false" onAction="#logout" prefWidth="75.0" text="Logout" />
@@ -61,7 +61,7 @@
                               <TableColumn fx:id="passwordColumn" prefWidth="182.00003051757812" text="Password" />
                            </columns>
                         </TableView>
-                        <Label fx:id="adminLabel" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
+                        <Label fx:id="adminLabelCustomer" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -73,7 +73,7 @@
                         </Label>
                         <Button fx:id="searchCustomerButton" layoutX="1036.0" layoutY="105.0" mnemonicParsing="false" onAction="#searchCustomer" prefWidth="75.0" text="Search" />
                         <TextField fx:id="searchCustomerTextField" layoutX="786.0" layoutY="107.0" prefHeight="25.0" prefWidth="223.0" />
-                        <Button fx:id="clearButton" layoutX="1128.0" layoutY="105.0" mnemonicParsing="false" onAction="#clear" prefWidth="75.0" text="Clear" />
+                        <Button fx:id="clearButton" layoutX="1128.0" layoutY="105.0" mnemonicParsing="false" onAction="#clearCustomer" prefWidth="75.0" text="Clear" />
                         <Button fx:id="logoutButton" layoutX="1128.0" layoutY="18.0" mnemonicParsing="false" onAction="#logout" prefWidth="75.0" text="Logout" />
                      </children>
                   </AnchorPane>
@@ -97,7 +97,7 @@
                         <TableColumn fx:id="totalPriceColumn" prefWidth="115.0" text="Total Price" />
                      </columns>
                   </TableView>
-                  <Label fx:id="adminLabel" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
+                  <Label fx:id="adminLabelBooking" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -109,7 +109,7 @@
                   </Label>
                   <TextField fx:id="searchBookingTextField" layoutX="762.0" layoutY="89.0" prefHeight="25.0" prefWidth="223.0" />
                   <Button fx:id="searchBookingButton" layoutX="1003.0" layoutY="87.0" mnemonicParsing="false" onAction="#searchBooking" prefWidth="75.0" text="Search" />
-                  <Button fx:id="clearButton" layoutX="1090.0" layoutY="87.0" mnemonicParsing="false" onAction="#clear" prefWidth="75.0" text="Clear" />
+                  <Button fx:id="clearButton" layoutX="1090.0" layoutY="87.0" mnemonicParsing="false" onAction="#clearBooking" prefWidth="75.0" text="Clear" />
                   <Button fx:id="approveButton" layoutX="1052.0" layoutY="589.0" mnemonicParsing="false" onAction="#approve" prefHeight="50.0" prefWidth="75.0" text="APPROVE" />
                   <Button fx:id="rejectButton" layoutX="1152.0" layoutY="589.0" mnemonicParsing="false" onAction="#reject" prefHeight="50.0" prefWidth="75.0" text="REJECT" />
                   <Button fx:id="logoutButton" layoutX="1190.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" prefWidth="75.0" text="Logout" />
@@ -121,7 +121,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="adminLabel" alignment="CENTER" layoutX="414.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
+                  <Label fx:id="adminLabelReport" alignment="CENTER" layoutX="414.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
                      <font>
                         <Font size="26.0" />
                      </font>

@@ -7,13 +7,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicLong;
 
-import javax.swing.Action;
-
+import Class.Admin;
 import Class.Booking;
 import Class.Car;
-import Class.Customer;
 import Class.Store;
 import Class.User;
 import javafx.collections.FXCollections;
@@ -21,13 +18,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -35,8 +33,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LongStringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 public class AdminMainPageController implements Initializable {
 
@@ -80,6 +76,9 @@ public class AdminMainPageController implements Initializable {
     @FXML
     private Button addCarButton, approveButton, clearButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, salesReportButton, revenueReportButton;
 
+    @FXML
+    private Label adminLabelCar, adminLabelCustomer, adminLabelBooking, adminLabelReport;
+
     private Stage stage;
     private Parent root;
     private Scene scene;
@@ -89,8 +88,9 @@ public class AdminMainPageController implements Initializable {
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
 
-
+    // String adminUsername = controller.returnUsername();
     Store store = new Store(adminFile, customerFile, carFile, bookingFile);
+    // Admin tmpAdmin = store.findAdmin(adminUsername);
 
     /** public void setEditableTable(TableView table, String tableType, boolean editable) {
         table.setEditable(editable);
@@ -102,8 +102,17 @@ public class AdminMainPageController implements Initializable {
         tblCol.setCellFactory(TextFieldTableCell.forTableColumn());
     } **/
 
+    private Admin receiveData(ActionEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        Admin admin = (Admin) stage.getUserData();
+        return admin;
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+
+
         
         // Car Table
         carTable.setEditable(true);
@@ -242,7 +251,7 @@ public class AdminMainPageController implements Initializable {
             }
             
         });
-        
+
         List<Car> carList = store.getCars();
         ObservableList<Car> obsCarList = FXCollections.observableArrayList(carList);
         carTable.setItems(obsCarList);
@@ -253,18 +262,114 @@ public class AdminMainPageController implements Initializable {
         // Customer Table
         customerTable.setEditable(true);
         customerTable.setPlaceholder(new Label("No customer records to display"));
+        
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullname"));
         customerNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        identificationCardColumn.setCellValueFactory(new PropertyValueFactory<>("identification"));
+        customerNameColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<User,String>>() {
+
+            @Override
+            public void handle(CellEditEvent<User, String> event) {
+                User tmpCustomer = customerTable.getSelectionModel().getSelectedItem();
+                String newCustomerName = event.getNewValue();
+
+                ArrayList<User> customerList = store.getCustomers();
+
+                try {
+                    for (User customer: customerList) {
+                        if (customer.getIdentification().equals(tmpCustomer.getIdentification())) {
+                            customer.setFullname(newCustomerName);
+                            break;
+                        }
+                    }
+                    Store.saveUsers(customerFile, customerList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }                
+            }
+            
+        });
+
         identificationCardColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        emailColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<User,String>>() {
+
+            @Override
+            public void handle(CellEditEvent<User, String> event) {
+                User tmpCustomer = customerTable.getSelectionModel().getSelectedItem();
+                String newCustomerEmail = event.getNewValue();
+
+                ArrayList<User> customerList = store.getCustomers();
+
+                try {
+                    for (User customer: customerList) {
+                        if (customer.getIdentification().equals(tmpCustomer.getIdentification())) {
+                            customer.setEmail(newCustomerEmail);
+                            break;
+                        }
+                    }
+                    Store.saveUsers(customerFile, customerList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }     
+            }
+            
+        });
+
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
         contactColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        contactColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<User,String>>() {
+
+            @Override
+            public void handle(CellEditEvent<User, String> event) {
+                User tmpCustomer = customerTable.getSelectionModel().getSelectedItem();
+                String newCustomerContact = event.getNewValue();
+
+                ArrayList<User> customerList = store.getCustomers();
+
+                try {
+                    for (User customer: customerList) {
+                        if (customer.getIdentification().equals(tmpCustomer.getIdentification())) {
+                            customer.setContact(newCustomerContact);
+                            break;
+                        }
+                    }
+                    Store.saveUsers(customerFile, customerList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }                     
+            }
+            
+        });
+
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         usernameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        usernameColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<User,String>>() {
+
+            @Override
+            public void handle(CellEditEvent<User, String> event) {
+                User tmpCustomer = customerTable.getSelectionModel().getSelectedItem();
+                String newCustomerUsername = event.getNewValue();
+
+                ArrayList<User> customerList = store.getCustomers();
+
+                try {
+                    for (User customer: customerList) {
+                        if (customer.getIdentification().equals(tmpCustomer.getIdentification())) {
+                            customer.setUsername(newCustomerUsername);
+                            break;
+                        }
+                    }
+                    Store.saveUsers(customerFile, customerList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }     
+            }
+            
+        });
+
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
-        passwordColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         List<User> customerList = store.getCustomers();
         ObservableList<User> obsCustList = FXCollections.observableArrayList(customerList);
         customerTable.setItems(obsCustList);
@@ -286,23 +391,43 @@ public class AdminMainPageController implements Initializable {
 
     }
 
-    public void searchCar(ActionEvent e) {
-
+    public void logout(ActionEvent e) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
+        stage =  (Stage)((Node) e.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void clear(ActionEvent e) {
+    public void searchCar(ActionEvent e) {
+        ArrayList<Car> tmpCars = store.getCars();
+        ArrayList<Car> searchedCars = new ArrayList<>();
+        String searchedCar = searchCarTextField.getText().toLowerCase().trim();
 
+        for (Car car: tmpCars) {
+            if (car.getPlateNumber().toLowerCase().trim().equals(searchedCar) || 
+                car.getCarBrand().toLowerCase().trim().equals(searchedCar) || 
+                car.getCarType().toLowerCase().trim().equals(searchedCar)) {
+                    searchedCars.add(car);
+                }
+        }
+
+        carTable.getItems().removeAll(tmpCars);
+        carTable.getItems().addAll(searchedCars);
+    }
+
+    public void clearCar(ActionEvent e) {
+        searchCarTextField.clear();
+        ArrayList<Car> tmpCars = store.getCars();
+        carTable.getItems().clear();
+        carTable.getItems().addAll(tmpCars);
     }
 
     public void addCar(ActionEvent e) {
-
+        Admin tmpAdmin = receiveData(e);
     }
 
     public void removeCar(ActionEvent e) {
-
-    }
-
-    public void logout(ActionEvent e) {
 
     }
 
@@ -310,7 +435,15 @@ public class AdminMainPageController implements Initializable {
 
     }
 
+    public void clearCustomer(ActionEvent e) {
+
+    }
+
     public void searchBooking(ActionEvent e) {
+
+    }
+
+    public void clearBooking(ActionEvent e) {
 
     }
 

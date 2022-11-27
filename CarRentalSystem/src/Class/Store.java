@@ -393,12 +393,19 @@ public class Store {
      *  3. Return the admin object
      * @throws FileNotFoundException
      */
-    public Admin findAdmin(String username) throws FileNotFoundException {
-        User[] adminList = readAdminFile(adminFile);
-        for (Admin admin: (Admin[]) adminList) {
-            if (admin.getUsername().toLowerCase().equals(username.toLowerCase())) {
-                return admin;
+    public Admin findAdmin(String email) {
+        User[] adminList;
+        try {
+            adminList = readAdminFile(adminFile);
+            
+            for (Admin admin: (Admin[]) adminList) {
+                if (admin.getEmail().toLowerCase().equals(email.toLowerCase())) {
+                    return admin;
+                }
             }
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return null;
     }
