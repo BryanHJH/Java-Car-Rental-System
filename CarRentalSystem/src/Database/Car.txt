@@ -1,7 +1,7 @@
 [
     {
         "plateNumber": "BNY1122",
-        "carBrand": "Toyota",
+        "carBrand": "Proton",
         "carType": "Sedan",
         "carSeat": 5,
         "carPrice": 25,
@@ -10,7 +10,7 @@
     },
     {
         "plateNumber": "WYY2349",
-        "carBrand": "Proton",
+        "carBrand": "Nissan",
         "carType": "SUV",
         "carSeat": 7,
         "carPrice": 45,

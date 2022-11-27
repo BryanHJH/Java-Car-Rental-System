@@ -36,10 +36,22 @@ public class Store {
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
 
-    public Store(ArrayList<User> admins, ArrayList<User> customers, ArrayList<Car> cars) {
+    public Store(ArrayList<User> admins, ArrayList<User> customers, ArrayList<Car> cars, ArrayList<Booking> bookings) {
         this.cars = new ArrayList<>(cars);
         this.admins = new ArrayList<>(admins);
         this.customers = new ArrayList<>(customers);
+        this.bookings = new ArrayList<>(bookings);
+    }
+
+    public Store(File admin, File customer, File car, File booking) { 
+        try {
+            this.cars = new ArrayList<Car>(Arrays.asList(readCarFile(car)));
+            this.admins = new ArrayList<User>(Arrays.asList(readAdminFile(admin)));
+            this.customers = new ArrayList<User>(Arrays.asList(readCustomerFile(customer)));
+            this.bookings = new ArrayList<Booking>(Arrays.asList(readBookingFile(booking)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Car> getCars() {
@@ -308,6 +320,21 @@ public class Store {
         saveBookings(bookingFile, newBookings);
     }
 
+    public void updateBooking(Booking b) throws IOException {
+        Booking[] oldBookings = readBookingFile(bookingFile);
+        ArrayList<Booking> updatedBookings = new ArrayList<>();
+
+        for (Booking booking: oldBookings) {
+            if (booking.getEmail().equals(b.getEmail()) && booking.getPlateNumber().equals(b.getPlateNumber()) && booking.getBookingStart().isEqual(b.getBookingStart())) {
+                updatedBookings.add(b);
+            } else {
+                updatedBookings.add(booking);
+            }
+        }
+
+        saveBookings(bookingFile, updatedBookings);
+    }
+
     /**
      * Function name: removeAdmin
      * 
@@ -421,10 +448,10 @@ public class Store {
         return null;
     }
 
-    public Booking findBooking(String id) throws FileNotFoundException {
+    public Booking findBooking(long id) throws FileNotFoundException {
         Booking[] bookingList = readBookingFile(bookingFile);
         for (Booking booking: bookingList) {
-            if (booking.getIdentifier().toString().equals(id)) {
+            if (booking.getIdentifier() == (id)) {
                 return booking;
             }
         }

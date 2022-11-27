@@ -75,8 +75,8 @@ public class Booking {
         this.bookingPeriod = source.getBookingPeriod();
     }
 
-    public AtomicLong getIdentifier() {
-        return this.identifier;
+    public long getIdentifier() {
+        return this.identifier.longValue();
     }
 
     public String getBookingType() {

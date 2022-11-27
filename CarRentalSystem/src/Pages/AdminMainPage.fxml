@@ -16,15 +16,14 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0">
                <children>
-                  <TableView fx:id="carTable" layoutX="76.0" layoutY="149.0" prefHeight="440.0" prefWidth="1128.0">
+                  <TableView fx:id="carTable" layoutX="167.0" layoutY="154.0" prefHeight="440.0" prefWidth="945.0">
                     <columns>
-                      <TableColumn fx:id="plateNumberColumn" prefWidth="110.66669082641602" text="Plate Number" />
+                      <TableColumn fx:id="plateNumberColumn" prefWidth="115.0" text="Plate Number" />
                       <TableColumn fx:id="carBrandColumn" prefWidth="156.66664123535156" text="Car Brand" />
+                        <TableColumn fx:id="carTypeColumn" prefWidth="182.00003051757812" text="Car Type" />
                         <TableColumn fx:id="noSeatsColumn" prefWidth="119.99993896484375" text="Number of seats" />
                         <TableColumn fx:id="rentPriceColumn" prefWidth="182.00003051757812" text="Rental Price (per day)" />
-                        <TableColumn fx:id="carStatusColumn" prefWidth="182.00003051757812" text="Status" />
-                        <TableColumn fx:id="carryLoadColumn" prefWidth="182.00003051757812" text="Carrying Load (kg)" />
-                        <TableColumn fx:id="comfortColumn" prefWidth="182.00003051757812" text="Comfortability Score" />
+                        <TableColumn fx:id="carTransmissionColumn" prefWidth="182.00003051757812" text="Car Transmission Type" />
                     </columns>
                   </TableView>
                   <Label fx:id="adminLabel" alignment="CENTER" layoutX="479.0" layoutY="14.0" prefHeight="36.0" prefWidth="321.0" text="Admin Panel">
@@ -40,8 +39,8 @@
                   <TextField fx:id="searchCarTextField" layoutX="786.0" layoutY="107.0" prefHeight="25.0" prefWidth="223.0" />
                   <Button fx:id="searchCarButton" layoutX="1036.0" layoutY="105.0" mnemonicParsing="false" onAction="#searchCar" prefWidth="75.0" text="Search" />
                   <Button fx:id="clearButton" layoutX="1128.0" layoutY="105.0" mnemonicParsing="false" onAction="#clear" prefWidth="75.0" text="Clear" />
-                  <Button fx:id="addCarButton" layoutX="1036.0" layoutY="605.0" mnemonicParsing="false" onAction="#addCar" prefHeight="50.0" prefWidth="75.0" text="ADD" />
-                  <Button fx:id="removeCarButton" layoutX="1128.0" layoutY="605.0" mnemonicParsing="false" onAction="#removeCar" prefHeight="50.0" prefWidth="75.0" text="REMOVE" />
+                  <Button fx:id="addCarButton" layoutX="933.0" layoutY="605.0" mnemonicParsing="false" onAction="#addCar" prefHeight="50.0" prefWidth="75.0" text="ADD" />
+                  <Button fx:id="removeCarButton" layoutX="1036.0" layoutY="605.0" mnemonicParsing="false" onAction="#removeCar" prefHeight="50.0" prefWidth="75.0" text="REMOVE" />
                   <Button fx:id="logoutButton" layoutX="1128.0" layoutY="18.0" mnemonicParsing="false" onAction="#logout" prefWidth="75.0" text="Logout" />
                </children></AnchorPane>
       </content>
@@ -75,8 +74,6 @@
                         <Button fx:id="searchCustomerButton" layoutX="1036.0" layoutY="105.0" mnemonicParsing="false" onAction="#searchCustomer" prefWidth="75.0" text="Search" />
                         <TextField fx:id="searchCustomerTextField" layoutX="786.0" layoutY="107.0" prefHeight="25.0" prefWidth="223.0" />
                         <Button fx:id="clearButton" layoutX="1128.0" layoutY="105.0" mnemonicParsing="false" onAction="#clear" prefWidth="75.0" text="Clear" />
-                        <Button fx:id="viewHistoryButton" layoutX="1036.0" layoutY="605.0" mnemonicParsing="false" onAction="#viewHistory" prefHeight="50.0" prefWidth="75.0" text="VIEW" />
-                        <Button fx:id="resetPasswordButton" layoutX="1128.0" layoutY="605.0" mnemonicParsing="false" onAction="#resetPassword" prefHeight="50.0" prefWidth="75.0" text="RESET" />
                         <Button fx:id="logoutButton" layoutX="1128.0" layoutY="18.0" mnemonicParsing="false" onAction="#logout" prefWidth="75.0" text="Logout" />
                      </children>
                   </AnchorPane>
@@ -87,7 +84,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="bookngTable" layoutX="14.0" layoutY="133.0" prefHeight="440.0" prefWidth="1243.0">
+                  <TableView fx:id="bookingTable" layoutX="14.0" layoutY="133.0" prefHeight="440.0" prefWidth="1243.0">
                      <columns>
                         <TableColumn fx:id="bookingIDColumn" prefWidth="110.66669082641602" text="Booking ID" />
                         <TableColumn fx:id="bookingTypeColumn" prefWidth="125.0" text="Booking Type" />
@@ -134,8 +131,8 @@
                         <Font size="26.0" />
                      </font>
                   </Label>
-                  <Button layoutX="262.0" layoutY="160.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" text="Sales Report" />
-                  <Button layoutX="262.0" layoutY="306.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" text="Revenue Report" />
+                  <Button fx:id="salesReportButton" layoutX="262.0" layoutY="160.0" mnemonicParsing="false" onAction="#generateSalesReport" prefHeight="75.0" prefWidth="150.0" text="Sales Report" />
+                  <Button fx:id="revenuReportButton" layoutX="262.0" layoutY="306.0" mnemonicParsing="false" onAction="#generateRevenueReport" prefHeight="75.0" prefWidth="150.0" text="Revenue Report" />
                   <Button layoutX="796.0" layoutY="163.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" text="Placeholder" />
                   <Button layoutX="797.0" layoutY="309.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" text="Placeholder" />
                </children>

@@ -1,0 +1,14 @@
+[
+    {
+        "identifier": 0,
+        "bookingType": "Return",
+        "bookingStatus": "Returned",
+        "email": "bryan@gmail.com",
+        "identification": "1111120293",
+        "plateNumber": "BNY1122",
+        "totalPrice": 100,
+        "bookingPeriod": 4,
+        "bookingStart": "2022-12-12",
+        "bookingEnd": "2022-12-16"
+    }
+]

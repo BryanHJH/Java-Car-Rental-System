@@ -98,11 +98,11 @@ public class SetUp {
         saveUserData(customerFile, custArr);
         saveCarData(carArr);
 
-        Store testStore = new Store(adminArr, custArr, carArr);
+        Store testStore = new Store(adminArr, custArr, carArr, new ArrayList<Booking>());
 
         testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
         testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
-
+        
         Admin tmpAdmin = testStore.findAdmin("brian");
         Car tmpCar = testStore.findCar("BNY1122");
         Customer tmpCustomer = testStore.findCustomer("bryan");
@@ -119,6 +119,7 @@ public class SetUp {
         try {
             tmpBooking = tmpAdmin.approve(tmpBooking, true);
             testStore.rentCar(tmpCar, bookingStart, bookingEnd);
+            testStore.addBooking(tmpBooking);
             System.out.println(tmpCar);
             System.out.println();
             System.out.println("Before Returning: \n");
@@ -126,14 +127,17 @@ public class SetUp {
             tmpBooking = tmpCustomer.returnCar(tmpBooking);
             System.out.println("After Returning: \n");
             System.out.println(tmpBooking);
+            testStore.updateBooking(tmpBooking);
             System.out.println();
             tmpBooking = tmpAdmin.approveReturn(tmpBooking, true);
             System.out.println("After approving Return: \n");
             System.out.println(tmpBooking);
+            testStore.updateBooking(tmpBooking);
             System.out.println();
-            //testStore.returnCar(tmpCar, bookingStart, bookingEnd);
-            //System.out.println("After removing dates: \n");
-            //System.out.println(tmpCar);
+            testStore.returnCar(tmpCar, bookingStart, bookingEnd);
+            System.out.println("After removing dates: \n");
+            System.out.println(tmpCar);
+            testStore.updateBooking(tmpBooking);
         } catch (IllegalAccessException e) {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
