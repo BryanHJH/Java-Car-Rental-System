@@ -6,6 +6,7 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import Class.Admin;
 import Class.Car;
+import Class.Store;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,16 +37,16 @@ public class AdminAddCarPageController {
     private Scene scene;
     private Parent root;
 
-    private Admin receiveAdminData(ActionEvent event) {
+    private Store receiveStoreData(ActionEvent event) {
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
-        Admin admin = (Admin) stage.getUserData();
-        return admin;
+        Store store = (Store) stage.getUserData();
+        return store;
     }
 
     public void add(ActionEvent event) throws IOException {
 
-        Admin tmpAdmin = receiveAdminData(event);
+        Store tmpStore = receiveStoreData(event);
 
         String plateNumber = plateNumberTextField.getText();
         String carBrand = carBrandTextField.getText();
@@ -56,8 +57,7 @@ public class AdminAddCarPageController {
         int carPrice = Integer.parseInt(carPriceTextField.getText());
 
         Car newCar = new Car(plateNumber, carBrand, carSeats, carType, carPrice, carTransmission);
-        
-
+        tmpStore.addCar(newCar);
 
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminMainPage.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();

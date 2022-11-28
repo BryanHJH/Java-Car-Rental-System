@@ -320,6 +320,7 @@ public class Store {
         saveBookings(bookingFile, newBookings);
     }
 
+    // Need to recheck this part a bit
     public void updateBooking(Booking b) throws IOException {
         Booking[] oldBookings = readBookingFile(bookingFile);
         ArrayList<Booking> updatedBookings = new ArrayList<>();
@@ -346,10 +347,9 @@ public class Store {
      *  1. Get the username of the Admin to be removed.
      *  2. Use the delete function in Admin class to remove the Admin.
      */
-    public void removeAdmin(String username) throws IOException {
-        Admin[] adminArray = new Admin[this.admins.size()];
-        ArrayList<User> newAdminList = Admin.delete(this.admins.toArray(adminArray), username);
-        saveUsers(adminFile, newAdminList);
+    public void removeAdmin(User admin) throws IOException {
+        this.admins.add(admin);
+        saveUsers(adminFile, this.admins);
     }
 
     /**
@@ -362,10 +362,14 @@ public class Store {
      *  1. Get the username of the Admin to be removed.
      *  2. Use the delete function in Admin class to remove the Admin.
      */
-    public void removeCustomer(String username) throws IOException {
-        Customer[] customerArray = new Customer[this.customers.size()];
-        ArrayList<User> newCustomerList = Customer.delete(this.admins.toArray(customerArray), username);
-        saveUsers(customerFile, newCustomerList);
+    public void removeCustomer(User customer) throws IOException {
+        this.customers.remove(customer);
+        saveUsers(customerFile, this.customers);
+    }
+
+    public void removeCar(Car car) throws IOException {
+        this.cars.remove(car);
+        saveCars(carFile, this.cars);
     }
 
     public void removeBooking(Booking b) throws IOException {
@@ -388,7 +392,7 @@ public class Store {
      * @return
      * 
      * What it does:
-     *  1. Get the admin username
+     *  1. Get the admin email
      *  2. Read the admin.txt file and find the matching admin record with the provided username.
      *  3. Return the admin object
      * @throws FileNotFoundException

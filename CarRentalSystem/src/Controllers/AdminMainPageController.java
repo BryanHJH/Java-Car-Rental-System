@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import Class.Admin;
 import Class.Booking;
 import Class.Car;
+import Class.Customer;
 import Class.Store;
 import Class.User;
 import javafx.collections.FXCollections;
@@ -296,7 +297,7 @@ public class AdminMainPageController implements Initializable {
             
         });
 
-        identificationCardColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        identificationCardColumn.setCellValueFactory(new PropertyValueFactory<>("identification"));
 
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -431,38 +432,73 @@ public class AdminMainPageController implements Initializable {
     }
 
     public void addCar(ActionEvent e) throws IOException {
-        Admin tmpAdmin = receiveAdminData(e);
-        // Car newCar = receiveCarData(e);
         Node node = (Node) e.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
 
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminAddCarPage.fxml"));
-        stage.setUserData(tmpAdmin);
+        stage.setUserData(store);
         stage =  (Stage)((Node) e.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        clearCar(e);
     }
 
-    public void removeCar(ActionEvent e) {
-
+    public void removeCar(ActionEvent e) throws IOException {
+        Car tmpCar = carTable.getSelectionModel().getSelectedItem();
+        store.removeCar(tmpCar);
+        clearCar(e);
     }
 
     public void searchCustomer(ActionEvent e) {
+        ArrayList<User> tmpCustomers = store.getCustomers();
+        ArrayList<User> searchedCustomers = new ArrayList<>();
+        String searchedCustomer = searchCustomerTextField.getText().toLowerCase().trim();
 
+        for (User customer: tmpCustomers) {
+            if (customer.getFullname().toLowerCase().trim().equals(searchedCustomer) || 
+                customer.getUsername().toLowerCase().trim().equals(searchedCustomer) || 
+                customer.getEmail().toLowerCase().trim().equals(searchedCustomer)) {
+                    searchedCustomers.add(customer);
+                }
+        }
+
+        customerTable.getItems().removeAll(tmpCustomers);
+        customerTable.getItems().addAll(searchedCustomers);
     }
 
     public void clearCustomer(ActionEvent e) {
-
+        searchCustomerTextField.clear();
+        ArrayList<User> tmpCustomers = store.getCustomers();
+        customerTable.getItems().clear();
+        customerTable.getItems().addAll(tmpCustomers);
     }
 
     public void searchBooking(ActionEvent e) {
+        ArrayList<Booking> tmpBookings = store.getBookings();
+        ArrayList<Booking> searchedBookings = new ArrayList<>();
+        String searchedBooking = searchBookingTextField.getText().toLowerCase().trim();
 
+        for (Booking booking: tmpBookings) {
+            if (booking.getBookingType().toLowerCase().trim().equals(searchedBooking) ||
+                booking.getBookingStatus().toLowerCase().trim().equals(searchedBooking) ||
+                booking.getEmail().toLowerCase().trim().equals(searchedBooking) ||
+                booking.getPlateNumber().toLowerCase().trim().equals(searchedBooking) ||
+                booking.getIdentification().toLowerCase().trim().equals(searchedBooking)) {
+                    searchedBookings.add(booking);
+                }
+        }
+
+        bookingTable.getItems().removeAll(tmpBookings);
+        bookingTable.getItems().addAll(searchedBookings);
     }
 
     public void clearBooking(ActionEvent e) {
-
+        searchBookingTextField.clear();
+        ArrayList<Booking> tmpBookings = store.getBookings();
+        bookingTable.getItems().clear();
+        bookingTable.getItems().addAll(tmpBookings);
     }
 
     public void approve(ActionEvent e) {

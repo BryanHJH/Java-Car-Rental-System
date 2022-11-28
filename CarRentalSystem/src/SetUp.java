@@ -103,10 +103,12 @@ public class SetUp {
         testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
         testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
         
-        Admin tmpAdmin = testStore.findAdmin("brian");
+        Admin tmpAdmin = testStore.findAdmin("brian@car.com");
         Car tmpCar = testStore.findCar("BNY1122");
         Customer tmpCustomer = testStore.findCustomer("bryan");
 
+        System.out.println(tmpAdmin);
+        System.out.println();
         System.out.println(tmpCar);
         System.out.println();
         System.out.println(tmpCustomer);
@@ -115,11 +117,16 @@ public class SetUp {
         String bookingStart = "12-12-2022";
         String bookingEnd = "16-12-2022";
 
-        Booking tmpBooking = tmpCustomer.bookCar(tmpCar, bookingStart, bookingEnd);
         try {
+            Booking tmpBooking = tmpCustomer.bookCar(tmpCar, bookingStart, bookingEnd);
+            System.out.println("Booking Created: \n");
+            System.out.println(tmpBooking);
             tmpBooking = tmpAdmin.approve(tmpBooking, true);
             testStore.rentCar(tmpCar, bookingStart, bookingEnd);
             testStore.addBooking(tmpBooking);
+            System.out.println("Booking Approved: \n");
+            System.out.println(tmpBooking);
+            System.out.println();
             System.out.println(tmpCar);
             System.out.println();
             System.out.println("Before Returning: \n");
@@ -139,10 +146,8 @@ public class SetUp {
             System.out.println(tmpCar);
             testStore.updateBooking(tmpBooking);
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
