@@ -84,9 +84,8 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="bookingTable" layoutX="14.0" layoutY="133.0" prefHeight="440.0" prefWidth="1243.0">
+                  <TableView fx:id="bookingTable" layoutX="78.0" layoutY="135.0" prefHeight="440.0" prefWidth="1125.0">
                      <columns>
-                        <TableColumn fx:id="bookingIDColumn" prefWidth="110.66669082641602" text="Booking ID" />
                         <TableColumn fx:id="bookingTypeColumn" prefWidth="125.0" text="Booking Type" />
                         <TableColumn fx:id="bookingStatusColumn" prefWidth="119.99993896484375" text="Booking Status" />
                         <TableColumn fx:id="custEmailColumn" prefWidth="175.0" text="Customer Email" />

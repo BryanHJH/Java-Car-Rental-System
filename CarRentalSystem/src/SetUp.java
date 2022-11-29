@@ -94,8 +94,8 @@ public class SetUp {
         Admin tmpAdmin = testStore.findAdmin("brian@car.com");
         Car tmpCar = testStore.findCar("BNY1122");
         Car tmpCar2 = testStore.findCar("A1");
-        Customer tmpCustomer = testStore.findCustomer("bryan");
-        Customer tmpCustomer2 = testStore.findCustomer("derek");
+        Customer tmpCustomer = testStore.findCustomer("bryan@gmail.com");
+        Customer tmpCustomer2 = testStore.findCustomer("derek@hotmail.com");
 
         // System.out.println(tmpAdmin);
         // System.out.println();

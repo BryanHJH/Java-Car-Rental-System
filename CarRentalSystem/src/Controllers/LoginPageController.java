@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
 import Class.Admin;
+import Class.Customer;
 import Class.Store;
 import Class.User;
 import javafx.event.ActionEvent;
@@ -48,10 +49,17 @@ public class LoginPageController {
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
     Store store = new Store(adminFile, customerFile, carFile, bookingFile);
 
-    public static User[] readFile(File file) throws FileNotFoundException {
+    public static User[] readAdminFile(File file) throws FileNotFoundException {
         Gson gson = new Gson();
         Reader reader = new FileReader(file);
         User[] userList = (User[]) gson.fromJson(reader, Admin[].class);
+        return userList;
+    }
+
+    public static User[] readCustomerFile(File file) throws FileNotFoundException {
+        Gson gson = new Gson();
+        Reader reader = new FileReader(file);
+        User[] userList = (User[]) gson.fromJson(reader, Customer[].class);
         return userList;
     }
 
@@ -76,13 +84,8 @@ public class LoginPageController {
 
         if (matchFound) { // Admin login
 
-            User[] adminList = readFile(adminFile);
+            User[] adminList = readAdminFile(adminFile);
             for (Admin admin: (Admin[]) adminList) {
-                
-                // TODO: rewrite the logic for this function
-                // 1. First check whether the userlist match any of the Admin in the list
-                // 2. Create a temp user for any matched user and check the password
-                // 3. If successful, go to the next page, else show errorLabel
 
                 if (admin.getEmail().equals(usernameTextField.getText())) {
 
@@ -117,9 +120,45 @@ public class LoginPageController {
                     errorLabel.setText("Email and/or Password is incorrect");
                     
                 }   
+
             }
+
         } else { // Customer login
-            User[] customerList = readFile(customerFile);
+            User[] customerList = readCustomerFile(customerFile);
+            for (Customer customer: (Customer[]) customerList) {
+
+                if (customer.getEmail().equals(usernameTextField.getText())) {
+
+                    boolean loginAttempt = customer.login(customer, passwordTextField.getText());
+
+                    if (loginAttempt) { // if login successful
+                        
+                        Customer tmpCustomer = store.findCustomer(usernameTextField.getText());
+                        Node node = (Node) event.getSource();
+                        Stage stage = (Stage) node.getScene().getWindow();
+                        stage.close();
+
+                        Parent root = FXMLLoader.load(getClass().getResource("/Pages/CustomerPage.fxml"));
+                        stage.setUserData(tmpCustomer);
+                        stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+
+                    } else {
+
+                        errorLabel.setTextFill(Color.RED);
+                        errorLabel.setText("Email and/or Password is incorrect");
+
+                    }
+                    
+                } else { // if login unsuccessful
+
+                    errorLabel.setTextFill(Color.RED);
+                    errorLabel.setText("Email and/or Password is incorrect");
+                    
+                }   
+            }
         }
     }
 

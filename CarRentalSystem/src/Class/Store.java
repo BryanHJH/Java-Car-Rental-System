@@ -438,10 +438,10 @@ public class Store {
      *  3. Return the customer object
      * @throws FileNotFoundException
      */
-    public Customer findCustomer(String username) throws FileNotFoundException {
+    public Customer findCustomer(String email) throws FileNotFoundException {
         User[] customerList = readCustomerFile(customerFile);
         for (Customer customer: (Customer[]) customerList) {
-            if (customer.getUsername().toLowerCase().equals(username.toLowerCase())) {
+            if (customer.getEmail().toLowerCase().equals(email.toLowerCase())) {
                 return customer;
             }
         }

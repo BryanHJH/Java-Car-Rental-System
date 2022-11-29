@@ -30,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
@@ -62,9 +63,6 @@ public class AdminMainPageController implements Initializable {
     TableColumn<Booking, String> bookingTypeColumn, bookingStatusColumn, custEmailColumn, custIDColumn, carPlateColumn;
 
     @FXML
-    TableColumn<Booking, Long> bookingIDColumn;
-
-    @FXML
     TableColumn<Booking, LocalDate> bookingStartColumn, bookingEndColumn;
 
     @FXML
@@ -89,19 +87,7 @@ public class AdminMainPageController implements Initializable {
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
 
-    // String adminUsername = controller.returnUsername();
     Store store = new Store(adminFile, customerFile, carFile, bookingFile);
-    // Admin tmpAdmin = store.findAdmin(adminUsername);
-
-    /** public void setEditableTable(TableView table, String tableType, boolean editable) {
-        table.setEditable(editable);
-        table.setPlaceholder(new Label("No " + tableType + " records to display"));
-    } **/
-    
-    /** public void initializeTableColumn(TableColumn carBrandColumn, String variableName) {
-        tblCol.setCellValueFactory(new PropertyValueFactory<>(variableName));
-        tblCol.setCellFactory(TextFieldTableCell.forTableColumn());
-    } **/
 
     private Admin receiveAdminData(ActionEvent event) {
         Node node = (Node) event.getSource();
@@ -109,13 +95,6 @@ public class AdminMainPageController implements Initializable {
         Admin admin = (Admin) stage.getUserData();
         return admin;
     }
-
-    /** private Car receiveCarData(ActionEvent event) {
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        Car car = (Car) stage.getUserData();
-        return car;
-    } **/
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -507,8 +486,9 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Booking> updatedBookings = new ArrayList<>();
 
         if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("rejected")) {
-            // TODO: Throw an Alert screen saying no modifications are allowed
-
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("Rejected bookings cannot be modified!");
+            alert.show();
         } else {
             
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
@@ -545,9 +525,12 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Booking> oldBookings = store.getBookings();
         ArrayList<Booking> updatedBookings = new ArrayList<>();
 
-        if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("approved")) {
-            // TODO: Throw an Alert window saying cannot reject approved booking
-
+        if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("approved") ||
+            selectedBooking.getBookingStatus().toLowerCase().trim().equals("returned") ||
+            selectedBooking.getBookingStatus().toLowerCase().trim().equals("paid")) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("Approved bookings cannot be modified!");
+            alert.show();
         } else {
             
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
@@ -572,7 +555,7 @@ public class AdminMainPageController implements Initializable {
     
             Store.saveBookings(bookingFile, updatedBookings);
             clearBooking(e);
-            
+
         }
 
     }
