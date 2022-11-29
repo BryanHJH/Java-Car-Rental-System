@@ -2,9 +2,6 @@ package Controllers;
 
 import java.io.IOException;
 
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
-
-import Class.Admin;
 import Class.Car;
 import Class.Store;
 import javafx.event.ActionEvent;

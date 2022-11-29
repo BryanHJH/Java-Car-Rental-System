@@ -9,14 +9,12 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Booking {
     
-    final AtomicLong identifier = new AtomicLong(0);
     private String bookingType, bookingStatus, email, identification, plateNumber;
     private int totalPrice, bookingPeriod;
     private LocalDate bookingStart, bookingEnd;
@@ -35,12 +33,12 @@ public class Booking {
     }
 
     public Booking(String bookingType, String bookingStatus, String email, String identification, String plateNumber, String bookingStart, String bookingEnd) {
-        this.identifier.incrementAndGet();
 
+        
         if (!(bookingType.toLowerCase().equals("booking") || bookingType.toLowerCase().equals("return") || bookingType.toLowerCase().equals("damaged"))) throw new IllegalArgumentException("Wrong booking type given");
-
+        
         if (!(bookingStatus.toLowerCase().equals("approved") || bookingStatus.toLowerCase().equals("rejected") || bookingStatus.toLowerCase().equals("pending") || bookingStatus.toLowerCase().equals("paid") || bookingStatus.toLowerCase().equals("returned"))) throw new IllegalArgumentException("Invalid booking status");
-
+        
         this.bookingType = bookingType;
         this.bookingStatus = bookingStatus;
         this.email = email;
@@ -63,21 +61,17 @@ public class Booking {
         }
     }
 
-    public Booking(Booking source) {
-        this.bookingType = source.getBookingType();
-        this.bookingStatus = source.getBookingStatus();
-        this.email = source.getEmail();
-        this.identification = source.getIdentification();
-        this.plateNumber = source.getPlateNumber();
-        this.totalPrice = source.getTotalPrice();
-        this.bookingStart = source.getBookingStart();
-        this.bookingEnd = source.getBookingEnd();
-        this.bookingPeriod = source.getBookingPeriod();
-    }
-
-    public long getIdentifier() {
-        return this.identifier.longValue();
-    }
+    // public Booking(Booking source) {
+    //     this.bookingType = source.getBookingType();
+    //     this.bookingStatus = source.getBookingStatus();
+    //     this.email = source.getEmail();
+    //     this.identification = source.getIdentification();
+    //     this.plateNumber = source.getPlateNumber();
+    //     this.totalPrice = source.getTotalPrice();
+    //     this.bookingStart = source.getBookingStart();
+    //     this.bookingEnd = source.getBookingEnd();
+    //     this.bookingPeriod = source.getBookingPeriod();
+    // }
 
     public String getBookingType() {
         return this.bookingType;
@@ -162,7 +156,6 @@ public class Booking {
         }
         Booking booking = (Booking) o;
         return
-            this.identifier.equals(booking.identifier) &&
             this.email.equals(booking.email) && 
             this.identification.equals(booking.identification) && 
             this.plateNumber.equals(booking.plateNumber) && 
@@ -174,14 +167,13 @@ public class Booking {
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, email, identification, plateNumber, bookingPeriod, bookingStart, bookingEnd);
+        return Objects.hash(email, identification, plateNumber, bookingPeriod, bookingStart, bookingEnd);
     }
 
 
     @Override
     public String toString() {
         return
-            "Booking ID: " + getIdentifier() + "\n" +
             "Booking Type: " + getBookingType() + "\n" +
             "Booking Status: " + getBookingStatus() + "\n" +
             "Email: " + getEmail() + "\n" +

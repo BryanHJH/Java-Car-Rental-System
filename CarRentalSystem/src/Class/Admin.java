@@ -56,15 +56,15 @@ public class Admin extends User {
      */
     public Booking approve(Booking booking, boolean approval) throws IllegalAccessException {
         if (booking.getBookingType().toLowerCase().equals("booking") || booking.getBookingType().toLowerCase().equals("return")) {
-            if (approval) {
+            if (approval) { // IF booking is APPROVED
                 booking.setBookingStatus("Approved");
-            } else {
+            } else { // IF booking is REJECTED
                 booking.setBookingStatus("Rejected");
             }
         } else if (booking.getBookingType().toLowerCase().equals("damaged")) {
-            if (approval) {
+            if (approval) { // IF fines are PAID
                 booking.setBookingStatus("Paid");
-            }  else {
+            }  else { // IF fines are not PAID
                 booking.setBookingStatus("Pending");
             }
         } else {

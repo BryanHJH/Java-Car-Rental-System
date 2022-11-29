@@ -67,6 +67,13 @@ public class Store {
     }
 
     public ArrayList<Booking> getBookings() {
+        try {
+            this.bookings = new ArrayList<Booking>(Arrays.asList(readBookingFile(bookingFile)));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         return this.bookings;
     }
 
@@ -325,11 +332,16 @@ public class Store {
         Booking[] oldBookings = readBookingFile(bookingFile);
         ArrayList<Booking> updatedBookings = new ArrayList<>();
 
-        for (Booking booking: oldBookings) {
-            if (booking.getEmail().equals(b.getEmail()) && booking.getPlateNumber().equals(b.getPlateNumber()) && booking.getBookingStart().isEqual(b.getBookingStart())) {
-                updatedBookings.add(b);
-            } else {
-                updatedBookings.add(booking);
+        if (oldBookings.length == 0) {
+            updatedBookings.add(b);
+        } else {
+            for (Booking booking: oldBookings) {
+                if (booking.getEmail().equals(b.getEmail()) && booking.getPlateNumber().equals(b.getPlateNumber()) && booking.getBookingStart().isEqual(b.getBookingStart())) {
+                    updatedBookings.add(b);
+                    continue;
+                } else {
+                    updatedBookings.add(booking);
+                }
             }
         }
 
@@ -459,10 +471,12 @@ public class Store {
         return null;
     }
 
-    public Booking findBooking(long id) throws FileNotFoundException {
+    public Booking findBooking(Booking b) throws FileNotFoundException {
         Booking[] bookingList = readBookingFile(bookingFile);
         for (Booking booking: bookingList) {
-            if (booking.getIdentifier() == (id)) {
+            if (booking.getEmail().equals(b.getEmail()) && 
+                booking.getPlateNumber().equals(b.getPlateNumber()) && 
+                booking.getBookingStart().isEqual(b.getBookingStart())) {
                 return booking;
             }
         }

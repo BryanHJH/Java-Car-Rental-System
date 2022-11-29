@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import Class.Admin;
 import Class.Booking;
 import Class.Car;
-import Class.Customer;
 import Class.Store;
 import Class.User;
 import javafx.collections.FXCollections;
@@ -24,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -383,7 +383,6 @@ public class AdminMainPageController implements Initializable {
         customerTable.setItems(obsCustList);
 
         // Booking Table
-        bookingIDColumn.setCellValueFactory(new PropertyValueFactory<>("identifier"));
         bookingTypeColumn.setCellValueFactory(new PropertyValueFactory<>("bookingType"));
         bookingStatusColumn.setCellValueFactory(new PropertyValueFactory<>("bookingStatus"));
         custEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -501,11 +500,80 @@ public class AdminMainPageController implements Initializable {
         bookingTable.getItems().addAll(tmpBookings);
     }
 
-    public void approve(ActionEvent e) {
+    public void approve(ActionEvent e) throws IllegalAccessException, IOException {
+        Admin tmpAdmin = receiveAdminData(e);
+        Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
+        ArrayList<Booking> oldBookings = store.getBookings();
+        ArrayList<Booking> updatedBookings = new ArrayList<>();
+
+        if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("rejected")) {
+            // TODO: Throw an Alert screen saying no modifications are allowed
+
+        } else {
+            
+            switch (selectedBooking.getBookingType().toLowerCase().trim()) {
+                case "booking": 
+                    selectedBooking = tmpAdmin.approve(selectedBooking, true);
+                    break;
+    
+                case "return": 
+                    selectedBooking = tmpAdmin.approveReturn(selectedBooking, true);
+                    break;
+            }
+    
+            for (Booking booking: oldBookings) {
+                if (booking.getEmail().equals(selectedBooking.getEmail()) &&
+                    booking.getPlateNumber().equals(selectedBooking.getPlateNumber()) &&
+                    booking.getBookingStart().isEqual(selectedBooking.getBookingStart())) {
+                    updatedBookings.add(selectedBooking);
+                    continue;
+                } else {
+                    updatedBookings.add(booking);
+                }
+            }
+    
+            Store.saveBookings(bookingFile, updatedBookings);
+            clearBooking(e);
+
+        }
 
     }
 
-    public void reject(ActionEvent e) {
+    public void reject(ActionEvent e) throws IllegalAccessException, IOException {
+        Admin tmpAdmin = receiveAdminData(e);
+        Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
+        ArrayList<Booking> oldBookings = store.getBookings();
+        ArrayList<Booking> updatedBookings = new ArrayList<>();
+
+        if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("approved")) {
+            // TODO: Throw an Alert window saying cannot reject approved booking
+
+        } else {
+            
+            switch (selectedBooking.getBookingType().toLowerCase().trim()) {
+                case "booking":
+                    selectedBooking = tmpAdmin.approve(selectedBooking, false);
+                    break;
+                case "return":
+                    selectedBooking = tmpAdmin.approveReturn(selectedBooking, false);
+                    break;
+            }
+    
+            for (Booking booking: oldBookings) {
+                if (booking.getEmail().equals(selectedBooking.getEmail()) &&
+                    booking.getPlateNumber().equals(selectedBooking.getPlateNumber()) &&
+                    booking.getBookingStart().isEqual(selectedBooking.getBookingStart())) {
+                    updatedBookings.add(selectedBooking);
+                    continue;
+                } else {
+                    updatedBookings.add(booking);
+                }
+            }
+    
+            Store.saveBookings(bookingFile, updatedBookings);
+            clearBooking(e);
+            
+        }
 
     }
 

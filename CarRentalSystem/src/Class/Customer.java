@@ -61,10 +61,9 @@ public class Customer extends User{
     *  3. If rejected, semd a notification with a fine imposed
     */
     public Booking returnCar(Booking booking) {
-        Booking changedBookingState = new Booking(booking);
-        changedBookingState.setBookingType("Return");
-        changedBookingState.setBookingStatus("Pending");
-        return changedBookingState;
+        booking.setBookingType("Return");
+        booking.setBookingStatus("Pending");
+        return booking;
     }
     
 

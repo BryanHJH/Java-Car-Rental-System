@@ -1,27 +1,15 @@
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import Class.Admin;
 import Class.Booking;
@@ -105,17 +93,21 @@ public class SetUp {
         
         Admin tmpAdmin = testStore.findAdmin("brian@car.com");
         Car tmpCar = testStore.findCar("BNY1122");
+        Car tmpCar2 = testStore.findCar("A1");
         Customer tmpCustomer = testStore.findCustomer("bryan");
+        Customer tmpCustomer2 = testStore.findCustomer("derek");
 
-        System.out.println(tmpAdmin);
-        System.out.println();
-        System.out.println(tmpCar);
-        System.out.println();
-        System.out.println(tmpCustomer);
-        System.out.println();
+        // System.out.println(tmpAdmin);
+        // System.out.println();
+        // System.out.println(tmpCar);
+        // System.out.println();
+        // System.out.println(tmpCustomer);
+        // System.out.println();
 
         String bookingStart = "12-12-2022";
         String bookingEnd = "16-12-2022";
+        String bookingStart2 = "13-12-2022";
+        String bookingEnd2 = "20-12-2022";
 
         try {
             Booking tmpBooking = tmpCustomer.bookCar(tmpCar, bookingStart, bookingEnd);
@@ -135,16 +127,35 @@ public class SetUp {
             System.out.println("After Returning: \n");
             System.out.println(tmpBooking);
             testStore.updateBooking(tmpBooking);
-            System.out.println();
-            tmpBooking = tmpAdmin.approveReturn(tmpBooking, true);
-            System.out.println("After approving Return: \n");
-            System.out.println(tmpBooking);
-            testStore.updateBooking(tmpBooking);
-            System.out.println();
-            testStore.returnCar(tmpCar, bookingStart, bookingEnd);
-            System.out.println("After removing dates: \n");
-            System.out.println(tmpCar);
-            testStore.updateBooking(tmpBooking);
+            // System.out.println();
+            // tmpBooking = tmpAdmin.approveReturn(tmpBooking, true);
+            // System.out.println("After approving Return: \n");
+            // System.out.println(tmpBooking);
+            // testStore.updateBooking(tmpBooking);
+            // System.out.println();
+            // testStore.returnCar(tmpCar, bookingStart, bookingEnd);
+            // System.out.println("After removing dates: \n");
+            // System.out.println(tmpCar);
+            // testStore.updateBooking(tmpBooking);
+
+            Booking tmpBooking2 = tmpCustomer2.bookCar(tmpCar2, bookingStart2, bookingEnd2);
+            System.out.println("Booking 2 Created: \n");
+            System.out.println(tmpBooking2);
+            testStore.addBooking(tmpBooking2);
+            // tmpBooking2 = tmpAdmin.approve(tmpBooking2, true);
+            // testStore.rentCar(tmpCar2, bookingStart2, bookingEnd2);
+            // testStore.addBooking(tmpBooking2);
+            // System.out.println("Booking 2 Approved: \n");
+            // System.out.println(tmpBooking2);
+            // System.out.println();
+            // System.out.println(tmpCar2);
+            // System.out.println();
+
+            System.out.println("Store Bookings:");
+            System.out.println(tmpBooking.getBookingType());
+            System.out.println(tmpBooking2.getBookingType());
+
+
         } catch (IllegalAccessException e) {
             System.out.println(e.getMessage());
         } catch (ParseException e) {
