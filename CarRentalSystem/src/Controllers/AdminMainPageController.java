@@ -1,12 +1,15 @@
 package Controllers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import Class.Admin;
@@ -33,6 +36,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -79,7 +83,7 @@ public class AdminMainPageController implements Initializable {
     private Button addCarButton, approveButton, clearButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, refreshChartButton;
 
     @FXML
-    private PieChart pieChart;
+    private PieChart chargesPieChart, salesPieChart;
 
     @FXML
     private Label adminLabelCar, adminLabelCustomer, adminLabelBooking, adminLabelReport;
@@ -94,6 +98,13 @@ public class AdminMainPageController implements Initializable {
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
 
     Store store = new Store(adminFile, customerFile, carFile, bookingFile);
+
+    public static<K> void incrementValue(Map<K, Integer> map, K key)
+    {
+        // containsKey() checks if this map contains a mapping for a key
+        Integer count = map.containsKey(key) ? map.get(key) : 0;
+        map.put(key, count + 1);
+    }
 
     private Admin receiveAdminData(ActionEvent event) {
         Node node = (Node) event.getSource();
@@ -380,35 +391,103 @@ public class AdminMainPageController implements Initializable {
         ObservableList<Booking> obsBookingList = FXCollections.observableArrayList(bookingList);
         bookingTable.setItems(obsBookingList);
         
-        // Pie Chart
+        // Charges Pie Chart
+        // Getting the neccesary information (Total Rental Fees charged and Fines charged)
         ArrayList<Booking> bookings = store.getBookings();
         int totalRent = 0, totalFines = 0;
 
+        // Getting the Rental and Fines charged from Booking class
         for (Booking booking: bookings) {
             totalRent += booking.getTotalRent();
             totalFines += booking.getTotalFines();
         }
         
+        // Adding labels to the Pie Chart
         ArrayList<String> labels = new ArrayList<String>();
         labels.add("Rental");
         labels.add("Fines");
         
+        // Adding the values to the Pie Chart
         ArrayList<Integer> values = new ArrayList<Integer>();
         values.add(totalRent);
         values.add(totalFines);
 
+        // Formatting the Labels and Values for the Pie Chart
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
         for (int i = 0; i < labels.size(); i++) {
             pieChartData.add(new PieChart.Data(labels.get(i), values.get(i)));
         }
 
-        pieChart.setData(pieChartData);
-        pieChart.setTitle("Total Rental and Fines charged");
-        pieChart.setLabelLineLength(50);
-        pieChart.setLabelsVisible(true);
-        pieChart.setVisible(true);
+        // Preparing and showing the Pie Chart
+        chargesPieChart.setData(pieChartData);
+        chargesPieChart.setTitle("Total Rental and Fines charged");
+        chargesPieChart.setLabelLineLength(50);
+        chargesPieChart.setLabelsVisible(true);
+        chargesPieChart.setVisible(true);
 
+        for (PieChart.Data data: pieChartData) {
+            Tooltip tooltip = new Tooltip(Double.toString(data.getPieValue()));
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.pieValueProperty().addListener((observable, oldPieValue, newPieValue)->{
+                tooltip.setText(Integer.toString((int) newPieValue));
+            });
+        }
+
+        // Sales Pie Chart
+        // Getting all the car plates of booked cars
+        ArrayList<String> carPlates = new ArrayList<>();
+        for (Booking b: bookings) {
+            carPlates.add(b.getPlateNumber());
+        }
+
+        // Getting all the cars that have been booked
+        ArrayList<Car> bookedCars = new ArrayList<>();
+        for (String carPlate: carPlates) {
+            try {
+                bookedCars.add(store.findCar(carPlate));
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        // Getting all the 
+        HashMap<String, Integer> carTypeSales = new HashMap<>();
+        for (Car car: bookedCars) {
+            if (carTypeSales.containsKey(car.getCarType())) {
+                continue;
+            } else {
+                carTypeSales.put(car.getCarType(), 0);
+            }
+        }
+
+        for (Car car: bookedCars) {
+            incrementValue(carTypeSales, car.getCarType());
+        }
+
+        ObservableList<PieChart.Data> salesPieChartData = FXCollections.observableArrayList();
+
+        for (String i: carTypeSales.keySet()) {
+            salesPieChartData.add(new PieChart.Data(i, carTypeSales.get(i)));
+        }
+        
+        // Preparing and showing the Pie Chart
+        salesPieChart.setData(salesPieChartData);
+        salesPieChart.setTitle("Total Rental and Fines charged");
+        salesPieChart.setLabelLineLength(50);
+        salesPieChart.setLabelsVisible(true);
+        salesPieChart.setVisible(true);
+
+        for (PieChart.Data data: salesPieChartData) {
+            Tooltip tooltip = new Tooltip(Double.toString(data.getPieValue()));
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.pieValueProperty().addListener((observable, oldPieValue, newPieValue)->{
+                tooltip.setText(Integer.toString((int) newPieValue));
+            });
+        }
     }
 
     public void logout(ActionEvent e) throws IOException {
@@ -538,6 +617,7 @@ public class AdminMainPageController implements Initializable {
     
                 case "return": 
                     selectedBooking = tmpAdmin.approveReturn(selectedBooking, true);
+                    store.returnCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
             }
     
@@ -562,8 +642,8 @@ public class AdminMainPageController implements Initializable {
     public void reject(ActionEvent e) throws IllegalAccessException, IOException {
         Admin tmpAdmin = receiveAdminData(e);
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
-        ArrayList<Booking> oldBookings = store.getBookings();
-        ArrayList<Booking> updatedBookings = new ArrayList<>();
+        // ArrayList<Booking> oldBookings = store.getBookings();
+        // ArrayList<Booking> updatedBookings = new ArrayList<>();
 
         if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("approved") ||
             selectedBooking.getBookingStatus().toLowerCase().trim().equals("returned") ||
@@ -584,18 +664,20 @@ public class AdminMainPageController implements Initializable {
                     break;
             }
     
-            for (Booking booking: oldBookings) {
+            for (Booking booking: store.getBookings()) {
                 if (booking.getEmail().equals(selectedBooking.getEmail()) &&
                     booking.getPlateNumber().equals(selectedBooking.getPlateNumber()) &&
                     booking.getBookingStart().isEqual(selectedBooking.getBookingStart())) {
-                    updatedBookings.add(selectedBooking);
-                    continue;
-                } else {
-                    updatedBookings.add(booking);
-                }
+                    // updatedBookings.add(selectedBooking);
+                    // continue;
+                    store.removeBooking(booking);
+                    store.addBooking(selectedBooking);
+                } // else {
+                //     updatedBookings.add(booking);
+                // }
             }
     
-            Store.saveBookings(bookingFile, updatedBookings);
+            // Store.saveBookings(bookingFile, updatedBookings);
             clearBooking(e);
 
         }
@@ -603,6 +685,8 @@ public class AdminMainPageController implements Initializable {
     }
 
     public void refreshChart(ActionEvent e) {
+
+        // Charges Pie Chart
         ArrayList<Booking> bookings = store.getBookings();
         int totalRent = 0, totalFines = 0;
 
@@ -625,11 +709,73 @@ public class AdminMainPageController implements Initializable {
             pieChartData.add(new PieChart.Data(labels.get(i), values.get(i)));
         }
 
-        pieChart.setData(pieChartData);
-        pieChart.setTitle("Total Rental and Fines charged");
-        pieChart.setLabelLineLength(50);
-        pieChart.setLabelsVisible(true);
-        pieChart.setVisible(true);
+        chargesPieChart.setData(pieChartData);
+        chargesPieChart.setTitle("Total Rental and Fines charged");
+        chargesPieChart.setLabelLineLength(50);
+        chargesPieChart.setLabelsVisible(true);
+        chargesPieChart.setVisible(true);
+
+        for (PieChart.Data data: pieChartData) {
+            Tooltip tooltip = new Tooltip(Double.toString(data.getPieValue()));
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.pieValueProperty().addListener((observable, oldPieValue, newPieValue)->{
+                tooltip.setText(Integer.toString((int) newPieValue));
+            });
+        }
+
+        // Sales Pie Chart
+        ArrayList<String> carPlates = new ArrayList<>();
+        for (Booking b: bookings) {
+            carPlates.add(b.getPlateNumber());
+        }
+
+        // Getting all the cars that have been booked
+        ArrayList<Car> bookedCars = new ArrayList<>();
+        for (String carPlate: carPlates) {
+            try {
+                bookedCars.add(store.findCar(carPlate));
+            } catch (FileNotFoundException ex) {
+                // TODO Auto-generated catch block
+                ex.printStackTrace();
+            }
+        }
+
+        // Getting all the 
+        HashMap<String, Integer> carTypeSales = new HashMap<>();
+        for (Car car: bookedCars) {
+            if (carTypeSales.containsKey(car.getCarType())) {
+                continue;
+            } else {
+                carTypeSales.put(car.getCarType(), 0);
+            }
+        }
+
+        for (Car car: bookedCars) {
+            incrementValue(carTypeSales, car.getCarType());
+        }
+
+        ObservableList<PieChart.Data> salesPieChartData = FXCollections.observableArrayList();
+
+        for (String i: carTypeSales.keySet()) {
+            salesPieChartData.add(new PieChart.Data(i, carTypeSales.get(i)));
+        }
+        
+        // Preparing and showing the Pie Chart
+        salesPieChart.setData(salesPieChartData);
+        salesPieChart.setTitle("Total Rental and Fines charged");
+        salesPieChart.setLabelLineLength(50);
+        salesPieChart.setLabelsVisible(true);
+        salesPieChart.setVisible(true);
+
+        for (PieChart.Data data: salesPieChartData) {
+            Tooltip tooltip = new Tooltip(Double.toString(data.getPieValue()));
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.pieValueProperty().addListener((observable, oldPieValue, newPieValue)->{
+                tooltip.setText(Integer.toString((int) newPieValue));
+            });
+        }
     }
 
 }

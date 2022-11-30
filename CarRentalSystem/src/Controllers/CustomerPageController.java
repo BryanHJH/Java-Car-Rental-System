@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ import Class.Booking;
 import Class.Car;
 import Class.Customer;
 import Class.Store;
+import Class.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -150,6 +153,23 @@ public class CustomerPageController implements Initializable {
         welcomeMessage.setText("Welcome, " + username);
     }
 
+    public void refreshTable(ActionEvent event) {
+        // Initializing the Booking table
+        Customer tmpCustomer = receiveCustomerData(event);
+
+        displayWelcomeMessage(tmpCustomer.getFullname());
+
+        ArrayList<Booking> bookingList = store.getBookings();
+        ArrayList<Booking> customerBookings = new ArrayList<>();
+        for (Booking booking: bookingList) {
+            if (booking.getEmail().toLowerCase().trim().equals(tmpCustomer.getEmail())) {
+                customerBookings.add(booking);
+            }
+        }
+
+        bookingTable.getItems().setAll(customerBookings);
+    }
+
     public ArrayList<Car> validateCarAvailability() {
 
         LocalDate bookingEndDate = rentDateDatePicker.getValue().plusDays((long) Integer.parseInt(rentalDurationTextField.getText()));
@@ -259,14 +279,77 @@ public class CustomerPageController implements Initializable {
         store.addBooking(newBooking);
         clear(event);
 
+    }
+    
+    public void confirmChanges(ActionEvent event) throws IOException {
+
+        Customer tmpCustomer = receiveCustomerData(event);
+        
+        tmpCustomer.setUsername(custUsernameTextField.getText());
+        tmpCustomer.setPassword(custPasswordField.getText());
+        
+        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]*@[a-zA-Z]{1,}\\.[a-zA-Z]{2,3}$");
+        Matcher emailMatcher = emailPattern.matcher(custEmailTextField.getText());
+        boolean matchFound = emailMatcher.find();
+
+        if (matchFound) {
+            tmpCustomer.setEmail(custEmailTextField.getText());
+        } else {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("Approved bookings cannot be modified!");
+            alert.show();
+        }
+
+        tmpCustomer.setContact(custContactTextField.getText());
+
+        for (User customer: store.getCustomers()) {
+            if (customer.getUsername().toLowerCase().equals(tmpCustomer.getUsername()) || 
+                customer.getEmail().toLowerCase().equals(tmpCustomer.getEmail())) {
+                store.removeCustomer(customer);
+                store.addCustomer(tmpCustomer);
+            }
+        }
 
     }
     
-    public void confirmChanges(ActionEvent event) {
+    public void returnCar(ActionEvent event) throws IOException {
 
-    }
-    
-    public void returnCar(ActionEvent event) {
+        Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
+        // ArrayList<Booking> oldBookings = store.getBookings();
+        // ArrayList<Booking> updatedBookings = new ArrayList<>();
+
+        switch (selectedBooking.getBookingType().toLowerCase().trim()) {
+            
+            case "booking":
+                if (selectedBooking.getBookingStatus().toLowerCase().equals("approved")) {
+                    selectedBooking.setBookingType("Return");
+                    selectedBooking.setBookingStatus("Pending");
+                } else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setContentText("You cannot return when your booking has not been approved!");
+                }
+                break;
+
+            case "damaged":
+                if (selectedBooking.getBookingStatus().toLowerCase().equals("pending")) {
+                    selectedBooking.setBookingStatus("Paid");
+                } else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setContentText("You do not need to pay anymore.");
+                }
+                break;
+        }
+
+        for (Booking booking: store.getBookings()) {
+            if (booking.getEmail().equals(selectedBooking.getEmail()) &&
+                booking.getPlateNumber().equals(selectedBooking.getPlateNumber()) &&
+                booking.getBookingStart().isEqual(selectedBooking.getBookingStart())) {
+                store.removeBooking(booking);
+                store.addBooking(selectedBooking);
+            }
+        }
+
+        // Store.saveBookings(bookingFile, updatedBookings);
 
     }
     
@@ -281,20 +364,8 @@ public class CustomerPageController implements Initializable {
         carPlateCombo.getSelectionModel().clearSelection();
         seatTextField.clear();
 
-        // Initializing the Booking table
         Customer tmpCustomer = receiveCustomerData(event);
-
-        displayWelcomeMessage(tmpCustomer.getFullname());
-
-        ArrayList<Booking> bookingList = store.getBookings();
-        ArrayList<Booking> customerBookings = new ArrayList<>();
-        for (Booking booking: bookingList) {
-            if (booking.getEmail().toLowerCase().trim().equals(tmpCustomer.getEmail())) {
-                customerBookings.add(booking);
-            }
-        }
-
-        bookingTable.getItems().setAll(customerBookings);
+        refreshTable(event);
 
         // Initializing the Profile page
         custUsernameTextField.setText(tmpCustomer.getUsername());

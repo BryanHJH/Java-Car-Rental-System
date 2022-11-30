@@ -107,7 +107,7 @@
                   </Label>
                   <Button fx:id="returnButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1076.0" layoutY="569.0" mnemonicParsing="false" onAction="#returnCar" prefHeight="50.0" prefWidth="125.0" text="Return/Pay">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="13.0" />
                      </font>
                   </Button>
                </children></AnchorPane>

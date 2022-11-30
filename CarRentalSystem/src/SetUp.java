@@ -155,11 +155,6 @@ public class SetUp {
             // System.out.println(tmpCar2);
             // System.out.println();
 
-            System.out.println("Store Bookings:");
-            System.out.println(tmpBooking.getBookingType());
-            System.out.println(tmpBooking2.getBookingType());
-
-
         } catch (IllegalAccessException e) {
             System.out.println(e.getMessage());
         } catch (ParseException e) {

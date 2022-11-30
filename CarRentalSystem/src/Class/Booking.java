@@ -90,7 +90,6 @@ public class Booking {
         this.bookingStatus = bookingStatus;
     }
 
-    
     public String getEmail() {
         return this.email;
     }
