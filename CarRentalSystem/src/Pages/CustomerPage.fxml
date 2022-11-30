@@ -4,125 +4,164 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="786.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerPageController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerPageController">
   <tabs>
     <Tab fx:id="catalog" text="Catolog">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="carTypeLabel" layoutX="202.0" layoutY="95.0" prefHeight="34.0" prefWidth="152.0" text="Type of Car">
+                  <Label fx:id="welcomeMessage" alignment="CENTER" contentDisplay="CENTER" layoutY="34.0" prefHeight="53.0" prefWidth="1280.0" text="Welcome, Customer">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutY="107.0" prefHeight="40.0" prefWidth="1280.0" text="Car Booking" textAlignment="CENTER">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="rentDateLabel" layoutX="271.0" layoutY="208.0" prefHeight="31.0" prefWidth="111.0" text="Rent Date">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="carTypeCombo" layoutX="407.0" layoutY="100.0" onAction="#listCars" prefWidth="150.0" />
-                  <Label fx:id="carNameLabel" layoutX="202.0" layoutY="146.0" prefHeight="31.0" prefWidth="123.0" text="Name of Car">
+                  <DatePicker fx:id="rentDateDatePicker" layoutX="475.0" layoutY="211.0" />
+                  <Label fx:id="rentalDurationLabel" layoutX="271.0" layoutY="249.0" prefHeight="31.0" prefWidth="147.0" text="Rental Duration">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="carNameCombo" layoutX="407.0" layoutY="149.0" onAction="#listSeat" prefWidth="150.0" />
-                  <Label fx:id="rentDateLabel" layoutX="202.0" layoutY="247.0" prefHeight="31.0" prefWidth="111.0" text="Rent Date">
+                  <TextField fx:id="rentalDurationTextField" layoutX="476.0" layoutY="252.0" onAction="#buildTypeComboBox" prefHeight="25.0" prefWidth="185.0" promptText="Number of days of rental" />
+                  <Label fx:id="carTransmissionLabel" layoutX="270.0" layoutY="297.0" prefHeight="34.0" prefWidth="152.0" text="Car Transmission">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="rentDateDatePicker" layoutX="406.0" layoutY="250.0" onAction="#checkValidDate" />
-                  <Label fx:id="returnDateLabel" layoutX="202.0" layoutY="299.0" prefHeight="31.0" prefWidth="111.0" text="Return Date">
+                  <RadioButton fx:id="autoRadioButton" layoutX="477.0" layoutY="299.0" mnemonicParsing="false" onAction="#buildTypeComboBox" text="AUTO">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="carTransmissionGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="manualRadioButton" layoutX="592.0" layoutY="299.0" mnemonicParsing="false" onAction="#buildTypeComboBox" text="MANUAL" toggleGroup="$carTransmissionGroup" />
+                  <Label fx:id="carTypeLabel" layoutX="272.0" layoutY="341.0" prefHeight="34.0" prefWidth="152.0" text="Type of Car">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="returnDateDatePicker" layoutX="406.0" layoutY="302.0" onAction="#calculatePrice" />
-                  <Label fx:id="carSeatLabel" layoutX="202.0" layoutY="196.0" prefHeight="31.0" prefWidth="149.0" text="Number of Seat">
+                  <ComboBox fx:id="carTypeCombo" layoutX="477.0" layoutY="346.0" onAction="#buildBrandComboBox" prefWidth="150.0" promptText="Car Type" />
+                  <Label fx:id="carNameLabel" layoutX="272.0" layoutY="392.0" prefHeight="31.0" prefWidth="123.0" text="Car Brand">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="carSeatLabel1" layoutX="406.0" layoutY="195.0" prefHeight="34.0" prefWidth="110.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="carPriceLabel" layoutX="202.0" layoutY="349.0" prefHeight="31.0" prefWidth="149.0" text="Price">
+                  <ComboBox fx:id="carBrandCombo" layoutX="477.0" layoutY="395.0" onAction="#buildPlateComboBox" prefWidth="150.0" promptText="Car Brand" />
+                  <Label fx:id="carPlateLabel" layoutX="271.0" layoutY="443.0" prefHeight="31.0" prefWidth="123.0" text="Car Plate">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="carPriceLabel1" layoutX="408.0" layoutY="349.0" prefHeight="31.0" prefWidth="149.0">
+                  <ComboBox fx:id="carPlateCombo" layoutX="477.0" layoutY="445.0" onAction="#setSeatTextField" prefWidth="150.0" promptText="Plate Number" />
+                  <Label fx:id="carSeatLabel" layoutX="271.0" layoutY="491.0" prefHeight="31.0" prefWidth="149.0" text="Number of Seat">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="logoutButton" layoutX="446.0" layoutY="441.0" mnemonicParsing="false" onAction="#logout" prefHeight="49.0" prefWidth="93.0" text="Logout" />
-                  <Button fx:id="confirmBookingButton" layoutX="248.0" layoutY="441.0" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="49.0" prefWidth="120.0" text="Confirm Booking" />
+                  <TextField fx:id="seatTextField" layoutX="477.0" layoutY="494.0" prefHeight="25.0" prefWidth="193.0" promptText="Number of seats in the car" />
+                  <Button fx:id="confirmBookingButton" layoutX="884.0" layoutY="224.0" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="50.0" prefWidth="125.0" text="Confirm Booking" />
+                  <Button fx:id="clearButton" layoutX="884.0" layoutY="301.0" mnemonicParsing="false" onAction="#clear" prefHeight="50.0" prefWidth="125.0" text="Clear" />
+                  <Button fx:id="logoutButton" layoutX="884.0" layoutY="385.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="125.0" text="Logout" />
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Return Car">
+      <Tab text="Bookings">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="bookingTable" layoutX="77.0" layoutY="123.0" prefHeight="440.0" prefWidth="1125.0">
+                     <columns>
+                        <TableColumn fx:id="bookingTypeColumn" prefWidth="125.0" text="Booking Type" />
+                        <TableColumn fx:id="bookingStatusColumn" prefWidth="119.99993896484375" text="Booking Status" />
+                        <TableColumn fx:id="custEmailColumn" prefWidth="175.0" text="Customer Email" />
+                        <TableColumn fx:id="custIDColumn" prefWidth="175.0" text="Customer Identification" />
+                        <TableColumn fx:id="carPlateColumn" prefWidth="120.0" text="Car Plate Number" />
+                        <TableColumn fx:id="bookingStartColumn" prefWidth="150.0" text="Collection Date" />
+                        <TableColumn fx:id="bookingEndColumn" prefWidth="150.0" text="Return Date" />
+                        <TableColumn fx:id="totalPriceColumn" prefWidth="115.0" text="Total Price" />
+                     </columns>
+                  </TableView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="40.0" prefHeight="51.0" prefWidth="1280.0" text="Bookings" textAlignment="CENTER">
+                     <font>
+                        <Font size="35.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="returnButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1076.0" layoutY="569.0" mnemonicParsing="false" onAction="#returnCar" prefHeight="50.0" prefWidth="125.0" text="Return/Pay">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
         </content>
       </Tab>
     <Tab fx:id="changePersonalInfo" text="Change Personal Info">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="custUsernameLabel" layoutX="177.0" layoutY="127.0" prefHeight="34.0" prefWidth="152.0" text="Username">
+                  <Label fx:id="custUsernameLabel" layoutX="385.0" layoutY="234.0" prefHeight="34.0" prefWidth="152.0" text="Username">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="custPasswordLabel" layoutX="177.0" layoutY="179.0" prefHeight="34.0" prefWidth="142.0" text="Password">
+                  <Label fx:id="custPasswordLabel" layoutX="385.0" layoutY="286.0" prefHeight="34.0" prefWidth="142.0" text="Password">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="custEmailLabel" layoutX="177.0" layoutY="230.0" prefHeight="34.0" prefWidth="134.0" text="Email">
+                  <Label fx:id="custEmailLabel" layoutX="385.0" layoutY="337.0" prefHeight="34.0" prefWidth="134.0" text="Email">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="custContact" layoutX="177.0" layoutY="287.0" prefHeight="34.0" prefWidth="152.0" text="Contact Number">
+                  <Label fx:id="custContactLabel" layoutX="385.0" layoutY="394.0" prefHeight="34.0" prefWidth="152.0" text="Contact Number">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="custContactTextField" layoutX="385.0" layoutY="285.0">
+                  <TextField fx:id="custContactTextField" layoutX="593.0" layoutY="392.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="custEmailTextField" layoutX="385.0" layoutY="228.0">
+                  <TextField fx:id="custEmailTextField" layoutX="593.0" layoutY="335.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="custPasswordTextField" layoutX="385.0" layoutY="177.0">
+                  <TextField fx:id="custUsernameTextField" layoutX="593.0" layoutY="236.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="custUsernameTextField" layoutX="385.0" layoutY="125.0">
+                  <Button fx:id="confirmChangesButton" layoutX="934.0" layoutY="259.0" mnemonicParsing="false" onAction="#confirmChanges" prefHeight="50.0" prefWidth="125.0" text="Confirm Changes" />
+                  <Button fx:id="logoutButton" layoutX="934.0" layoutY="346.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="125.0" text="Logout" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="81.0" prefHeight="53.0" prefWidth="1280.0" text="Customer Profile">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="36.0" />
                      </font>
-                  </TextField>
-                  <Button fx:id="confirmChangesButton" layoutX="227.0" layoutY="411.0" mnemonicParsing="false" onAction="#confirmChanges" prefHeight="49.0" prefWidth="120.0" text="Confirm Changes" />
-                  <Button fx:id="logoutButton" layoutX="450.0" layoutY="411.0" mnemonicParsing="false" onAction="#logout" prefHeight="49.0" prefWidth="93.0" text="Logout" />
+                  </Label>
+                  <PasswordField fx:id="custPasswordField" layoutX="596.0" layoutY="290.0" />
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Booking History">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-        </content>
-      </Tab>
   </tabs>
 </TabPane>

@@ -32,7 +32,7 @@ public class Booking {
         return carList;
     }
 
-    public Booking(String bookingType, String bookingStatus, String email, String identification, String plateNumber, String bookingStart, String bookingEnd) {
+    public Booking(String bookingType, String bookingStatus, String email, String identification, String plateNumber, LocalDate bookingStart, LocalDate bookingEnd) {
 
         
         if (!(bookingType.toLowerCase().equals("booking") || bookingType.toLowerCase().equals("return") || bookingType.toLowerCase().equals("damaged"))) throw new IllegalArgumentException("Wrong booking type given");
@@ -44,8 +44,8 @@ public class Booking {
         this.email = email;
         this.identification = identification;
         this.plateNumber = plateNumber;
-        this.bookingStart = LocalDate.parse(bookingStart, dateFormatter);
-        this.bookingEnd = LocalDate.parse(bookingEnd, dateFormatter);
+        this.bookingStart = bookingStart;
+        this.bookingEnd = bookingEnd;
         this.bookingPeriod = Period.between(this.bookingStart, this.bookingEnd).getDays();
 
         try {

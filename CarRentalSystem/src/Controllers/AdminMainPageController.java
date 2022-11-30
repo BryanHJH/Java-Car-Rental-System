@@ -3,6 +3,7 @@ package Controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -512,7 +513,7 @@ public class AdminMainPageController implements Initializable {
         bookingTable.getItems().addAll(tmpBookings);
     }
 
-    public void approve(ActionEvent e) throws IllegalAccessException, IOException {
+    public void approve(ActionEvent e) throws IllegalAccessException, IOException, ParseException {
         Admin tmpAdmin = receiveAdminData(e);
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
         ArrayList<Booking> oldBookings = store.getBookings();
@@ -527,10 +528,12 @@ public class AdminMainPageController implements Initializable {
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
                 case "booking": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
+                    store.rentCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
 
                 case "damaged": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
+                    store.returnCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
     
                 case "return": 

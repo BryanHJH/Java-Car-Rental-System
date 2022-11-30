@@ -128,7 +128,7 @@ public class Car{
                 this.bookedDates.remove(lastIndex);
                 this.bookedDates.add(date);
             } else { // Meaning date is before the last index and is now being placed as the second last item in the ArrayList
-                this.bookedDates.add(lastIndex - 2, date);
+                this.bookedDates.add(lastIndex - 1, date);
             }
 
             this.bookedDates.sort(Comparator.naturalOrder());

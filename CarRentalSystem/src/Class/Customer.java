@@ -3,6 +3,7 @@ package Class;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Customer extends User{
@@ -45,7 +46,7 @@ public class Customer extends User{
      * What it does: <br>
      *  1. Creates a new booking using a Car object and 2 strings denoting the beginning and the end of the rental period <br>
      */
-    public Booking bookCar(Car car, String bookingStart, String bookingEnd) throws IOException{
+    public Booking bookCar(Car car, LocalDate bookingStart, LocalDate bookingEnd) throws IOException{
         return new Booking("Booking", "Pending", this.getEmail(), this.getIdentification(), car.getPlateNumber(), bookingStart, bookingEnd);
     }
     

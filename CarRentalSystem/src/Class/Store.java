@@ -242,12 +242,10 @@ public class Store {
      *  3. If car is already booked in any of those dates, the booking will not happen, no dates will be added to the car's bookedDates arraylist <br>
      *  4. Save the modified car information to Car.txt <br> 
      */
-    public void rentCar(Car car, String bookingStart, String bookingEnd) throws ParseException, FileNotFoundException, IOException {
-        
-        LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
-        LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
+    public void rentCar(Car car, LocalDate bookingStart, LocalDate bookingEnd) throws ParseException, FileNotFoundException, IOException {
+
         ArrayList<LocalDate> bookedDates = new ArrayList<>();
-        List<LocalDate> dates = bookingStartDate.datesUntil(bookingEndDate).collect(Collectors.toList());
+        List<LocalDate> dates = bookingStart.datesUntil(bookingEnd).collect(Collectors.toList());
 
         for (LocalDate date: dates) {
             if (car.checkAvailability(date)) {
@@ -263,11 +261,13 @@ public class Store {
                 car.addDates(date);
             }
             
+            car.addDates(bookingEnd);
+            
             Car[] currentCarList = readCarFile(carFile);
             ArrayList<Car> newCarList = new ArrayList<>();
     
             for (Car currentCar: currentCarList) {
-                if (currentCar.equals(car)) {
+                if (currentCar.getPlateNumber().toLowerCase().trim().equals(car.getPlateNumber().toLowerCase().trim())) {
                     newCarList.add(car);
                 } else {
                     newCarList.add(currentCar);
@@ -291,10 +291,8 @@ public class Store {
      *  2. Remove all of them from the car's bookedDates arraylist
      *  3. Save modified car information to Car.txt
      */
-    public void returnCar(Car car, String bookingStart, String bookingEnd) throws IOException {
-        LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
-        LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
-        ArrayList<LocalDate> dates = (ArrayList<LocalDate>) bookingStartDate.datesUntil(bookingEndDate).collect(Collectors.toList());
+    public void returnCar(Car car, LocalDate bookingStart, LocalDate bookingEnd) throws IOException {
+        ArrayList<LocalDate> dates = (ArrayList<LocalDate>) bookingStart.datesUntil(bookingEnd).collect(Collectors.toList());
         ArrayList<LocalDate> bookedDates = car.getBookedDates();
         ArrayList<LocalDate> datesToBeRemoved = new ArrayList<>();
 
@@ -555,25 +553,5 @@ public class Store {
         return null;
         
     }
-
-    /**
-     * Function name: generateReport
-     * 
-     * @param reportType
-     * @return
-     * 
-     * What it does:
-     *  1. From the Admin class, get the String of the report type
-     *  2. Depending on th report type, read the necessary data from the text files
-     *  3. Format the data acquired from the text files in a readable format
-     */
-    // public String generateReport(String reportType) {
-    //     switch (reportType.toLowerCase().trim()) {
-    //         case "revenue": return "revenue";
-    //         case "sales": return "sales";
-    //         case "fines": return "fines";
-    //         default: return "Nothing found";
-    //     }
-    // }
     
 }

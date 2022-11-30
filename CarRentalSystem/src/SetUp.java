@@ -5,8 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,6 +28,7 @@ public class SetUp {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.US);
 
     public static void saveUserData(File file, ArrayList<User> arr) throws IOException {
         FileWriter fwriter = new FileWriter(file);
@@ -104,10 +107,11 @@ public class SetUp {
         // System.out.println(tmpCustomer);
         // System.out.println();
 
-        String bookingStart = "12-12-2022";
-        String bookingEnd = "16-12-2022";
-        String bookingStart2 = "13-12-2022";
-        String bookingEnd2 = "20-12-2022";
+        LocalDate bookingStart = LocalDate.parse("12-12-2022", formatter);
+        LocalDate bookingEnd = LocalDate.parse("16-12-2022", formatter);
+        LocalDate bookingStart2 = LocalDate.parse("13-12-2022", formatter);
+        LocalDate bookingEnd2 = LocalDate.parse("20-12-2022", formatter);
+
 
         try {
             Booking tmpBooking = tmpCustomer.bookCar(tmpCar, bookingStart, bookingEnd);

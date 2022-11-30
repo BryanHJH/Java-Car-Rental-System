@@ -15,6 +15,7 @@ import Class.Customer;
 import Class.Store;
 import Class.User;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class LoginPageController {
     
@@ -137,8 +139,12 @@ public class LoginPageController {
                         Node node = (Node) event.getSource();
                         Stage stage = (Stage) node.getScene().getWindow();
                         stage.close();
-
+                        
+                        // FXMLLoader loader = new 
                         Parent root = FXMLLoader.load(getClass().getResource("/Pages/CustomerPage.fxml"));
+                        
+                        // CustomerPageController mainPageController = new FXMLLoader(getClass().getResource("/Pages/CustomerPage.fxml")).getController();
+                        // mainPageController.displayWelcomeMessage(tmpCustomer.getFullname());
                         stage.setUserData(tmpCustomer);
                         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
                         scene = new Scene(root);
