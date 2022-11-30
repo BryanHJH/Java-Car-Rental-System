@@ -20,9 +20,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -73,7 +75,10 @@ public class AdminMainPageController implements Initializable {
     private TextField searchCarTextField, searchCustomerTextField, searchBookingTextField;
 
     @FXML
-    private Button addCarButton, approveButton, clearButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, salesReportButton, revenueReportButton;
+    private Button addCarButton, approveButton, clearButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, refreshChartButton;
+
+    @FXML
+    private PieChart pieChart;
 
     @FXML
     private Label adminLabelCar, adminLabelCustomer, adminLabelBooking, adminLabelReport;
@@ -374,6 +379,34 @@ public class AdminMainPageController implements Initializable {
         ObservableList<Booking> obsBookingList = FXCollections.observableArrayList(bookingList);
         bookingTable.setItems(obsBookingList);
         
+        // Pie Chart
+        ArrayList<Booking> bookings = store.getBookings();
+        int totalRent = 0, totalFines = 0;
+
+        for (Booking booking: bookings) {
+            totalRent += booking.getTotalRent();
+            totalFines += booking.getTotalFines();
+        }
+        
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Rental");
+        labels.add("Fines");
+        
+        ArrayList<Integer> values = new ArrayList<Integer>();
+        values.add(totalRent);
+        values.add(totalFines);
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        for (int i = 0; i < labels.size(); i++) {
+            pieChartData.add(new PieChart.Data(labels.get(i), values.get(i)));
+        }
+
+        pieChart.setData(pieChartData);
+        pieChart.setTitle("Total Rental and Fines charged");
+        pieChart.setLabelLineLength(50);
+        pieChart.setLabelsVisible(true);
+        pieChart.setVisible(true);
 
     }
 
@@ -495,6 +528,10 @@ public class AdminMainPageController implements Initializable {
                 case "booking": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
                     break;
+
+                case "damaged": 
+                    selectedBooking = tmpAdmin.approve(selectedBooking, true);
+                    break;
     
                 case "return": 
                     selectedBooking = tmpAdmin.approveReturn(selectedBooking, true);
@@ -537,6 +574,8 @@ public class AdminMainPageController implements Initializable {
                 case "booking":
                     selectedBooking = tmpAdmin.approve(selectedBooking, false);
                     break;
+                case "damaged":
+                    selectedBooking = tmpAdmin.approve(selectedBooking, false);
                 case "return":
                     selectedBooking = tmpAdmin.approveReturn(selectedBooking, false);
                     break;
@@ -560,11 +599,34 @@ public class AdminMainPageController implements Initializable {
 
     }
 
-    public void generateSalesReport(ActionEvent e) {
+    public void refreshChart(ActionEvent e) {
+        ArrayList<Booking> bookings = store.getBookings();
+        int totalRent = 0, totalFines = 0;
 
-    }
-
-    public void generateRevenueReport(ActionEvent e) {
+        for (Booking booking: bookings) {
+            totalRent += booking.getTotalRent();
+            totalFines += booking.getTotalFines();
+        }
         
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Rental");
+        labels.add("Fines");
+        
+        ArrayList<Integer> values = new ArrayList<Integer>();
+        values.add(totalRent);
+        values.add(totalFines);
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        for (int i = 0; i < labels.size(); i++) {
+            pieChartData.add(new PieChart.Data(labels.get(i), values.get(i)));
+        }
+
+        pieChart.setData(pieChartData);
+        pieChart.setTitle("Total Rental and Fines charged");
+        pieChart.setLabelLineLength(50);
+        pieChart.setLabelsVisible(true);
+        pieChart.setVisible(true);
     }
+
 }

@@ -70,7 +70,6 @@ public class Store {
         try {
             this.bookings = new ArrayList<Booking>(Arrays.asList(readBookingFile(bookingFile)));
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -118,6 +117,18 @@ public class Store {
         }
     }
 
+    /**
+     * Function Name: saveCars
+     * 
+     * @param file
+     * @param arr
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Locate file
+     *  2. Get the arraylist with the data to be saved
+     *  3. Write to the file in JSON format
+     */
     public static void saveCars(File file, ArrayList<Car> arr) throws IOException {
         FileWriter fwriter = new FileWriter(file);
         
@@ -131,6 +142,18 @@ public class Store {
         }
     }
 
+    /**
+     * Function Name: saveBookings
+     * 
+     * @param file
+     * @param arr
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Locate file
+     *  2. Get the arraylist with the data to be saved
+     *  3. Write to the file in JSON format
+     */
     public static void saveBookings(File file, ArrayList<Booking> arr) throws IOException {
         FileWriter fwriter = new FileWriter(file);
         
@@ -145,7 +168,7 @@ public class Store {
     }
 
     /**
-     * Name: readUserFile
+     * Name: readAdminFile
      * @param file
      * @return
      * @throws FileNotFoundException
@@ -160,7 +183,7 @@ public class Store {
     }
     
     /**
-     * Name: readUserFile
+     * Name: readCustomerFile
      * @param file
      * @return
      * @throws FileNotFoundException
@@ -174,6 +197,12 @@ public class Store {
         return customerList;
     }
 
+    /**
+     * Name: readCarFile
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Car[] readCarFile(File file) throws FileNotFoundException {
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
@@ -183,6 +212,12 @@ public class Store {
         return carList;
     }
 
+    /**
+     * Name: readBookingFile
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Booking[] readBookingFile(File file) throws FileNotFoundException {
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
@@ -192,6 +227,21 @@ public class Store {
         return bookingList;
     }
 
+    /**
+     * Function name: rentCar
+     * @param car
+     * @param bookingStart
+     * @param bookingEnd
+     * @throws ParseException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Gets the Car object that is to be rented and the beginning and end of rental period <br>
+     *  2. Add all the dates between the beginning and end to an arraylist <br>
+     *  3. If car is already booked in any of those dates, the booking will not happen, no dates will be added to the car's bookedDates arraylist <br>
+     *  4. Save the modified car information to Car.txt <br> 
+     */
     public void rentCar(Car car, String bookingStart, String bookingEnd) throws ParseException, FileNotFoundException, IOException {
         
         LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
@@ -204,6 +254,7 @@ public class Store {
                 bookedDates.add(date);
             } else {
                 bookedDates.clear();
+                break;
             }
         }
 
@@ -228,6 +279,18 @@ public class Store {
 
     }
 
+    /**
+     * Function name: returnCar
+     * @param car
+     * @param bookingStart
+     * @param bookingEnd
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Get all the dates that are to be removed into an arraylist
+     *  2. Remove all of them from the car's bookedDates arraylist
+     *  3. Save modified car information to Car.txt
+     */
     public void returnCar(Car car, String bookingStart, String bookingEnd) throws IOException {
         LocalDate bookingStartDate = LocalDate.parse(bookingStart, formatter);
         LocalDate bookingEndDate = LocalDate.parse(bookingEnd, formatter);
@@ -327,7 +390,14 @@ public class Store {
         saveBookings(bookingFile, newBookings);
     }
 
-    // Need to recheck this part a bit
+    /**
+     * Function name: updateBooking
+     * @param b
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Updates existing bookings, mostly just changing the status and type of the booking
+     */
     public void updateBooking(Booking b) throws IOException {
         Booking[] oldBookings = readBookingFile(bookingFile);
         ArrayList<Booking> updatedBookings = new ArrayList<>();
@@ -384,6 +454,7 @@ public class Store {
         saveCars(carFile, this.cars);
     }
 
+    // Might be removed as it is not used
     public void removeBooking(Booking b) throws IOException {
         Booking[] currentBookings = readBookingFile(bookingFile);
         ArrayList<Booking> newBookings = new ArrayList<Booking>(Arrays.asList(currentBookings));
@@ -496,13 +567,13 @@ public class Store {
      *  2. Depending on th report type, read the necessary data from the text files
      *  3. Format the data acquired from the text files in a readable format
      */
-    public String generateReport(String reportType) {
-        switch (reportType) {
-            case "Type1": return "Type1";
-            case "Type2": return "Type2";
-            case "Type3": return "Type3";
-            default: return "Nothing found";
-        }
-    }
+    // public String generateReport(String reportType) {
+    //     switch (reportType.toLowerCase().trim()) {
+    //         case "revenue": return "revenue";
+    //         case "sales": return "sales";
+    //         case "fines": return "fines";
+    //         default: return "Nothing found";
+    //     }
+    // }
     
 }

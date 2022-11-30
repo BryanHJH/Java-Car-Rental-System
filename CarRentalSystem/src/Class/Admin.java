@@ -82,7 +82,9 @@ public class Admin extends User {
      *  1. Returns a double that will be added to the price for Damaged Booking record
      */
     public int imposeFines(Booking booking) {
-        return (int) Math.round(booking.getBookingPeriod() * booking.getTotalPrice() * 0.35);
+        int fines = (int) Math.round(booking.getBookingPeriod() * booking.getTotalPrice() * 0.35);
+        booking.setTotalFines(fines);
+        return fines;
     }
 
     /**
@@ -94,10 +96,11 @@ public class Admin extends User {
      *  2. If admin rejects, imposeFines() is run
      */
     public Booking approveReturn(Booking booking, boolean approval) {
-        if (!approval) {
-            booking.setBookingStatus("Rejected");
+        if (!approval) { // Car is damaged
+            booking.setBookingStatus("Pending");
+            booking.setBookingType("Damaged");
             booking.setTotalPrice(booking.getTotalPrice() + imposeFines(booking));
-        } else {
+        } else { // Car is not damaged
             booking.setBookingStatus("Returned");
         }
 

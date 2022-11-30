@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 public class Booking {
     
     private String bookingType, bookingStatus, email, identification, plateNumber;
-    private int totalPrice, bookingPeriod;
+    private int totalPrice, totalRent, totalFines, bookingPeriod;
     private LocalDate bookingStart, bookingEnd;
 
     static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.US);
@@ -52,7 +52,8 @@ public class Booking {
             Car[] CarList = readCarFile(carFile);
             for (Car car: CarList) {
                 if (car.getPlateNumber().equals(this.plateNumber)) {
-                    this.totalPrice = Math.round(car.getCarPrice() * this.bookingPeriod);
+                    this.totalRent = Math.round(car.getCarPrice() * this.bookingPeriod);
+                    this.totalPrice = this.totalRent;
                     break;
                 }
             }
@@ -120,6 +121,22 @@ public class Booking {
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public int getTotalRent() {
+        return this.totalRent;
+    }
+
+    public void setTotalRent(int totalRent) {
+        this.totalRent = totalRent;
+    }
+
+    public int getTotalFines() {
+        return this.totalFines;
+    }
+
+    public void setTotalFines(int totalFines) {
+        this.totalFines = totalFines;
     }
 
     public LocalDate getBookingStart() {
