@@ -43,7 +43,7 @@ public class ForgotPasswordController {
         if (matchFound) {
             if (adminFound) {
                 successLabel.setTextFill(Color.GREEN);
-                successLabel.setText("Please contact Admin for more instructions");
+                successLabel.setText("Please contact IT staff at it@car.com for more instructions");
             } else {
                 successLabel.setTextFill(Color.GREEN);
                 successLabel.setText("Link sent");

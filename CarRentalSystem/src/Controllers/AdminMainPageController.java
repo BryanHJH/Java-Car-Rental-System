@@ -382,6 +382,7 @@ public class AdminMainPageController implements Initializable {
         customerTable.setItems(obsCustList);
 
         // Booking Table
+        bookingTable.setPlaceholder(new Label("No booking records to display"));
         bookingTypeColumn.setCellValueFactory(new PropertyValueFactory<>("bookingType"));
         bookingStatusColumn.setCellValueFactory(new PropertyValueFactory<>("bookingStatus"));
         custEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -508,7 +509,7 @@ public class AdminMainPageController implements Initializable {
         
         // Preparing and showing the Pie Chart
         salesPieChart.setData(salesPieChartData);
-        salesPieChart.setTitle("Total Rental and Fines charged");
+        salesPieChart.setTitle("Types of Cars rented");
         salesPieChart.setLabelLineLength(50);
         salesPieChart.setLabelsVisible(true);
         salesPieChart.setVisible(true);
@@ -544,6 +545,12 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Car> tmpCars = store.getCars();
         ArrayList<Car> searchedCars = new ArrayList<>();
         String searchedCar = searchCarTextField.getText().toLowerCase().trim();
+
+        if (searchCustomerTextField.getText().isEmpty()) {
+            Alert a = new Alert(AlertType.ERROR);
+            a.setContentText("Nothing to search, please give an input.");
+            a.show();
+        }
 
         for (Car car: tmpCars) {
             if (car.getPlateNumber().toLowerCase().trim().equals(searchedCar) || 
@@ -589,6 +596,12 @@ public class AdminMainPageController implements Initializable {
         ArrayList<User> searchedCustomers = new ArrayList<>();
         String searchedCustomer = searchCustomerTextField.getText().toLowerCase().trim();
 
+        if (searchCustomerTextField.getText().isEmpty()) {
+            Alert a = new Alert(AlertType.ERROR);
+            a.setContentText("Nothing to search, please give an input.");
+            a.show();
+        }
+
         for (User customer: tmpCustomers) {
             if (customer.getFullname().toLowerCase().trim().equals(searchedCustomer) || 
                 customer.getUsername().toLowerCase().trim().equals(searchedCustomer) || 
@@ -612,6 +625,12 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Booking> tmpBookings = store.getBookings();
         ArrayList<Booking> searchedBookings = new ArrayList<>();
         String searchedBooking = searchBookingTextField.getText().toLowerCase().trim();
+
+        if (searchCustomerTextField.getText().isEmpty()) {
+            Alert a = new Alert(AlertType.ERROR);
+            a.setContentText("Nothing to search, please give an input.");
+            a.show();
+        }
 
         for (Booking booking: tmpBookings) {
             if (booking.getBookingType().toLowerCase().trim().equals(searchedBooking) ||
@@ -730,6 +749,11 @@ public class AdminMainPageController implements Initializable {
                     selectedBooking = tmpAdmin.approve(selectedBooking, false);
                     break;
                 case "damaged":
+                    if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("pending")) {
+                        Alert a = new Alert(AlertType.ERROR);
+                        a.setContentText("You cannot reject a pending fine payment");
+                        a.show();
+                    }
                     selectedBooking = tmpAdmin.approve(selectedBooking, false);
                 case "return":
                     selectedBooking = tmpAdmin.approveReturn(selectedBooking, false);
@@ -835,7 +859,7 @@ public class AdminMainPageController implements Initializable {
         
         // Preparing and showing the Pie Chart
         salesPieChart.setData(salesPieChartData);
-        salesPieChart.setTitle("Total Rental and Fines charged");
+        salesPieChart.setTitle("Types of Cars rented");
         salesPieChart.setLabelLineLength(50);
         salesPieChart.setLabelsVisible(true);
         salesPieChart.setVisible(true);

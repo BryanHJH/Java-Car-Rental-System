@@ -5,7 +5,15 @@
         "email": "bryan@gmail.com",
         "contact": "0192938202",
         "username": "bryan",
-        "password": "SsQbii96vJRqY77qS8JpS7EzAH44qwpT"
+        "password": "cVMRzRCO0zJms+97hcihM5Wma00bSd82"
+    },
+    {
+        "fullname": "Damian",
+        "identification": "23948723987",
+        "email": "damian@yahoo.com",
+        "contact": "2309423",
+        "username": "damian",
+        "password": "B0Tj7RaHqSC/SFHxYgOJNb8kUN+rI4oQ"
     },
     {
         "fullname": "Derek",
@@ -13,7 +21,7 @@
         "email": "derek@hotmail.com",
         "contact": "0192938202",
         "username": "derek",
-        "password": "xn3JyUWpFmbeuiP6KWDQ74cMarD0lhrk"
+        "password": "i8D3kOSLynoDLcHuHdi7v3CYEqZqOk3F"
     },
     {
         "fullname": "Lemon",
@@ -21,14 +29,14 @@
         "email": "lemon@gmail.com",
         "contact": "0192938202",
         "username": "lemon",
-        "password": "DL/xTgnqbVTcOQsgXDqnwV2zciIdPJcr"
+        "password": "E81JPA0NIdn/WW79FBNGVByUj4Dss1J6"
     },
     {
-        "fullname": "Damian",
-        "identification": "23948723987",
-        "email": "damian@yahoo.com",
-        "contact": "2309423",
-        "username": "damian123",
-        "password": "bRYdXgBopLp69yq6lC+BXY3S8fx/1E9a"
+        "fullname": "Nicholas",
+        "identification": "112233445566",
+        "email": "nicholas@gmail.com",
+        "contact": "0123344556",
+        "username": "nicholas",
+        "password": "QKrd4ziUuXGcaFwtp/dhA+iF+ud3xVfG"
     }
 ]

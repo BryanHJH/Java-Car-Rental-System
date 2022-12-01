@@ -15,7 +15,6 @@ import Class.Customer;
 import Class.Store;
 import Class.User;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class LoginPageController {
     
@@ -37,7 +35,7 @@ public class LoginPageController {
     private TextField usernameTextField, passwordTextField;
 
     @FXML
-    private Button loginButton, forgotPasswordButton;
+    private Button loginButton, registerButton, forgotPasswordButton;
 
     private Stage stage;
     private Scene scene;
@@ -94,11 +92,8 @@ public class LoginPageController {
                     boolean loginAttempt = admin.login(admin, passwordTextField.getText());
 
                     if (loginAttempt) { // if login successful
-                          // Step 1
-                        Admin tmpAdmin = store.findAdmin(usernameTextField.getText());
-                        // Step 2
+                        User tmpAdmin = store.findAdmin(usernameTextField.getText());
                         Node node = (Node) event.getSource();
-                        // Step 3
                         Stage stage = (Stage) node.getScene().getWindow();
                         stage.close();
 
@@ -166,6 +161,14 @@ public class LoginPageController {
                 }   
             }
         }
+    }
+
+    public void register(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/Pages/RegisterPage.fxml"));
+        stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**

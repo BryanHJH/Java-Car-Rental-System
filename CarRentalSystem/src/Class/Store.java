@@ -268,13 +268,13 @@ public class Store {
     
             for (Car currentCar: currentCarList) {
                 if (currentCar.getPlateNumber().toLowerCase().trim().equals(car.getPlateNumber().toLowerCase().trim())) {
-                    newCarList.add(car);
-                } else {
-                    newCarList.add(currentCar);
+                    // newCarList.add(car)
+                    removeCar(currentCar);
+                    addCar(car);
                 }
             }
     
-            saveCars(carFile, newCarList);
+            // saveCars(carFile, newCarList);
         }
 
     }
@@ -300,24 +300,30 @@ public class Store {
             for (LocalDate carDate: bookedDates) {
                 if (date.isEqual(carDate)) {
                     datesToBeRemoved.add(date);
+                    continue;
                 }
             }
         }
 
+        datesToBeRemoved.add(bookingEnd);
+
         car.removeDate(datesToBeRemoved);
 
         Car[] currentCarList = readCarFile(carFile);
-        ArrayList<Car> newCarList = new ArrayList<>();
+        // ArrayList<Car> newCarList = new ArrayList<>();
 
         for (Car currentCar: currentCarList) {
-            if (currentCar.equals(car)) {
-                newCarList.add(car);
-            } else {
-                newCarList.add(currentCar);
-            }
+            if (currentCar.getPlateNumber().toLowerCase().trim().equals(car.getPlateNumber().toLowerCase().trim())) {
+                // newCarList.add(car);
+                removeCar(currentCar);
+                addCar(car);
+                break;
+            } // else {
+            //     newCarList.add(currentCar);
+            // }
         }
 
-        saveCars(carFile, newCarList);
+        // saveCars(carFile, newCarList);
     }
 
     /**
@@ -478,12 +484,12 @@ public class Store {
      *  3. Return the admin object
      * @throws FileNotFoundException
      */
-    public Admin findAdmin(String email) {
+    public User findAdmin(String email) {
         User[] adminList;
         try {
             adminList = readAdminFile(adminFile);
             
-            for (Admin admin: (Admin[]) adminList) {
+            for (User admin: adminList) {
                 if (admin.getEmail().toLowerCase().equals(email.toLowerCase())) {
                     return admin;
                 }

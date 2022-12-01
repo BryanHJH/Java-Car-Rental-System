@@ -154,7 +154,9 @@ public class Car{
             throw new IllegalStateException("You cannot remove anything anymore!");
         }
 
-        this.bookedDates.removeAll(datesToBeRemoved);
+        for (LocalDate date: datesToBeRemoved) {
+            this.bookedDates.remove(date);
+        }
     }
 
     /**

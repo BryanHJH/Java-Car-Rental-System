@@ -3,7 +3,6 @@ package Controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import Class.Booking;
@@ -30,6 +28,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -37,13 +36,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -105,6 +102,7 @@ public class CustomerPageController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         
         // Booking Table
+        bookingTable.setPlaceholder(new Label("No booking records to display"));
         bookingTypeColumn.setCellValueFactory(new PropertyValueFactory<>("bookingType"));
         bookingStatusColumn.setCellValueFactory(new PropertyValueFactory<>("bookingStatus"));
         custEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -168,6 +166,14 @@ public class CustomerPageController implements Initializable {
         carBrandCombo.getItems().addAll(availableCarBrands);
         carPlateCombo.getItems().addAll(availableCarPlates);
         carTypeCombo.getItems().addAll(availableCarTypes);
+
+        carBrandCombo.disableProperty().bind(
+            carTypeCombo.valueProperty().isNull()
+        );
+
+        carPlateCombo.disableProperty().bind(
+            carBrandCombo.valueProperty().isNull()
+        );
 
 
         Platform.runLater(new Runnable() {
@@ -286,6 +292,14 @@ public class CustomerPageController implements Initializable {
 
         carTypeCombo.getItems().setAll(uniqueCarTypes);
 
+        carBrandCombo.disableProperty().bind(
+            carTypeCombo.valueProperty().isNull()
+        );
+
+        carPlateCombo.disableProperty().bind(
+            (carBrandCombo.valueProperty().isNull())
+        );
+
     }
 
     public void buildBrandComboBox() {
@@ -304,6 +318,10 @@ public class CustomerPageController implements Initializable {
 
 
         carBrandCombo.getItems().setAll(uniqueCarBrands);
+
+        carPlateCombo.disableProperty().bind(
+            (carBrandCombo.valueProperty().isNull())
+        );
 
     }
 

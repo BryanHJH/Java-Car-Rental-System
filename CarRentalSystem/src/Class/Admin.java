@@ -96,12 +96,12 @@ public class Admin extends User {
      *  2. If admin rejects, imposeFines() is run
      */
     public Booking approveReturn(Booking booking, boolean approval) {
-        if (!approval) { // Car is damaged
+        if (approval) { // Car is not damaged
+            booking.setBookingStatus("Returned");
+        } else { // Car is damaged
             booking.setBookingStatus("Pending");
             booking.setBookingType("Damaged");
             booking.setTotalPrice(booking.getTotalPrice() + imposeFines(booking));
-        } else { // Car is not damaged
-            booking.setBookingStatus("Returned");
         }
 
         return booking;

@@ -59,42 +59,42 @@ public class SetUp {
     public static void main(String[] args) throws IOException {
     
 
-        User[] admins = {
-            new Admin("Brian", "1111120293", "brian@car.com", "0192938202", "brian", "brian"),
-            new Admin("Ryan", "23948723987", "ryan@car.com", "2309423", "ryan", "ryan"),
-            new Admin("Taran", "32453242134", "taran@car.com", "0192938202", "taran", "taran"),
-            new Admin("Rana", "r43534234", "rana@car.com", "0192938202", "rana", "rana")
-        };
+        // User[] admins = {
+        //     new Admin("Brian", "1111120293", "brian@car.com", "0192938202", "brian", "brian"),
+        //     new Admin("Ryan", "23948723987", "ryan@car.com", "2309423", "ryan", "ryan"),
+        //     new Admin("Taran", "32453242134", "taran@car.com", "0192938202", "taran", "taran"),
+        //     new Admin("Rana", "r43534234", "rana@car.com", "0192938202", "rana", "rana")
+        // };
         
-        User[] customers = {
-            new Customer("Bryan", "1111120293", "bryan@gmail.com", "0192938202", "bryan", "bryan"),
-            new Customer("Damian", "23948723987", "damian@yahoo.com", "2309423", "damian", "damian"),
-            new Customer("Derek", "32453242134", "derek@hotmail.com", "0192938202", "derek", "derek"),
-            new Customer("Lemon", "r43534234", "lemon@gmail.com", "0192938202", "lemon", "lemon")
-        };
+        // User[] customers = {
+        //     new Customer("Bryan", "1111120293", "bryan@gmail.com", "0192938202", "bryan", "bryan"),
+        //     new Customer("Damian", "23948723987", "damian@yahoo.com", "2309423", "damian", "damian"),
+        //     new Customer("Derek", "32453242134", "derek@hotmail.com", "0192938202", "derek", "derek"),
+        //     new Customer("Lemon", "r43534234", "lemon@gmail.com", "0192938202", "lemon", "lemon")
+        // };
         
-        Car[] cars = {
-            new Car("BNY1122", "Toyota", 5, "Sedan", 25, "AUTO"),
-            new Car("WYY2349", "Proton", 7, "SUV", 45, "AUTO"),
-            new Car("W2349", "Porshe", 2, "Sports Car", 99, "MANUAL"),
-            new Car("A1", "Ferari", 2, "Sports Car", 150, "MANUAL"),
-            new Car("RRE1233", "Nissan", 15, "Minivan", 60, "MANUAL"),
-            new Car("YYU3291", "Mercedes Benz", 5, "Sedan", 50, "AUTO")
-        };
+        // Car[] cars = {
+        //     new Car("BNY1122", "Toyota", 5, "Sedan", 25, "AUTO"),
+        //     new Car("WYY2349", "Proton", 7, "SUV", 45, "AUTO"),
+        //     new Car("W2349", "Porshe", 2, "Sports Car", 99, "MANUAL"),
+        //     new Car("A1", "Ferari", 2, "Sports Car", 150, "MANUAL"),
+        //     new Car("RRE1233", "Nissan", 15, "Minivan", 60, "MANUAL"),
+        //     new Car("YYU3291", "Mercedes Benz", 5, "Sedan", 50, "AUTO")
+        // };
 
-        ArrayList<User> adminArr = new ArrayList<>(Arrays.asList(admins));
-        ArrayList<User> custArr = new ArrayList<>(Arrays.asList(customers));
-        ArrayList<Car> carArr = new ArrayList<>(Arrays.asList(cars));
-        saveUserData(adminFile, adminArr);
-        saveUserData(customerFile, custArr);
-        saveCarData(carArr);
+        // ArrayList<User> adminArr = new ArrayList<>(Arrays.asList(admins));
+        // ArrayList<User> custArr = new ArrayList<>(Arrays.asList(customers));
+        // ArrayList<Car> carArr = new ArrayList<>(Arrays.asList(cars));
+        // saveUserData(adminFile, adminArr);
+        // saveUserData(customerFile, custArr);
+        // saveCarData(carArr);
 
         Store testStore = new Store(adminArr, custArr, carArr, new ArrayList<Booking>());
 
         testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
         testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
         
-        Admin tmpAdmin = testStore.findAdmin("brian@car.com");
+        User tmpAdmin = testStore.findAdmin("brian@car.com");
         Car tmpCar = testStore.findCar("BNY1122");
         Car tmpCar2 = testStore.findCar("A1");
         Customer tmpCustomer = testStore.findCustomer("bryan@gmail.com");
