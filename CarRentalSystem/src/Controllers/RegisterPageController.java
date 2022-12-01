@@ -2,10 +2,12 @@ package Controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Class.Customer;
+import Class.Log;
 import Class.Store;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,7 +40,9 @@ public class RegisterPageController {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
-    Store store = new Store(adminFile, customerFile, carFile, bookingFile);
+    static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
+
+    Store store = new Store(adminFile, customerFile, carFile, bookingFile, logFile);
 
     public void register(ActionEvent event) throws IOException {
 
@@ -66,6 +70,10 @@ public class RegisterPageController {
             a.setContentText("Empty fields found, please provide all necessary information to proceed");
             a.show();
         } else {
+            
+            Log log = new Log(LocalDate.now(), emailTextField.getText(), "Registration Successful");
+            store.addLog(log);
+
             Customer newCustomer = new Customer(fullNameTextField.getText(), identificationTextField.getText(), emailTextField.getText(), contactTextField.getText(), usernameTextField.getText(), passwordField.getText());
             store.addCustomer(newCustomer);
             cancel(event);

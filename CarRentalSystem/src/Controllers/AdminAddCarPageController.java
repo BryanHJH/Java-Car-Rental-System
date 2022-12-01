@@ -56,15 +56,15 @@ public class AdminAddCarPageController {
         Car newCar = new Car(plateNumber, carBrand, carSeats, carType, carPrice, carTransmission);
         tmpStore.addCar(newCar);
 
+        cancel(event);
+    }
+
+    public void cancel(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminMainPage.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void cancel(ActionEvent event) {
-
     }
 
 }

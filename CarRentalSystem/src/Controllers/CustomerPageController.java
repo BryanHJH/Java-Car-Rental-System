@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import Class.Booking;
 import Class.Car;
 import Class.Customer;
+import Class.Log;
 import Class.Store;
 import Class.User;
 import javafx.application.Platform;
@@ -91,8 +92,9 @@ public class CustomerPageController implements Initializable {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
+    static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
 
-    Store store = new Store(adminFile, customerFile, carFile, bookingFile);
+    Store store = new Store(adminFile, customerFile, carFile, bookingFile, logFile);
     ArrayList<String> availableCarBrands = new ArrayList<>();
     ArrayList<String> availableCarPlates = new ArrayList<>();
     ArrayList<String> availableCarTypes = new ArrayList<>();
@@ -370,6 +372,9 @@ public class CustomerPageController implements Initializable {
         store.addBooking(newBooking);
         clear(event);
 
+        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Booking Created");
+        store.addLog(log);
+
     }
     
     public void confirmChanges(ActionEvent event) throws IOException {
@@ -387,7 +392,7 @@ public class CustomerPageController implements Initializable {
             tmpCustomer.setEmail(custEmailTextField.getText());
         } else {
             Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("Approved bookings cannot be modified!");
+            alert.setContentText("Email is incorrect");
             alert.show();
         }
 
@@ -400,6 +405,9 @@ public class CustomerPageController implements Initializable {
                 store.addCustomer(tmpCustomer);
             }
         }
+
+        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Profile Changed successfully");
+        store.addLog(log);
 
     }
     
@@ -468,6 +476,10 @@ public class CustomerPageController implements Initializable {
     }
 
     public void logout(ActionEvent event) throws IOException {
+
+        Customer tmpCustomer = receiveCustomerData(event);
+        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Logout successful");
+        store.addLog(log);
 
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();

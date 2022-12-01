@@ -1,8 +1,10 @@
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +20,7 @@ import Class.Booking;
 import Class.Car;
 import Class.Customer;
 import Class.GsonLocalDateAdapter;
+import Class.Log;
 import Class.Store;
 import Class.User;
 
@@ -28,6 +31,8 @@ public class SetUp {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
+    static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
+    
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.US);
 
     public static void saveUserData(File file, ArrayList<User> arr) throws IOException {
@@ -56,6 +61,45 @@ public class SetUp {
         }
     }
 
+    public static User[] readAdminFile(File file) throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+        Reader reader = new FileReader(file);
+        User[] customerList = (User[]) gson.fromJson(reader, Admin[].class);
+        return customerList;
+    }
+    
+    /**
+     * Name: readCustomerFile
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static User[] readCustomerFile(File file) throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+        Reader reader = new FileReader(file);
+        User[] customerList = (User[]) gson.fromJson(reader, Customer[].class);
+        return customerList;
+    }
+
+    /**
+     * Name: readCarFile
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static Car[] readCarFile(File file) throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+        Reader reader = new FileReader(file);
+        Car[] carList = gson.fromJson(reader, Car[].class);
+        return carList;
+    }
+
     public static void main(String[] args) throws IOException {
     
 
@@ -82,19 +126,20 @@ public class SetUp {
         //     new Car("YYU3291", "Mercedes Benz", 5, "Sedan", 50, "AUTO")
         // };
 
-        // ArrayList<User> adminArr = new ArrayList<>(Arrays.asList(admins));
-        // ArrayList<User> custArr = new ArrayList<>(Arrays.asList(customers));
-        // ArrayList<Car> carArr = new ArrayList<>(Arrays.asList(cars));
+        ArrayList<User> adminArr = new ArrayList<>(Arrays.asList(readAdminFile(adminFile)));
+        ArrayList<User> custArr = new ArrayList<>(Arrays.asList(readCustomerFile(customerFile)));
+        ArrayList<Car> carArr = new ArrayList<>(Arrays.asList(readCarFile(carFile)));
         // saveUserData(adminFile, adminArr);
         // saveUserData(customerFile, custArr);
         // saveCarData(carArr);
 
-        Store testStore = new Store(adminArr, custArr, carArr, new ArrayList<Booking>());
+
+        Store testStore = new Store(adminArr, custArr, carArr, new ArrayList<Booking>(), new ArrayList<Log>());
 
         testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
         testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
         
-        User tmpAdmin = testStore.findAdmin("brian@car.com");
+        Admin tmpAdmin = (Admin) testStore.findAdmin("brian@car.com");
         Car tmpCar = testStore.findCar("BNY1122");
         Car tmpCar2 = testStore.findCar("A1");
         Customer tmpCustomer = testStore.findCustomer("bryan@gmail.com");
@@ -114,6 +159,21 @@ public class SetUp {
 
 
         try {
+            Log log = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Login successful");
+            Log log2 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Booking Created");
+            Log log3 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Login successful");
+            Log log3_1 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Logout successful");
+            Log log4 = new Log(LocalDate.of(2022, 12, 1), tmpAdmin.getEmail(), "Login sucessful");
+            Log log5 = new Log(LocalDate.of(2022, 12, 1), tmpAdmin.getEmail(), "Approval successful");
+            Log log6 = new Log(LocalDate.of(2022, 12, 1), tmpAdmin.getEmail(), "Logout sucessful");
+
+            testStore.addLog(log);
+            testStore.addLog(log2);
+            testStore.addLog(log3);
+            testStore.addLog(log3_1);
+            testStore.addLog(log4);
+            testStore.addLog(log5);
+            testStore.addLog(log6);
             Booking tmpBooking = tmpCustomer.bookCar(tmpCar, bookingStart, bookingEnd);
             System.out.println("Booking Created: \n");
             System.out.println(tmpBooking);
@@ -142,6 +202,12 @@ public class SetUp {
             // System.out.println(tmpCar);
             // testStore.updateBooking(tmpBooking);
 
+            Log log7 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer2.getEmail(), "Login successful");
+            Log log8 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer2.getEmail(), "Booking Created");
+            Log log9 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer2.getEmail(), "Login successful");
+            testStore.addLog(log7);
+            testStore.addLog(log8);
+            testStore.addLog(log9);
             Booking tmpBooking2 = tmpCustomer2.bookCar(tmpCar2, bookingStart2, bookingEnd2);
             System.out.println("Booking 2 Created: \n");
             System.out.println(tmpBooking2);

@@ -28,6 +28,7 @@ public class Store {
     private ArrayList<User> admins;
     private ArrayList<User> customers;
     private ArrayList<Booking> bookings;
+    private ArrayList<Log> logs;
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy", Locale.US);
 
@@ -35,20 +36,23 @@ public class Store {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
+    static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
 
-    public Store(ArrayList<User> admins, ArrayList<User> customers, ArrayList<Car> cars, ArrayList<Booking> bookings) {
+    public Store(ArrayList<User> admins, ArrayList<User> customers, ArrayList<Car> cars, ArrayList<Booking> bookings, ArrayList<Log> logs) {
         this.cars = new ArrayList<>(cars);
         this.admins = new ArrayList<>(admins);
         this.customers = new ArrayList<>(customers);
         this.bookings = new ArrayList<>(bookings);
+        this.logs = new ArrayList<>(logs);
     }
 
-    public Store(File admin, File customer, File car, File booking) { 
+    public Store(File admin, File customer, File car, File booking, File log) { 
         try {
             this.cars = new ArrayList<Car>(Arrays.asList(readCarFile(car)));
             this.admins = new ArrayList<User>(Arrays.asList(readAdminFile(admin)));
             this.customers = new ArrayList<User>(Arrays.asList(readCustomerFile(customer)));
             this.bookings = new ArrayList<Booking>(Arrays.asList(readBookingFile(booking)));
+            this.logs = new ArrayList<Log>(Arrays.asList(readLogFile(log)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -64,6 +68,10 @@ public class Store {
 
     public ArrayList<User> getCustomers() {
         return this.customers;
+    }
+
+    public ArrayList<Log> getLogs() {
+        return this.logs;
     }
 
     public ArrayList<Booking> getBookings() {
@@ -167,6 +175,19 @@ public class Store {
         }
     }
 
+    public static void saveLogs(File file, ArrayList<Log> arr) throws IOException {
+        FileWriter fwriter = new FileWriter(file);
+        
+        try (BufferedWriter writer = new BufferedWriter(fwriter)) {
+            Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+            gson.toJson(arr, writer);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * Name: readAdminFile
      * @param file
@@ -225,6 +246,15 @@ public class Store {
         Reader reader = new FileReader(file);
         Booking[] bookingList = gson.fromJson(reader, Booking[].class);
         return bookingList;
+    }
+
+    public static Log[] readLogFile(File file) throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+        Reader reader = new FileReader(file);
+        Log[] logs = gson.fromJson(reader, Log[].class);
+        return logs;
     }
 
     /**
@@ -370,13 +400,13 @@ public class Store {
      * @param b
      * @throws IOException
      * 
-     * What it does:
-     *  1. Create a temporary Booking Array with all current Bookings
-     *  2. Create a new Booking ArrayList
-     *  3a. Move all current Bookings from the Array to the ArrayList
-     *  3b. If no current Bookings, meaning the Array is empty, just add the new Booking to the ArrayList
-     *  4. Add the new Booking to the ArrayList
-     *  5. Write the ArrayList to the text file
+     * What it does: <br>
+     *  1. Create a temporary Booking Array with all current Bookings <br>
+     *  2. Create a new Booking ArrayList <br>
+     *  3a. Move all current Bookings from the Array to the ArrayList <br>
+     *  3b. If no current Bookings, meaning the Array is empty, just add the new Booking to the ArrayList <br>
+     *  4. Add the new Booking to the ArrayList <br>
+     *  5. Write the ArrayList to the text file <br>
      */
     public void addBooking(Booking b) throws IOException {
         Booking[] oldBookings = readBookingFile(bookingFile);
@@ -392,6 +422,11 @@ public class Store {
         }
 
         saveBookings(bookingFile, newBookings);
+    }
+
+    public void addLog(Log l) throws IOException {
+        this.logs.add(l);
+        saveLogs(logFile, logs);;
     }
 
     /**

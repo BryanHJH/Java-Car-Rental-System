@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import Class.Admin;
 import Class.Booking;
 import Class.Car;
+import Class.Log;
 import Class.Store;
 import Class.User;
 import javafx.application.Platform;
@@ -100,8 +101,9 @@ public class AdminMainPageController implements Initializable {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
+    static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
 
-    Store store = new Store(adminFile, customerFile, carFile, bookingFile);
+    Store store = new Store(adminFile, customerFile, carFile, bookingFile, logFile);
 
     public static<K> void incrementValue(Map<K, Integer> map, K key) {
         // containsKey() checks if this map contains a mapping for a key
@@ -534,6 +536,11 @@ public class AdminMainPageController implements Initializable {
     }
 
     public void logout(ActionEvent e) throws IOException {
+        
+        Admin tmpAdmin = receiveAdminData(e);
+        Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Logout Successful");
+        store.addLog(log);
+
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
         stage =  (Stage)((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -586,6 +593,11 @@ public class AdminMainPageController implements Initializable {
     }
 
     public void removeCar(ActionEvent e) throws IOException {
+
+        Admin tmpAdmin = receiveAdminData(e);
+        Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Remove car successful");
+        store.addLog(log);
+
         Car tmpCar = carTable.getSelectionModel().getSelectedItem();
         store.removeCar(tmpCar);
         clearCar(e);
@@ -686,8 +698,6 @@ public class AdminMainPageController implements Initializable {
     public void approve(ActionEvent e) throws IllegalAccessException, IOException, ParseException {
         Admin tmpAdmin = receiveAdminData(e);
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
-        ArrayList<Booking> oldBookings = store.getBookings();
-        ArrayList<Booking> updatedBookings = new ArrayList<>();
 
         if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("rejected")) {
             Alert alert = new Alert(AlertType.ERROR);
@@ -712,18 +722,18 @@ public class AdminMainPageController implements Initializable {
                     break;
             }
     
-            for (Booking booking: oldBookings) {
+            for (Booking booking: store.getBookings()) {
                 if (booking.getEmail().equals(selectedBooking.getEmail()) &&
                     booking.getPlateNumber().equals(selectedBooking.getPlateNumber()) &&
                     booking.getBookingStart().isEqual(selectedBooking.getBookingStart())) {
-                    updatedBookings.add(selectedBooking);
-                    continue;
-                } else {
-                    updatedBookings.add(booking);
+                    store.removeBooking(booking);
+                    store.addBooking(selectedBooking);
                 }
             }
+
+            Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Approval successful");
+            store.addLog(log);
     
-            Store.saveBookings(bookingFile, updatedBookings);
             clearBooking(e);
 
         }
@@ -733,8 +743,6 @@ public class AdminMainPageController implements Initializable {
     public void reject(ActionEvent e) throws IllegalAccessException, IOException {
         Admin tmpAdmin = receiveAdminData(e);
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
-        // ArrayList<Booking> oldBookings = store.getBookings();
-        // ArrayList<Booking> updatedBookings = new ArrayList<>();
 
         if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("approved") ||
             selectedBooking.getBookingStatus().toLowerCase().trim().equals("returned") ||

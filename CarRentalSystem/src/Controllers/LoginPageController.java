@@ -1,17 +1,24 @@
 package Controllers;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import Class.Admin;
 import Class.Customer;
+import Class.GsonLocalDateAdapter;
+import Class.Log;
 import Class.Store;
 import Class.User;
 import javafx.event.ActionEvent;
@@ -47,7 +54,9 @@ public class LoginPageController {
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
-    Store store = new Store(adminFile, customerFile, carFile, bookingFile);
+    static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
+
+    Store store = new Store(adminFile, customerFile, carFile, bookingFile, logFile);
 
     public static User[] readAdminFile(File file) throws FileNotFoundException {
         Gson gson = new Gson();
@@ -61,6 +70,19 @@ public class LoginPageController {
         Reader reader = new FileReader(file);
         User[] userList = (User[]) gson.fromJson(reader, Customer[].class);
         return userList;
+    }
+
+    public static void saveUsers(File file, ArrayList<Log> arr) throws IOException {
+        FileWriter fwriter = new FileWriter(file);
+        
+        try (BufferedWriter writer = new BufferedWriter(fwriter)) {
+            Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
+            .create();
+            gson.toJson(arr, writer);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -90,9 +112,13 @@ public class LoginPageController {
                 if (admin.getEmail().equals(usernameTextField.getText())) {
 
                     boolean loginAttempt = admin.login(admin, passwordTextField.getText());
+                    User tmpAdmin = store.findAdmin(usernameTextField.getText());
 
                     if (loginAttempt) { // if login successful
-                        User tmpAdmin = store.findAdmin(usernameTextField.getText());
+                        
+                        Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Login Successful");
+                        store.addLog(log);
+
                         Node node = (Node) event.getSource();
                         Stage stage = (Stage) node.getScene().getWindow();
                         stage.close();
@@ -106,8 +132,9 @@ public class LoginPageController {
 
                     } else {
 
+                        String message = "Email and/or Password is incorrect";
                         errorLabel.setTextFill(Color.RED);
-                        errorLabel.setText("Email and/or Password is incorrect");
+                        errorLabel.setText(message);
 
                     }
                     
@@ -127,10 +154,13 @@ public class LoginPageController {
                 if (customer.getEmail().equals(usernameTextField.getText())) {
 
                     boolean loginAttempt = customer.login(customer, passwordTextField.getText());
+                    Customer tmpCustomer = store.findCustomer(usernameTextField.getText());
 
                     if (loginAttempt) { // if login successful
                         
-                        Customer tmpCustomer = store.findCustomer(usernameTextField.getText());
+                        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Login Successful");
+                        store.addLog(log);
+
                         Node node = (Node) event.getSource();
                         Stage stage = (Stage) node.getScene().getWindow();
                         stage.close();
