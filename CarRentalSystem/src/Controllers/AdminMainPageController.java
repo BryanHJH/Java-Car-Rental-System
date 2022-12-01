@@ -7,6 +7,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import Class.Booking;
 import Class.Car;
 import Class.Store;
 import Class.User;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,22 +26,24 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -80,7 +84,7 @@ public class AdminMainPageController implements Initializable {
     private TextField searchCarTextField, searchCustomerTextField, searchBookingTextField;
 
     @FXML
-    private Button addCarButton, approveButton, clearButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, refreshChartButton;
+    private Button addCarButton, approveButton, clearCarButton, clearCustomerButton, clearBookingButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, refreshChartButton;
 
     @FXML
     private PieChart chargesPieChart, salesPieChart;
@@ -99,8 +103,7 @@ public class AdminMainPageController implements Initializable {
 
     Store store = new Store(adminFile, customerFile, carFile, bookingFile);
 
-    public static<K> void incrementValue(Map<K, Integer> map, K key)
-    {
+    public static<K> void incrementValue(Map<K, Integer> map, K key) {
         // containsKey() checks if this map contains a mapping for a key
         Integer count = map.containsKey(key) ? map.get(key) : 0;
         map.put(key, count + 1);
@@ -389,7 +392,37 @@ public class AdminMainPageController implements Initializable {
         totalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         List<Booking> bookingList = store.getBookings();
         ObservableList<Booking> obsBookingList = FXCollections.observableArrayList(bookingList);
-        bookingTable.setItems(obsBookingList);
+        bookingTable.getItems().setAll(obsBookingList);
+
+        bookingTable.setRowFactory(row -> new TableRow<Booking>(){
+            @Override
+            public void updateItem(Booking item, boolean empty){
+                super.updateItem(item, empty);
+        
+                if (item == null || empty) {
+                    setStyle("");
+                } else {
+                    //Now 'item' has all the info of the Person in this row
+                    if (item.getBookingStatus().toLowerCase().equals("pending")) {
+                        //We apply now the changes in all the cells of the row
+                        for(int i=0; i<getChildren().size();i++){
+                            ((Labeled) getChildren().get(i)).setTextFill(Color.ORANGE);
+                        }                        
+                    } else {
+                        if(getTableView().getSelectionModel().getSelectedItems().contains(item)){
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.WHITE);;
+                            }
+                        }
+                        else{
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.BLACK);;
+                            }
+                        }
+                    }
+                }
+            }
+        });
         
         // Charges Pie Chart
         // Getting the neccesary information (Total Rental Fees charged and Fines charged)
@@ -488,6 +521,15 @@ public class AdminMainPageController implements Initializable {
                 tooltip.setText(Integer.toString((int) newPieValue));
             });
         }
+
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                clearBookingButton.fire();
+            }
+            
+        });
     }
 
     public void logout(ActionEvent e) throws IOException {
@@ -590,6 +632,36 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Booking> tmpBookings = store.getBookings();
         bookingTable.getItems().clear();
         bookingTable.getItems().addAll(tmpBookings);
+
+        bookingTable.setRowFactory(row -> new TableRow<Booking>(){
+            @Override
+            public void updateItem(Booking item, boolean empty){
+                super.updateItem(item, empty);
+        
+                if (item == null || empty) {
+                    setStyle("");
+                } else {
+                    //Now 'item' has all the info of the Person in this row
+                    if (item.getBookingStatus().toLowerCase().equals("pending")) {
+                        //We apply now the changes in all the cells of the row
+                        for(int i=0; i<getChildren().size();i++){
+                            ((Labeled) getChildren().get(i)).setTextFill(Color.ORANGE);
+                        }                        
+                    } else {
+                        if(getTableView().getSelectionModel().getSelectedItems().contains(item)){
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.WHITE);;
+                            }
+                        }
+                        else{
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.BLACK);;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void approve(ActionEvent e) throws IllegalAccessException, IOException, ParseException {

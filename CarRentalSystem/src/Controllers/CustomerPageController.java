@@ -34,15 +34,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class CustomerPageController implements Initializable {
@@ -113,6 +116,41 @@ public class CustomerPageController implements Initializable {
         List<Booking> bookingList = store.getBookings();
         ObservableList<Booking> obsBookingList = FXCollections.observableArrayList(bookingList);
         bookingTable.getItems().addAll(obsBookingList);
+
+        bookingTable.setRowFactory(row -> new TableRow<Booking>(){
+            @Override
+            public void updateItem(Booking item, boolean empty){
+                super.updateItem(item, empty);
+        
+                if (item == null || empty) {
+                    setStyle("");
+                } else {
+                    //Now 'item' has all the info of the Person in this row
+                    if (item.getBookingStatus().toLowerCase().equals("rejected")) {
+                        //We apply now the changes in all the cells of the row
+                        for(int i=0; i<getChildren().size();i++){
+                            ((Labeled) getChildren().get(i)).setTextFill(Color.RED);
+                        }                        
+                    } else if (item.getBookingStatus().toLowerCase().equals("approved") || 
+                               item.getBookingStatus().toLowerCase().equals("returned"))  {
+                        for (int i=0; i<getChildren().size(); i++) {
+                            ((Labeled) getChildren().get(i)).setTextFill(Color.GREEN);
+                        }
+                    } else {
+                        if(getTableView().getSelectionModel().getSelectedItems().contains(item)){
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.WHITE);;
+                            }
+                        }
+                        else{
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.BLACK);;
+                            }
+                        }
+                    }
+                }
+            }
+        });
         
         // Building the initial Combo Boxes
         rentDateDatePicker.setValue(LocalDate.now());
@@ -168,6 +206,41 @@ public class CustomerPageController implements Initializable {
         }
 
         bookingTable.getItems().setAll(customerBookings);
+
+        bookingTable.setRowFactory(row -> new TableRow<Booking>(){
+            @Override
+            public void updateItem(Booking item, boolean empty){
+                super.updateItem(item, empty);
+        
+                if (item == null || empty) {
+                    setStyle("");
+                } else {
+                    //Now 'item' has all the info of the Person in this row
+                    if (item.getBookingStatus().toLowerCase().equals("rejected")) {
+                        //We apply now the changes in all the cells of the row
+                        for(int i=0; i<getChildren().size();i++){
+                            ((Labeled) getChildren().get(i)).setTextFill(Color.RED);
+                        }                        
+                    } else if (item.getBookingStatus().toLowerCase().equals("approved") || 
+                               item.getBookingStatus().toLowerCase().equals("returned"))  {
+                        for (int i=0; i<getChildren().size(); i++) {
+                            ((Labeled) getChildren().get(i)).setTextFill(Color.GREEN);
+                        }
+                    } else {
+                        if(getTableView().getSelectionModel().getSelectedItems().contains(item)){
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.WHITE);;
+                            }
+                        }
+                        else{
+                            for(int i=0; i<getChildren().size();i++){
+                                ((Labeled) getChildren().get(i)).setTextFill(Color.BLACK);;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public ArrayList<Car> validateCarAvailability() {
@@ -349,6 +422,7 @@ public class CustomerPageController implements Initializable {
             }
         }
 
+        refreshTable(event);
         // Store.saveBookings(bookingFile, updatedBookings);
 
     }
