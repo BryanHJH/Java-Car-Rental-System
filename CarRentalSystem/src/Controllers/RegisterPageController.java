@@ -44,6 +44,17 @@ public class RegisterPageController {
 
     Store store = new Store(adminFile, customerFile, carFile, bookingFile, logFile);
 
+    /**
+     * Function name: register
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Gets all the text from the text and password fields <br>
+     *  2. Validates the contents extracted from the text and password fields <br>
+     *  3a. If all are ok, add the new user to Customer.txt <br>
+     *  3b. If some fields are wrong, throw an Alert window
+     */
     public void register(ActionEvent event) throws IOException {
 
         Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]*@[a-zA-Z]{1,}\\.[a-zA-Z]{2,3}$");
@@ -81,6 +92,14 @@ public class RegisterPageController {
 
     }
 
+    /**
+     * Function name: cancel
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Brings the user back to the Login page
+     */
     public void cancel(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();

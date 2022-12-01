@@ -2,10 +2,8 @@ package Class;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.Objects;
 
 public class Car{
@@ -18,8 +16,15 @@ public class Car{
     private ArrayList<LocalDate> bookedDates;
     private String carTransmission;
 
-    static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.US);
-
+    /**
+     * Constructor
+     * @param plateNumber
+     * @param carBrand
+     * @param carSeat
+     * @param carType
+     * @param carPrice
+     * @param carTransmission
+     */
     public Car(String plateNumber, String carBrand, int carSeat, String carType, int carPrice, String carTransmission) {
         if (!(carTransmission.toUpperCase().equals("AUTO") || carTransmission.toUpperCase().equals("MANUAL"))) {
             throw new IllegalArgumentException("Transmission can only be AUTO or MANUAL");
@@ -39,6 +44,10 @@ public class Car{
 
     }
 
+    /**
+     * Copy Constructor
+     * @param source
+     */
     public Car(Car source) {
         this.plateNumber = source.getPlateNumber();
         this.carBrand = source.getCarBrand();
@@ -49,8 +58,7 @@ public class Car{
         this.bookedDates = source.getBookedDates();
     }
 
-    // Prepare a Copy Constructor
-
+    // Getter and Setters
     public String getPlateNumber() {
         return this.plateNumber;
     }
@@ -107,15 +115,15 @@ public class Car{
         this.carTransmission = carTransmission;
     }
 
-    /*
-    * Function name: addDates
-    * 
-    * What it does:
-    *  1. Add dates after the return car is approved
-    */
+    /**
+     * Function name: addDates
+     * @param date
+     * @throws ParseException
+     * 
+     * What it does:
+     *  1. Add dates after the return car is approved
+     */
     public void addDates(LocalDate date) throws ParseException {
-        //LocalDate newDate = LocalDate.parse(date, dateFormatter);
-
         if (this.bookedDates.size() == 0) {
             this.bookedDates.add(date);
         } else {
@@ -130,25 +138,18 @@ public class Car{
             } else { // Meaning date is before the last index and is now being placed as the second last item in the ArrayList
                 this.bookedDates.add(lastIndex - 1, date);
             }
-
+            
             this.bookedDates.sort(Comparator.naturalOrder());
         }
-
-        // Not sure this part is needed or not, above part is taken from my old Java Assignment, require testing
-        /** else if (this.bookedDates.size() == 1) {
-            if (newDate.isAfter(this.bookedDates.get(0))) {
-                this.bookedDates.add(newDate);
-            }
-        }**/
     }
 
-
-    /*
-    * Function name: removeDates
-    * 
-    * What it does:
-    *  1. Remove dates when payment for booking car is done
-    */
+    /**
+     * Function name: removeDates
+     * @param datesToBeRemoved
+     * 
+     * What it does: <br>
+     *  1. Remove dates when payment for booking car is done
+     */
     public void removeDate(ArrayList<LocalDate> datesToBeRemoved) {
         if (this.bookedDates.size() == 0) {
             throw new IllegalStateException("You cannot remove anything anymore!");
@@ -164,13 +165,11 @@ public class Car{
      * @param date
      * @return
      * 
-     * What it does:
-     *  1. Loop through the ArrayList of bookedDates
-     *  2. return false if the car is already booked else true
+     * What it does: <br>
+     *  1. Loop through the ArrayList of bookedDates <br>
+     *  2. return false if the car is already booked else true <br>
      */
     public boolean checkAvailability(LocalDate date) {
-        // LocalDate bookingDate = LocalDate.parse(date, dateFormatter);
-
         for (LocalDate bookedDates: this.bookedDates) {
             if (bookedDates.isEqual(date)) {
                 return false; // Means the car is booked at that date
@@ -179,7 +178,6 @@ public class Car{
 
         return true; // Means the car is not booked at that date
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -197,17 +195,6 @@ public class Car{
         return Objects.hash(plateNumber, carBrand, carType, carSeat, carPrice, bookedDates, carTransmission);
     }
 
-
-    /*
-    * Function name: carDetails / carCatalog /override the toString method
-    * 
-    * What it does:
-    *  1. Show the information of car
-    *  2. Information grouped by the types of car
-    *  3. After choosing types of car, customer should see the picture of the car? (discuss with bryan),
-    *  car model, seats, price
-    * 
-    */
     @Override
     public String toString() {
         return
@@ -219,6 +206,5 @@ public class Car{
             "Booked Dates:" + getBookedDates() + "\n" +
             "Car Transmission:" + getCarTransmission() + "\n" ;
     }
-
 
 }

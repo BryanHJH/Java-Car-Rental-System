@@ -94,7 +94,6 @@ public class AdminMainPageController implements Initializable {
     private Label adminLabelCar, adminLabelCustomer, adminLabelBooking, adminLabelReport;
 
     private Stage stage;
-    private Parent root;
     private Scene scene;
 
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
@@ -105,12 +104,29 @@ public class AdminMainPageController implements Initializable {
 
     Store store = new Store(adminFile, customerFile, carFile, bookingFile, logFile);
 
+    /**
+     * Function name: incrementValue
+     * @param <K>
+     * @param map
+     * @param key
+     * 
+     * What it does:
+     *  1. Checks for key in HashMap
+     *  2. Increments the value for the key if found
+     */
     public static<K> void incrementValue(Map<K, Integer> map, K key) {
-        // containsKey() checks if this map contains a mapping for a key
         Integer count = map.containsKey(key) ? map.get(key) : 0;
         map.put(key, count + 1);
     }
 
+    /**
+     * Function name: receiveAdminData
+     * @param event
+     * @return Admin
+     * 
+     * What it does: <br>
+     *  1. Gets Admin object from Login screen
+     */
     private Admin receiveAdminData(ActionEvent event) {
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -535,6 +551,14 @@ public class AdminMainPageController implements Initializable {
         });
     }
 
+    /**
+     * Function name: logout
+     * @param e
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Brings user back to Login screen
+     */
     public void logout(ActionEvent e) throws IOException {
         
         Admin tmpAdmin = receiveAdminData(e);
@@ -548,6 +572,16 @@ public class AdminMainPageController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Function name: searchCar
+     * @param e
+     * 
+     * What it does: <br> 
+     *  1. Gets the text from the search bar <br>
+     *  2. Throw an alert if search bar is empty but user still pressed search button <br>
+     *  3. Find the car that matches the text from the search bar and add it to an ArrayList <br>
+     *  4. Set the TableView contents to the ArrayList with the search results
+     */
     public void searchCar(ActionEvent e) {
         ArrayList<Car> tmpCars = store.getCars();
         ArrayList<Car> searchedCars = new ArrayList<>();
@@ -571,6 +605,14 @@ public class AdminMainPageController implements Initializable {
         carTable.getItems().addAll(searchedCars);
     }
 
+    /**
+     * Function name: clearCar
+     * @param e
+     * 
+     * What it does: <br>
+     *  1. Clear the search bar <br>
+     *  2. Revert the TableView contents to all the Car objects of the organization
+     */
     public void clearCar(ActionEvent e) {
         searchCarTextField.clear();
         ArrayList<Car> tmpCars = store.getCars();
@@ -578,6 +620,15 @@ public class AdminMainPageController implements Initializable {
         carTable.getItems().addAll(tmpCars);
     }
 
+
+    /**
+     * Function name: addCar
+     * @param e
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Brings the user to the Add Car page
+     */
     public void addCar(ActionEvent e) throws IOException {
         Node node = (Node) e.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -592,6 +643,15 @@ public class AdminMainPageController implements Initializable {
         clearCar(e);
     }
 
+    /**
+     * Function name: removeCar
+     * @param e
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Removes the selected Car object from the ArrayList <br>
+     *  2. Save the new ArrayList to Car.txt 
+     */
     public void removeCar(ActionEvent e) throws IOException {
 
         Admin tmpAdmin = receiveAdminData(e);
@@ -603,6 +663,16 @@ public class AdminMainPageController implements Initializable {
         clearCar(e);
     }
 
+    /**
+     * Function name: searchCustomer
+     * @param e
+     * 
+     * What it does: <br> 
+     *  1. Gets the text from the search bar <br>
+     *  2. Throw an alert if search bar is empty but user still pressed search button <br>
+     *  3. Find the Customer that matches the text from the search bar and add it to an ArrayList <br>
+     *  4. Set the TableView contents to the ArrayList with the search results
+     */
     public void searchCustomer(ActionEvent e) {
         ArrayList<User> tmpCustomers = store.getCustomers();
         ArrayList<User> searchedCustomers = new ArrayList<>();
@@ -626,6 +696,14 @@ public class AdminMainPageController implements Initializable {
         customerTable.getItems().addAll(searchedCustomers);
     }
 
+    /**
+     * Function name: clearCustomer
+     * @param e
+     * 
+     * What it does: <br>
+     *  1. Clear the search bar <br>
+     *  2. Revert the TableView contents to all the Customer objects of the organization
+     */
     public void clearCustomer(ActionEvent e) {
         searchCustomerTextField.clear();
         ArrayList<User> tmpCustomers = store.getCustomers();
@@ -633,6 +711,16 @@ public class AdminMainPageController implements Initializable {
         customerTable.getItems().addAll(tmpCustomers);
     }
 
+    /**
+     * Function name: searchBooking
+     * @param e
+     * 
+     * What it does: <br> 
+     *  1. Gets the text from the search bar <br>
+     *  2. Throw an alert if search bar is empty but user still pressed search button <br>
+     *  3. Find the Booking that matches the text from the search bar and add it to an ArrayList <br>
+     *  4. Set the TableView contents to the ArrayList with the search results
+     */
     public void searchBooking(ActionEvent e) {
         ArrayList<Booking> tmpBookings = store.getBookings();
         ArrayList<Booking> searchedBookings = new ArrayList<>();
@@ -658,6 +746,14 @@ public class AdminMainPageController implements Initializable {
         bookingTable.getItems().addAll(searchedBookings);
     }
 
+    /**
+     * Function name: clearBooking
+     * @param e
+     * 
+     * What it does: <br>
+     *  1. Clear the search bar <br>
+     *  2. Revert the TableView contents to all the Booking objects of the organization
+     */
     public void clearBooking(ActionEvent e) {
         searchBookingTextField.clear();
         ArrayList<Booking> tmpBookings = store.getBookings();
@@ -695,6 +791,19 @@ public class AdminMainPageController implements Initializable {
         });
     }
 
+    /**
+     * Function name: approve
+     * @param e
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     * 
+     * What it does: <br>
+     *  1. If booking type is "Booking", state is changed to "Approved" <br>
+     *  2. If booking type is "Damaged", state is changed to "Paid" <br>
+     *  3. If booking type is "Return", statis is changed to "Approved" <br>
+     *  4. Booking will add dates to the corresponding car while Return will remove dates
+     */
     public void approve(ActionEvent e) throws IllegalAccessException, IOException, ParseException {
         Admin tmpAdmin = receiveAdminData(e);
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
@@ -704,18 +813,15 @@ public class AdminMainPageController implements Initializable {
             alert.setContentText("Rejected bookings cannot be modified!");
             alert.show();
         } else {
-            
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
                 case "booking": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
                     store.rentCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
-
                 case "damaged": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
                     store.returnCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
-    
                 case "return": 
                     selectedBooking = tmpAdmin.approveReturn(selectedBooking, true);
                     store.returnCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
@@ -730,16 +836,25 @@ public class AdminMainPageController implements Initializable {
                     store.addBooking(selectedBooking);
                 }
             }
-
             Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Approval successful");
             store.addLog(log);
-    
             clearBooking(e);
-
         }
-
     }
 
+    /**
+     * Function name: reject
+     * @param e
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     * 
+     * What it does: <br>
+     *  1. If booking type is "Booking", state is changed to "Rejected" <br>
+     *  2. If booking type is "Damaged", state is changed to "Pending" <br>
+     *  3. If booking type is "Return", type is changed to "Damaged" and state is changed to "Pending" <br>
+     *  4. Damaged will impose fines
+     */
     public void reject(ActionEvent e) throws IllegalAccessException, IOException {
         Admin tmpAdmin = receiveAdminData(e);
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
@@ -772,24 +887,22 @@ public class AdminMainPageController implements Initializable {
                 if (booking.getEmail().equals(selectedBooking.getEmail()) &&
                     booking.getPlateNumber().equals(selectedBooking.getPlateNumber()) &&
                     booking.getBookingStart().isEqual(selectedBooking.getBookingStart())) {
-                    // updatedBookings.add(selectedBooking);
-                    // continue;
                     store.removeBooking(booking);
                     store.addBooking(selectedBooking);
-                } // else {
-                //     updatedBookings.add(booking);
-                // }
+                }
             }
-    
-            // Store.saveBookings(bookingFile, updatedBookings);
             clearBooking(e);
-
         }
-
     }
 
+    /**
+     * Function name: refreshChart
+     * @param e
+     * 
+     * What it does:
+     *  1. Refreshes the chart with new data
+     */
     public void refreshChart(ActionEvent e) {
-
         // Charges Pie Chart
         ArrayList<Booking> bookings = store.getBookings();
         int totalRent = 0, totalFines = 0;
@@ -881,5 +994,4 @@ public class AdminMainPageController implements Initializable {
             });
         }
     }
-
 }

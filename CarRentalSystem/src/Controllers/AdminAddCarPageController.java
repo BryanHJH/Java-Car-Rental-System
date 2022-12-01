@@ -31,9 +31,15 @@ public class AdminAddCarPageController {
     private Button addButton, cancelButton;
 
     private Stage stage;
-    private Scene scene;
-    private Parent root;
 
+    /**
+     * Function name: receiveStoreData
+     * @param event
+     * @return Store
+     * 
+     * What it does: <br>
+     *  1. Gets Store object from previous screen
+     */
     private Store receiveStoreData(ActionEvent event) {
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -41,8 +47,17 @@ public class AdminAddCarPageController {
         return store;
     }
 
+    /**
+     * Function name: add
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Gets all the contents of TextFields <br>
+     *  2. Create new Car object <br>
+     *  3. Save the Car object to Car.txt
+     */
     public void add(ActionEvent event) throws IOException {
-
         Store tmpStore = receiveStoreData(event);
 
         String plateNumber = plateNumberTextField.getText();
@@ -59,6 +74,13 @@ public class AdminAddCarPageController {
         cancel(event);
     }
 
+    /**
+     * Function name: cancel
+     * @param event
+     * @throws IOException
+     * What it does: <br>
+     *  1. Brings user back to the previous screen
+     */
     public void cancel(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/AdminMainPage.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();

@@ -356,8 +356,17 @@ public class CustomerPageController implements Initializable {
         }
     }
     
+    /**
+     * Function name: confirmBooking
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br> 
+     *  1. Get all the contents of the Fields <br>
+     *  2. Create a new Booking object <br>
+     *  3. Save the Booking object to Booking.txt
+     */
     public void confirmBooking(ActionEvent event) throws IOException {
-
         Customer tmpCustomer = receiveCustomerData(event);
 
         LocalDate bookingStart = rentDateDatePicker.getValue();
@@ -374,9 +383,18 @@ public class CustomerPageController implements Initializable {
 
         Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Booking Created");
         store.addLog(log);
-
     }
     
+    /**
+     * Function name: confirmChanges
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Get all the contents of the Fields <br>
+     *  2. Set the Customer parameters to the contents of the Fields <br>
+     *  3. Save the Customer object to the Customer file, overwrites the old Customer data
+     */
     public void confirmChanges(ActionEvent event) throws IOException {
 
         Customer tmpCustomer = receiveCustomerData(event);
@@ -411,14 +429,20 @@ public class CustomerPageController implements Initializable {
 
     }
     
+    /**
+     * Function name: returnCar
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Gets the selected Booking <br>
+     *  2. Change the Booking type and state <br>
+     *  3. Save the changed Booking to Booking.txt by overwriting old Booking
+     */
     public void returnCar(ActionEvent event) throws IOException {
-
         Booking selectedBooking = bookingTable.getSelectionModel().getSelectedItem();
-        // ArrayList<Booking> oldBookings = store.getBookings();
-        // ArrayList<Booking> updatedBookings = new ArrayList<>();
 
         switch (selectedBooking.getBookingType().toLowerCase().trim()) {
-            
             case "booking":
                 if (selectedBooking.getBookingStatus().toLowerCase().equals("approved")) {
                     selectedBooking.setBookingType("Return");
@@ -428,7 +452,6 @@ public class CustomerPageController implements Initializable {
                     alert.setContentText("You cannot return when your booking has not been approved!");
                 }
                 break;
-
             case "damaged":
                 if (selectedBooking.getBookingStatus().toLowerCase().equals("pending")) {
                     selectedBooking.setBookingStatus("Paid");
@@ -447,15 +470,18 @@ public class CustomerPageController implements Initializable {
                 store.addBooking(selectedBooking);
             }
         }
-
         refreshTable(event);
-        // Store.saveBookings(bookingFile, updatedBookings);
-
     }
-    
 
+    /**
+     * Function name: clear
+     * @param event
+     * 
+     * What it does: <br>
+     *  1. Clears all fields <br>
+     *  2. Refreshes the Booking table (especially important during initialization)
+     */
     public void clear(ActionEvent event) {
-
         // Clearing the Booking fields
         rentDateDatePicker.setValue(LocalDate.now());
         rentalDurationTextField.setText("0");
@@ -472,11 +498,17 @@ public class CustomerPageController implements Initializable {
         custPasswordField.setText(tmpCustomer.getPassword());
         custEmailTextField.setText(tmpCustomer.getEmail());
         custContactTextField.setText(tmpCustomer.getContact());
-
     }
 
+    /**
+     * Function name: logout
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br> 
+     *  1. Brings the user back to the Login screen
+     */
     public void logout(ActionEvent event) throws IOException {
-
         Customer tmpCustomer = receiveCustomerData(event);
         Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Logout successful");
         store.addLog(log);
@@ -486,7 +518,5 @@ public class CustomerPageController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
-
 }

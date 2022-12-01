@@ -1,6 +1,5 @@
 package Class;
 
-import java.time.format.DateTimeFormatter;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
 public class User {
@@ -13,8 +12,17 @@ public class User {
     private String password;
 
     static BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy");
 
+    
+    /**
+     * Constructor
+     * @param fullname
+     * @param identification
+     * @param email
+     * @param contact
+     * @param username
+     * @param password
+     */
     public User(String fullname, String identification, String email, String contact, String username, String password) {
         this.fullname = fullname;
         this.identification = identification;
@@ -24,6 +32,10 @@ public class User {
         this.password = passwordEncryptor.encryptPassword(password);
     }
 
+    /**
+     * Copy Constructor
+     * @param source
+     */
     public User(User source) {
         this.fullname = source.getUsername();
         this.identification = source.getIdentification();
@@ -33,6 +45,7 @@ public class User {
         this.password = source.getPassword();
     }
 
+    // Getter and Setter
     public String getFullname() {
         return this.fullname;
     }

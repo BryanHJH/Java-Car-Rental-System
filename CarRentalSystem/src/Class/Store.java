@@ -9,11 +9,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -30,14 +28,20 @@ public class Store {
     private ArrayList<Booking> bookings;
     private ArrayList<Log> logs;
 
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy", Locale.US);
-
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
     static File customerFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Customer.txt");
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
     static File bookingFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Booking.txt");
     static File logFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Logs.txt");
 
+    /**
+     * Constructor
+     * @param admins
+     * @param customers
+     * @param cars
+     * @param bookings
+     * @param logs
+     */
     public Store(ArrayList<User> admins, ArrayList<User> customers, ArrayList<Car> cars, ArrayList<Booking> bookings, ArrayList<Log> logs) {
         this.cars = new ArrayList<>(cars);
         this.admins = new ArrayList<>(admins);
@@ -46,6 +50,14 @@ public class Store {
         this.logs = new ArrayList<>(logs);
     }
 
+    /**
+     * Copy Constructor
+     * @param admin
+     * @param customer
+     * @param car
+     * @param booking
+     * @param log
+     */
     public Store(File admin, File customer, File car, File booking, File log) { 
         try {
             this.cars = new ArrayList<Car>(Arrays.asList(readCarFile(car)));
@@ -58,6 +70,7 @@ public class Store {
         }
     }
 
+    // Getters and Setters
     public ArrayList<Car> getCars() {
         return this.cars;
     }
@@ -174,7 +187,18 @@ public class Store {
             System.out.println(e.getMessage());
         }
     }
-
+    /**
+     * Function Name: saveLogs
+     * 
+     * @param file
+     * @param arr
+     * @throws IOException
+     * 
+     * What it does:
+     *  1. Locate file
+     *  2. Get the arraylist with the data to be saved
+     *  3. Write to the file in JSON format
+     */
     public static void saveLogs(File file, ArrayList<Log> arr) throws IOException {
         FileWriter fwriter = new FileWriter(file);
         
@@ -248,6 +272,12 @@ public class Store {
         return bookingList;
     }
 
+        /**
+     * Name: readLogFile
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Log[] readLogFile(File file) throws FileNotFoundException {
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter())
@@ -273,7 +303,6 @@ public class Store {
      *  4. Save the modified car information to Car.txt <br> 
      */
     public void rentCar(Car car, LocalDate bookingStart, LocalDate bookingEnd) throws ParseException, FileNotFoundException, IOException {
-
         ArrayList<LocalDate> bookedDates = new ArrayList<>();
         List<LocalDate> dates = bookingStart.datesUntil(bookingEnd).collect(Collectors.toList());
 
@@ -292,21 +321,14 @@ public class Store {
             }
             
             car.addDates(bookingEnd);
-            
-            Car[] currentCarList = readCarFile(carFile);
-            ArrayList<Car> newCarList = new ArrayList<>();
-    
-            for (Car currentCar: currentCarList) {
+                
+            for (Car currentCar: readCarFile(carFile)) {
                 if (currentCar.getPlateNumber().toLowerCase().trim().equals(car.getPlateNumber().toLowerCase().trim())) {
-                    // newCarList.add(car)
                     removeCar(currentCar);
                     addCar(car);
                 }
             }
-    
-            // saveCars(carFile, newCarList);
         }
-
     }
 
     /**
@@ -316,10 +338,10 @@ public class Store {
      * @param bookingEnd
      * @throws IOException
      * 
-     * What it does:
-     *  1. Get all the dates that are to be removed into an arraylist
-     *  2. Remove all of them from the car's bookedDates arraylist
-     *  3. Save modified car information to Car.txt
+     * What it does: <br>
+     *  1. Get all the dates that are to be removed into an arraylist <br>
+     *  2. Remove all of them from the car's bookedDates arraylist <br>
+     *  3. Save modified car information to Car.txt <br>
      */
     public void returnCar(Car car, LocalDate bookingStart, LocalDate bookingEnd) throws IOException {
         ArrayList<LocalDate> dates = (ArrayList<LocalDate>) bookingStart.datesUntil(bookingEnd).collect(Collectors.toList());
@@ -339,21 +361,12 @@ public class Store {
 
         car.removeDate(datesToBeRemoved);
 
-        Car[] currentCarList = readCarFile(carFile);
-        // ArrayList<Car> newCarList = new ArrayList<>();
-
-        for (Car currentCar: currentCarList) {
+        for (Car currentCar: readCarFile(carFile)) {
             if (currentCar.getPlateNumber().toLowerCase().trim().equals(car.getPlateNumber().toLowerCase().trim())) {
-                // newCarList.add(car);
                 removeCar(currentCar);
                 addCar(car);
-                break;
-            } // else {
-            //     newCarList.add(currentCar);
-            // }
+            }
         }
-
-        // saveCars(carFile, newCarList);
     }
 
     /**
@@ -362,10 +375,10 @@ public class Store {
      * @param admin
      * @return
      * 
-     * What it does:
-     *  1. Get a new Admin object
-     *  2. Append it to existing Admin (User) ArrayList
-     *  3. Return the ArrayList
+     * What it does: <br>
+     *  1. Get a new Admin object <br>
+     *  2. Append it to existing Admin (User) ArrayList <br>
+     *  3. Return the ArrayList <br>
      * @throws IOException
      */
     public void addAdmin(Admin admin) throws IOException {
@@ -379,10 +392,10 @@ public class Store {
      * @param customer
      * @throws IOException
      * 
-     * What it does:
-     *  1. Get a new Admin object
-     *  2. Append it to existing Admin (User) ArrayList
-     *  3. Return the ArrayList
+     * What it does: <br>
+     *  1. Get a new Admin object <br>
+     *  2. Append it to existing Admin (User) ArrayList <br>
+     *  3. Return the ArrayList <br>
      */
     public void addCustomer(Customer customer) throws IOException {
         this.customers.add(customer);
@@ -424,6 +437,15 @@ public class Store {
         saveBookings(bookingFile, newBookings);
     }
 
+    /**
+     * Function name: addLog
+     * @param l
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Gets a new Log object <br>
+     *  2. Save it to Logs.txt <br>
+     */
     public void addLog(Log l) throws IOException {
         this.logs.add(l);
         saveLogs(logFile, logs);;
@@ -434,7 +456,7 @@ public class Store {
      * @param b
      * @throws IOException
      * 
-     * What it does:
+     * What it does: <br>
      *  1. Updates existing bookings, mostly just changing the status and type of the booking
      */
     public void updateBooking(Booking b) throws IOException {
@@ -464,9 +486,10 @@ public class Store {
      * @return
      * @throws IOException
      * 
-     * What it does:
-     *  1. Get the username of the Admin to be removed.
-     *  2. Use the delete function in Admin class to remove the Admin.
+     * What it does: <br>
+     *  1. Get the Admin to be removed. <br>
+     *  2. Remove the Admin object from the ArrayList <br>
+     *  3. Save the ArrayList to Admin.txt     
      */
     public void removeAdmin(User admin) throws IOException {
         this.admins.add(admin);
@@ -479,21 +502,43 @@ public class Store {
      * @param username
      * @throws IOException
      * 
-     * What it does:
-     *  1. Get the username of the Admin to be removed.
-     *  2. Use the delete function in Admin class to remove the Admin.
+     * What it does: <br>
+     *  1. Get the Customer to be removed. <br>
+     *  2. Remove the Customer object from the ArrayList <br>
+     *  3. Save the ArrayList to Customer.txt
      */
     public void removeCustomer(User customer) throws IOException {
         this.customers.remove(customer);
         saveUsers(customerFile, this.customers);
     }
 
+    /**
+     * Function name: removeCar
+     * 
+     * @param username
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Get the Car to be removed. <br>
+     *  2. Remove the Car object from the ArrayList <br>
+     *  3. Save the ArrayList to Car.txt <br>    
+     */
     public void removeCar(Car car) throws IOException {
         this.cars.remove(car);
         saveCars(carFile, this.cars);
     }
 
-    // Might be removed as it is not used
+        /**
+     * Function name: removeBooking
+     * 
+     * @param username
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Get the Booking to be removed. <br>
+     *  2. Remove the Booking object from the ArrayList <br>
+     *  3. Save the ArrayList to Booking.txt <br>    
+     */
     public void removeBooking(Booking b) throws IOException {
         Booking[] currentBookings = readBookingFile(bookingFile);
         ArrayList<Booking> newBookings = new ArrayList<Booking>(Arrays.asList(currentBookings));
@@ -581,6 +626,18 @@ public class Store {
         return null;
     }
 
+        /**
+     * Function name: findCar
+     * 
+     * @param carID
+     * @return
+     * 
+     * What it does:
+     *  1. Get the Booking object
+     *  2. Read the Booking.txt file and find the matching Booking record with the provided Booking object's email, car plate number and booking start
+     *  3. Return the Booking object
+     * @throws FileNotFoundException
+     */
     public Booking findBooking(Booking b) throws FileNotFoundException {
         Booking[] bookingList = readBookingFile(bookingFile);
         for (Booking booking: bookingList) {

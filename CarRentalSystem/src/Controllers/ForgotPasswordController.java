@@ -29,8 +29,17 @@ public class ForgotPasswordController {
 
     private Stage stage;
     private Scene scene;
-    private Parent root;
 
+    /**
+     * Function name: sendLink
+     * @param event
+     * 
+     * What it does: <br>
+     *  1. Checks the email is the correct format or not <br>
+     *  2. If email is correct, check is it Admin email or Customer email <br>
+     *  3a. If Admin email, set Contact IT staff text <br>
+     *  3b. If Customer email, say Link sent
+     */
     public void sendLink(ActionEvent event) {
         Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]*@[a-zA-Z]{1,}\\.[a-zA-Z]{2,3}$");
         Matcher emailMatcher = emailPattern.matcher(usernameTextField.getText());
@@ -55,6 +64,14 @@ public class ForgotPasswordController {
         }
     }
 
+    /**
+     * Function name: returnToLogin
+     * @param event
+     * @throws IOException
+     * 
+     * What it does: <br> 
+     *  1. Brings user back to Login page
+     */
     public void returnToLogin(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
