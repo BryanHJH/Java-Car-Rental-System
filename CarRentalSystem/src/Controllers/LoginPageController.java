@@ -184,9 +184,7 @@ public class LoginPageController {
                         
                         // FXMLLoader loader = new 
                         Parent root = FXMLLoader.load(getClass().getResource("/Pages/CustomerPage.fxml"));
-                        
-                        // CustomerPageController mainPageController = new FXMLLoader(getClass().getResource("/Pages/CustomerPage.fxml")).getController();
-                        // mainPageController.displayWelcomeMessage(tmpCustomer.getFullname());
+
                         stage.setUserData(tmpCustomer);
                         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
                         scene = new Scene(root);

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
+
 import Class.Admin;
 import Class.Booking;
 import Class.Car;
@@ -21,11 +23,13 @@ import Class.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,6 +47,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
@@ -84,7 +89,7 @@ public class AdminMainPageController implements Initializable {
     private TextField searchCarTextField, searchCustomerTextField, searchBookingTextField;
 
     @FXML
-    private Button addCarButton, approveButton, clearCarButton, clearCustomerButton, clearBookingButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, refreshChartButton;
+    private Button addCarButton, approveButton, clearCarButton, clearCustomerButton, clearBookingButton, logoutButton, rejectButton, removeCarButton, searchBookingButton, searchCarButton, searchCustomerButton, refreshChartButton, printReportButton;
 
     @FXML
     private PieChart chargesPieChart, salesPieChart;
@@ -135,9 +140,6 @@ public class AdminMainPageController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-
-
-        
         // Car Table
         carTable.setEditable(true);
 
@@ -443,7 +445,7 @@ public class AdminMainPageController implements Initializable {
         });
         
         // Charges Pie Chart
-        // Getting the neccesary information (Total Rental Fees charged and Fines charged)
+        // Getting the necessary information (Total Rental Fees charged and Fines charged)
         ArrayList<Booking> bookings = store.getBookings();
         int totalRent = 0, totalFines = 0;
 
@@ -499,7 +501,6 @@ public class AdminMainPageController implements Initializable {
             try {
                 bookedCars.add(store.findCar(carPlate));
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -800,7 +801,7 @@ public class AdminMainPageController implements Initializable {
      * What it does: <br>
      *  1. If booking type is "Booking", state is changed to "Approved" <br>
      *  2. If booking type is "Damaged", state is changed to "Paid" <br>
-     *  3. If booking type is "Return", statis is changed to "Approved" <br>
+     *  3. If booking type is "Return", state is changed to "Approved" <br>
      *  4. Booking will add dates to the corresponding car while Return will remove dates
      */
     public void approve(ActionEvent e) throws IllegalAccessException, IOException, ParseException {
@@ -865,7 +866,6 @@ public class AdminMainPageController implements Initializable {
             alert.setContentText("Approved bookings cannot be modified!");
             alert.show();
         } else {
-            
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
                 case "booking":
                     selectedBooking = tmpAdmin.approve(selectedBooking, false);
@@ -952,12 +952,11 @@ public class AdminMainPageController implements Initializable {
             try {
                 bookedCars.add(store.findCar(carPlate));
             } catch (FileNotFoundException ex) {
-                // TODO Auto-generated catch block
                 ex.printStackTrace();
             }
         }
 
-        // Getting all the 
+        // Getting all the carTypes
         HashMap<String, Integer> carTypeSales = new HashMap<>();
         for (Car car: bookedCars) {
             if (carTypeSales.containsKey(car.getCarType())) {
@@ -992,5 +991,23 @@ public class AdminMainPageController implements Initializable {
                 tooltip.setText(Integer.toString((int) newPieValue));
             });
         }
+    }
+
+    public void printReport(ActionEvent event) throws IOException {
+        //Creating a Group object
+        Scene scene = new Scene(new Group(), 1280, 720);
+        ((Group) scene.getRoot()).getChildren().add(chargesPieChart);
+        ((Group) scene.getRoot()).getChildren().add(salesPieChart);
+        //Saving the scene as image
+        WritableImage image = scene.snapshot(null);
+        File file = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Reports\\Reports.png");
+        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", file);
+        // ((Group) scene.getRoot()).toBack();
+
+        Parent root = FXMLLoader.load(getClass().getResource("/Pages/Image.fxml"));
+        stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -85,7 +85,6 @@ public class CustomerPageController implements Initializable {
     private Button logoutButton, confirmChangesButton, clearButton, confirmBookingButton, returnButton;
 
     private Stage stage;
-    private Parent root;
     private Scene scene;
 
     static File adminFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Admin.txt");
@@ -351,6 +350,7 @@ public class CustomerPageController implements Initializable {
 
         for (Car car: carList) {
             if (car.getPlateNumber().toLowerCase().trim().equals(carPlate)) {
+                seatTextField.setEditable(false);
                 seatTextField.setText(Integer.toString(car.getCarSeat()));
             }
         }

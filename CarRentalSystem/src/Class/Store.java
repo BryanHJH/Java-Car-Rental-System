@@ -358,7 +358,6 @@ public class Store {
         }
 
         datesToBeRemoved.add(bookingEnd);
-
         car.removeDate(datesToBeRemoved);
 
         for (Car currentCar: readCarFile(carFile)) {
@@ -378,7 +377,7 @@ public class Store {
      * What it does: <br>
      *  1. Get a new Admin object <br>
      *  2. Append it to existing Admin (User) ArrayList <br>
-     *  3. Return the ArrayList <br>
+     *  3. Save the ArrayList <br>
      * @throws IOException
      */
     public void addAdmin(Admin admin) throws IOException {
@@ -393,15 +392,26 @@ public class Store {
      * @throws IOException
      * 
      * What it does: <br>
-     *  1. Get a new Admin object <br>
-     *  2. Append it to existing Admin (User) ArrayList <br>
-     *  3. Return the ArrayList <br>
+     *  1. Get a new Customer object <br>
+     *  2. Append it to existing Customer (User) ArrayList <br>
+     *  3. Save the ArrayList <br>
      */
     public void addCustomer(Customer customer) throws IOException {
         this.customers.add(customer);
         saveUsers(customerFile, customers);
     }
 
+    /**
+     * Function name: addCar
+     * 
+     * @param car
+     * @throws IOException
+     * 
+     * What it does: <br>
+     *  1. Get a new Car object <br>
+     *  2. Append it to existing Car ArrayList <br>
+     *  3. Save the ArrayList to Car.txt <br>
+     */
     public void addCar(Car car) throws IOException {
         this.cars.add(car);
         saveCars(carFile, cars);
@@ -575,7 +585,6 @@ public class Store {
                 }
             }
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -649,7 +658,5 @@ public class Store {
         }
 
         return null;
-        
     }
-    
 }
