@@ -1,1 +1,102 @@
-[{"timestamp":"Nov 30, 2022, 10:30:00 AM","userEmail":"bryan@gmail.com","activity":"Login successful"},{"timestamp":"Nov 30, 2022, 10:43:00 AM","userEmail":"bryan@gmail.com","activity":"Booking Created"},{"timestamp":"Nov 30, 2022, 10:50:00 AM","userEmail":"bryan@gmail.com","activity":"Logout successful"},{"timestamp":"Dec 1, 2022, 8:00:00 AM","userEmail":"brian@car.com","activity":"Login successful"},{"timestamp":"Dec 1, 2022, 8:05:00 AM","userEmail":"brian@car.com","activity":"Approval successful"},{"timestamp":"Dec 1, 2022, 9:00:00 AM","userEmail":"brian@car.com","activity":"Logout successful"},{"timestamp":"Nov 30, 2022, 10:44:00 AM","userEmail":"derek@hotmail.com","activity":"Login successful"},{"timestamp":"Nov 30, 2022, 10:50:00 AM","userEmail":"derek@hotmail.com","activity":"Booking Created"},{"timestamp":"Nov 30, 2022, 10:54:00 AM","userEmail":"derek@hotmail.com","activity":"Logout successful"}]
+[
+    {
+        "timestamp": "Nov 30, 2022, 10:30:00 AM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Login successful"
+    },
+    {
+        "timestamp": "Nov 30, 2022, 10:43:00 AM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Booking Created"
+    },
+    {
+        "timestamp": "Nov 30, 2022, 10:50:00 AM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Logout successful"
+    },
+    {
+        "timestamp": "Dec 1, 2022, 8:00:00 AM",
+        "userEmail": "brian@car.com",
+        "activity": "Login successful"
+    },
+    {
+        "timestamp": "Dec 1, 2022, 8:05:00 AM",
+        "userEmail": "brian@car.com",
+        "activity": "Approval successful"
+    },
+    {
+        "timestamp": "Dec 1, 2022, 9:00:00 AM",
+        "userEmail": "brian@car.com",
+        "activity": "Logout successful"
+    },
+    {
+        "timestamp": "Nov 30, 2022, 10:44:00 AM",
+        "userEmail": "derek@hotmail.com",
+        "activity": "Login successful"
+    },
+    {
+        "timestamp": "Nov 30, 2022, 10:50:00 AM",
+        "userEmail": "derek@hotmail.com",
+        "activity": "Booking Created"
+    },
+    {
+        "timestamp": "Nov 30, 2022, 10:54:00 AM",
+        "userEmail": "derek@hotmail.com",
+        "activity": "Logout successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:31:26 PM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Login Successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:31:29 PM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Logout successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:31:37 PM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Login unsuccessful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:31:45 PM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Login Successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:31:47 PM",
+        "userEmail": "bryan@gmail.com",
+        "activity": "Logout successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:32:00 PM",
+        "userEmail": "nicholas@gmail.com",
+        "activity": "Login unsuccessful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:32:07 PM",
+        "userEmail": "nicholas@gmail.com",
+        "activity": "Login Successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:32:09 PM",
+        "userEmail": "nicholas@gmail.com",
+        "activity": "Logout successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:32:17 PM",
+        "userEmail": "derek@hotmail.com",
+        "activity": "Login unsuccessful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:32:26 PM",
+        "userEmail": "derek@hotmail.com",
+        "activity": "Login Successful"
+    },
+    {
+        "timestamp": "Dec 4, 2022, 11:32:26 PM",
+        "userEmail": "derek@hotmail.com",
+        "activity": "Logout Successful"
+    }
+]

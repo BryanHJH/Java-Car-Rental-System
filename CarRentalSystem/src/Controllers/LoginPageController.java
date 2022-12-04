@@ -125,7 +125,8 @@ public class LoginPageController {
         if (matchFound) { // Admin login
 
             User[] adminList = readAdminFile(adminFile);
-            for (Admin admin: (Admin[]) adminList) {
+            found: {
+                for (Admin admin: (Admin[]) adminList)
 
                 if (admin.getEmail().equals(usernameTextField.getText())) {
 
@@ -147,31 +148,23 @@ public class LoginPageController {
                         scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
+                        
+                        break found;
 
-                    } 
-                    // else {
-
-                    //     String message = "Email and/or Password is incorrect";
-                    //     errorLabel.setTextFill(Color.RED);
-                    //     errorLabel.setText(message);
-
-                    // }
+                    }
                     
-                } else { // if login unsuccessful
-
-                    User tmpAdmin = store.findAdmin(usernameTextField.getText());
-                    Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Login unsuccessful");
-                    store.addLog(log);
-                    errorLabel.setTextFill(Color.RED);
-                    errorLabel.setText("Email and/or Password is incorrect");
+                        Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Login unsuccessful");
+                        store.addLog(log);
+                        errorLabel.setTextFill(Color.RED);
+                        errorLabel.setText("Email and/or Password is incorrect");
                     
-                }   
-
+                }
             }
 
         } else { // Customer login
             User[] customerList = readCustomerFile(customerFile);
-            for (Customer customer: (Customer[]) customerList) {
+            found: {
+                for (Customer customer: (Customer[]) customerList)
 
                 if (customer.getEmail().equals(usernameTextField.getText())) {
 
@@ -196,23 +189,16 @@ public class LoginPageController {
                         stage.setScene(scene);
                         stage.show();
 
+                        break found;
+
                     } 
-                    // else {
 
-                    //     errorLabel.setTextFill(Color.RED);
-                    //     errorLabel.setText("Email and/or Password is incorrect");
-
-                    // }
-                    
-                } else { // if login unsuccessful
-
-                    Customer tmpCustomer = store.findCustomer(usernameTextField.getText());
                     Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Login unsuccessful");
                     store.addLog(log);
                     errorLabel.setTextFill(Color.RED);
                     errorLabel.setText("Email and/or Password is incorrect");
                     
-                }   
+                } 
             }
         }
     }
