@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,8 +137,8 @@ public class SetUp {
 
         Store testStore = new Store(adminArr, custArr, carArr, new ArrayList<Booking>(), new ArrayList<Log>());
 
-        testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
-        testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
+        // testStore.addAdmin(new Admin("Christina", "12938749293", "christina@car.com", "0128382239", "christina", "christina"));
+        // testStore.addAdmin(new Admin("Jimmy", "4323445324", "jimmy@car.com", "0128382240", "jimmy", "jimmy"));
         
         Admin tmpAdmin = (Admin) testStore.findAdmin("brian@car.com");
         Car tmpCar = testStore.findCar("BNY1122");
@@ -159,18 +160,16 @@ public class SetUp {
 
 
         try {
-            Log log = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Login successful");
-            Log log2 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Booking Created");
-            Log log3 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Login successful");
-            Log log3_1 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer.getEmail(), "Logout successful");
-            Log log4 = new Log(LocalDate.of(2022, 12, 1), tmpAdmin.getEmail(), "Login sucessful");
-            Log log5 = new Log(LocalDate.of(2022, 12, 1), tmpAdmin.getEmail(), "Approval successful");
-            Log log6 = new Log(LocalDate.of(2022, 12, 1), tmpAdmin.getEmail(), "Logout sucessful");
+            Log log = new Log(LocalDateTime.of(2022, 11, 30, 10, 30), tmpCustomer.getEmail(), "Login successful");
+            Log log2 = new Log(LocalDateTime.of(2022, 11, 30, 10, 43), tmpCustomer.getEmail(), "Booking Created");
+            Log log3 = new Log(LocalDateTime.of(2022, 11, 30, 10, 50), tmpCustomer.getEmail(), "Logout successful");
+            Log log4 = new Log(LocalDateTime.of(2022, 12, 1, 8, 0), tmpAdmin.getEmail(), "Login successful");
+            Log log5 = new Log(LocalDateTime.of(2022, 12, 1, 8, 5), tmpAdmin.getEmail(), "Approval successful");
+            Log log6 = new Log(LocalDateTime.of(2022, 12, 1, 9, 0), tmpAdmin.getEmail(), "Logout successful");
 
             testStore.addLog(log);
             testStore.addLog(log2);
             testStore.addLog(log3);
-            testStore.addLog(log3_1);
             testStore.addLog(log4);
             testStore.addLog(log5);
             testStore.addLog(log6);
@@ -202,9 +201,9 @@ public class SetUp {
             // System.out.println(tmpCar);
             // testStore.updateBooking(tmpBooking);
 
-            Log log7 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer2.getEmail(), "Login successful");
-            Log log8 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer2.getEmail(), "Booking Created");
-            Log log9 = new Log(LocalDate.of(2022, 11, 30), tmpCustomer2.getEmail(), "Login successful");
+            Log log7 = new Log(LocalDateTime.of(2022, 11, 30, 10, 44), tmpCustomer2.getEmail(), "Login successful");
+            Log log8 = new Log(LocalDateTime.of(2022, 11, 30, 10, 50), tmpCustomer2.getEmail(), "Booking Created");
+            Log log9 = new Log(LocalDateTime.of(2022, 11, 30, 10, 54), tmpCustomer2.getEmail(), "Logout successful");
             testStore.addLog(log7);
             testStore.addLog(log8);
             testStore.addLog(log9);

@@ -3,6 +3,7 @@ package Controllers;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +83,7 @@ public class RegisterPageController {
             a.show();
         } else {
             
-            Log log = new Log(LocalDate.now(), emailTextField.getText(), "Registration Successful");
+            Log log = new Log(LocalDateTime.now(), emailTextField.getText(), "Registration Successful");
             store.addLog(log);
 
             Customer newCustomer = new Customer(fullNameTextField.getText(), identificationTextField.getText(), emailTextField.getText(), contactTextField.getText(), usernameTextField.getText(), passwordField.getText());

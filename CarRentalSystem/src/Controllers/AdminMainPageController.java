@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -562,7 +563,7 @@ public class AdminMainPageController implements Initializable {
     public void logout(ActionEvent e) throws IOException {
         
         Admin tmpAdmin = receiveAdminData(e);
-        Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Logout Successful");
+        Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Logout Successful");
         store.addLog(log);
 
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
@@ -655,7 +656,7 @@ public class AdminMainPageController implements Initializable {
     public void removeCar(ActionEvent e) throws IOException {
 
         Admin tmpAdmin = receiveAdminData(e);
-        Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Remove car successful");
+        Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Remove car successful");
         store.addLog(log);
 
         Car tmpCar = carTable.getSelectionModel().getSelectedItem();
@@ -816,7 +817,6 @@ public class AdminMainPageController implements Initializable {
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
                 case "booking": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
-                    store.rentCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
                 case "damaged": 
                     selectedBooking = tmpAdmin.approve(selectedBooking, true);
@@ -836,7 +836,7 @@ public class AdminMainPageController implements Initializable {
                     store.addBooking(selectedBooking);
                 }
             }
-            Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Approval successful");
+            Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Approval successful");
             store.addLog(log);
             clearBooking(e);
         }
@@ -869,6 +869,7 @@ public class AdminMainPageController implements Initializable {
             switch (selectedBooking.getBookingType().toLowerCase().trim()) {
                 case "booking":
                     selectedBooking = tmpAdmin.approve(selectedBooking, false);
+                    store.returnCar(store.findCar(selectedBooking.getPlateNumber()), selectedBooking.getBookingStart(), selectedBooking.getBookingEnd());
                     break;
                 case "damaged":
                     if (selectedBooking.getBookingStatus().toLowerCase().trim().equals("pending")) {

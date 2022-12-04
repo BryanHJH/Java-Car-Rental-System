@@ -3,6 +3,7 @@ package Class;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class Log {
@@ -11,13 +12,13 @@ public class Log {
     private String userEmail;
     private String activity;
 
-    public static Date convertToDateUsingInstant(LocalDate date) {
-        return (Date) java.util.Date.from(date.atStartOfDay()
+    public static Date convertToDateUsingInstant(LocalDateTime date) {
+        return (Date) java.util.Date.from(date
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
     }
 
-    public Log(LocalDate timestamp, String userEmail, String activity) {
+    public Log(LocalDateTime timestamp, String userEmail, String activity) {
         this.timestamp = new Timestamp(convertToDateUsingInstant(timestamp).getTime());
         this.userEmail = userEmail;
         this.activity = activity;

@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -128,12 +129,12 @@ public class LoginPageController {
 
                 if (admin.getEmail().equals(usernameTextField.getText())) {
 
-                    boolean loginAttempt = admin.login(admin, passwordTextField.getText());
                     User tmpAdmin = store.findAdmin(usernameTextField.getText());
+                    boolean loginAttempt = admin.login(admin, passwordTextField.getText());
 
                     if (loginAttempt) { // if login successful
                         
-                        Log log = new Log(LocalDate.now(), tmpAdmin.getEmail(), "Login Successful");
+                        Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Login Successful");
                         store.addLog(log);
 
                         Node node = (Node) event.getSource();
@@ -147,16 +148,20 @@ public class LoginPageController {
                         stage.setScene(scene);
                         stage.show();
 
-                    } else {
+                    } 
+                    // else {
 
-                        String message = "Email and/or Password is incorrect";
-                        errorLabel.setTextFill(Color.RED);
-                        errorLabel.setText(message);
+                    //     String message = "Email and/or Password is incorrect";
+                    //     errorLabel.setTextFill(Color.RED);
+                    //     errorLabel.setText(message);
 
-                    }
+                    // }
                     
                 } else { // if login unsuccessful
 
+                    User tmpAdmin = store.findAdmin(usernameTextField.getText());
+                    Log log = new Log(LocalDateTime.now(), tmpAdmin.getEmail(), "Login unsuccessful");
+                    store.addLog(log);
                     errorLabel.setTextFill(Color.RED);
                     errorLabel.setText("Email and/or Password is incorrect");
                     
@@ -175,7 +180,7 @@ public class LoginPageController {
 
                     if (loginAttempt) { // if login successful
                         
-                        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Login Successful");
+                        Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Login Successful");
                         store.addLog(log);
 
                         Node node = (Node) event.getSource();
@@ -191,15 +196,19 @@ public class LoginPageController {
                         stage.setScene(scene);
                         stage.show();
 
-                    } else {
+                    } 
+                    // else {
 
-                        errorLabel.setTextFill(Color.RED);
-                        errorLabel.setText("Email and/or Password is incorrect");
+                    //     errorLabel.setTextFill(Color.RED);
+                    //     errorLabel.setText("Email and/or Password is incorrect");
 
-                    }
+                    // }
                     
                 } else { // if login unsuccessful
 
+                    Customer tmpCustomer = store.findCustomer(usernameTextField.getText());
+                    Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Login unsuccessful");
+                    store.addLog(log);
                     errorLabel.setTextFill(Color.RED);
                     errorLabel.setText("Email and/or Password is incorrect");
                     

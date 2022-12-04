@@ -3,7 +3,9 @@ package Controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -365,8 +367,9 @@ public class CustomerPageController implements Initializable {
      *  1. Get all the contents of the Fields <br>
      *  2. Create a new Booking object <br>
      *  3. Save the Booking object to Booking.txt
+     * @throws ParseException
      */
-    public void confirmBooking(ActionEvent event) throws IOException {
+    public void confirmBooking(ActionEvent event) throws IOException, ParseException {
         Customer tmpCustomer = receiveCustomerData(event);
 
         LocalDate bookingStart = rentDateDatePicker.getValue();
@@ -379,9 +382,10 @@ public class CustomerPageController implements Initializable {
 
         Booking newBooking = new Booking("Booking", "Pending", custEmail, custId, carPlate, bookingStart, bookingEnd);
         store.addBooking(newBooking);
+        store.rentCar(store.findCar(carPlate), bookingStart, bookingEnd);
         clear(event);
 
-        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Booking Created");
+        Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Booking Created");
         store.addLog(log);
     }
     
@@ -424,7 +428,7 @@ public class CustomerPageController implements Initializable {
             }
         }
 
-        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Profile Changed successfully");
+        Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Profile Changed successfully");
         store.addLog(log);
 
     }
@@ -510,7 +514,7 @@ public class CustomerPageController implements Initializable {
      */
     public void logout(ActionEvent event) throws IOException {
         Customer tmpCustomer = receiveCustomerData(event);
-        Log log = new Log(LocalDate.now(), tmpCustomer.getEmail(), "Logout successful");
+        Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Logout successful");
         store.addLog(log);
 
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/LoginPage.fxml"));
