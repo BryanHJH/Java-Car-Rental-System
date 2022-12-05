@@ -588,7 +588,7 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Car> searchedCars = new ArrayList<>();
         String searchedCar = searchCarTextField.getText().toLowerCase().trim();
 
-        if (searchCustomerTextField.getText().isEmpty()) {
+        if (searchCarTextField.getText().isEmpty()) {
             Alert a = new Alert(AlertType.ERROR);
             a.setContentText("Nothing to search, please give an input.");
             a.show();
@@ -727,7 +727,7 @@ public class AdminMainPageController implements Initializable {
         ArrayList<Booking> searchedBookings = new ArrayList<>();
         String searchedBooking = searchBookingTextField.getText().toLowerCase().trim();
 
-        if (searchCustomerTextField.getText().isEmpty()) {
+        if (searchBookingTextField.getText().isEmpty()) {
             Alert a = new Alert(AlertType.ERROR);
             a.setContentText("Nothing to search, please give an input.");
             a.show();

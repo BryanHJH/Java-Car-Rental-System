@@ -454,6 +454,7 @@ public class CustomerPageController implements Initializable {
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setContentText("You cannot return when your booking has not been approved!");
+                    alert.show();
                 }
                 break;
             case "damaged":
@@ -462,6 +463,7 @@ public class CustomerPageController implements Initializable {
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setContentText("You do not need to pay anymore.");
+                    alert.show();
                 }
                 break;
         }
