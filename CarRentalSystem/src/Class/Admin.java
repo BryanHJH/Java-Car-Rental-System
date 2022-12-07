@@ -1,5 +1,7 @@
 package Class;
 
+import java.time.LocalDate;
+
 public class Admin extends User {
     
     /**
@@ -64,6 +66,12 @@ public class Admin extends User {
         return fines;
     }
 
+    public int imposeOvertimeCharges(Booking booking) {
+        int charges = (int) Math.round(booking.getBookingPeriod() * 50);
+        booking.setTotalOvertimeCharges(charges);
+        return charges;
+    }
+
     /**
      * Function name: approveReturn
      * @return
@@ -75,6 +83,11 @@ public class Admin extends User {
     public Booking approveReturn(Booking booking, boolean approval) {
         if (approval) { // Car is not damaged
             booking.setBookingStatus("Returned");
+
+            if (booking.getBookingEnd().isBefore(LocalDate.now())) { // Charging overtime return fees if customer return the car late
+                booking.setTotalPrice(booking.getTotalPrice() + imposeOvertimeCharges(booking));
+            }
+
         } else { // Car is damaged
             booking.setBookingStatus("Pending");
             booking.setBookingType("Damaged");

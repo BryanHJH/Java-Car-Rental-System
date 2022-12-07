@@ -34,6 +34,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
@@ -103,6 +104,9 @@ public class CustomerPageController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+
+        seatTextField.setEditable(false);
+        custEmailTextField.setEditable(false);
         
         // Booking Table
         bookingTable.setPlaceholder(new Label("No booking records to display"));
@@ -155,6 +159,7 @@ public class CustomerPageController implements Initializable {
         
         // Building the initial Combo Boxes
         rentDateDatePicker.setValue(LocalDate.now());
+        
         ArrayList<Car> carList = store.getCars();
 
         for (Car car: carList) {
@@ -178,6 +183,13 @@ public class CustomerPageController implements Initializable {
             carBrandCombo.valueProperty().isNull()
         );
 
+        rentDateDatePicker.setDayCellFactory(d ->
+        new DateCell() {
+            @Override public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(item.isBefore(LocalDate.now()));
+            }
+        });
 
         Platform.runLater(new Runnable() {
 
@@ -352,7 +364,6 @@ public class CustomerPageController implements Initializable {
 
         for (Car car: carList) {
             if (car.getPlateNumber().toLowerCase().trim().equals(carPlate)) {
-                seatTextField.setEditable(false);
                 seatTextField.setText(Integer.toString(car.getCarSeat()));
             }
         }
@@ -372,18 +383,29 @@ public class CustomerPageController implements Initializable {
     public void confirmBooking(ActionEvent event) throws IOException, ParseException {
         Customer tmpCustomer = receiveCustomerData(event);
 
-        LocalDate bookingStart = rentDateDatePicker.getValue();
-        LocalDate bookingEnd = bookingStart.plusDays(Integer.parseInt(rentalDurationTextField.getText()));
-        
-        String carPlate = carPlateCombo.getValue();
+        if (rentDateDatePicker.getValue() == null ||
+        rentalDurationTextField.getText().isEmpty() ||
+        carPlateCombo.getValue() == null ||
+        carBrandCombo.getValue() == null ||
+        carTypeCombo.getValue() == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("Cannot create booking with empty fields");
+            alert.show();
+        } else {
+            LocalDate bookingStart = rentDateDatePicker.getValue();
+            LocalDate bookingEnd = bookingStart.plusDays(Integer.parseInt(rentalDurationTextField.getText()));
+            
+            String carPlate = carPlateCombo.getValue();
+    
+            String custEmail = tmpCustomer.getEmail();
+            String custId = tmpCustomer.getIdentification();
+            
+            Booking newBooking = new Booking("Booking", "Pending", custEmail, custId, carPlate, bookingStart, bookingEnd);
+            store.addBooking(newBooking);
+            store.rentCar(store.findCar(carPlate), bookingStart, bookingEnd);
+            clear(event);
+        }
 
-        String custEmail = tmpCustomer.getEmail();
-        String custId = tmpCustomer.getIdentification();
-
-        Booking newBooking = new Booking("Booking", "Pending", custEmail, custId, carPlate, bookingStart, bookingEnd);
-        store.addBooking(newBooking);
-        store.rentCar(store.findCar(carPlate), bookingStart, bookingEnd);
-        clear(event);
 
         Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Booking Created");
         store.addLog(log);

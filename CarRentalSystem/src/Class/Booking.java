@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 public class Booking {
     
     private String bookingType, bookingStatus, email, identification, plateNumber;
-    private int totalPrice, totalRent, totalFines, bookingPeriod;
+    private int totalPrice, totalRent, totalFines, totalOvertimeCharges, bookingPeriod;
     private LocalDate bookingStart, bookingEnd;
 
     static File carFile = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Database\\Car.txt");
@@ -128,6 +128,14 @@ public class Booking {
 
     public void setTotalRent(int totalRent) {
         this.totalRent = totalRent;
+    }
+
+    public int getTotalOvertimeCharges() {
+        return this.totalOvertimeCharges;
+    }
+
+    public void setTotalOvertimeCharges(int totalOvertimeCharges) {
+        this.totalOvertimeCharges = totalOvertimeCharges;
     }
 
     public int getTotalFines() {

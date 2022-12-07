@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +16,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 
 import Class.Admin;
 import Class.Booking;
@@ -52,6 +57,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+
 
 public class AdminMainPageController implements Initializable {
 
@@ -994,7 +1000,7 @@ public class AdminMainPageController implements Initializable {
         }
     }
 
-    public void printReport(ActionEvent event) throws IOException {
+    public void printReport(ActionEvent event) throws Exception {
         //Creating a Group object
         Scene scene = new Scene(new Group(), 1280, 720);
         ((Group) scene.getRoot()).getChildren().add(chargesPieChart);
@@ -1004,6 +1010,11 @@ public class AdminMainPageController implements Initializable {
         File file = new File("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Reports\\Reports.png");
         ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", file);
         // ((Group) scene.getRoot()).toBack();
+
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        builder.insertImage(SwingFXUtils.fromFXImage(image, null));
+        doc.save("C:\\Users\\2702b\\OneDrive - Asia Pacific University\\Degree (CYB)\\Year 2\\Object Oriented Development with Java\\Java Car Rental System\\Java-Car-Rental-System\\CarRentalSystem\\src\\Reports\\Reports.pdf");
 
         Parent root = FXMLLoader.load(getClass().getResource("/Pages/Image.fxml"));
         stage =  (Stage)((Node) event.getSource()).getScene().getWindow();
