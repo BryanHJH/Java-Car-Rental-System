@@ -425,31 +425,26 @@ public class CustomerPageController implements Initializable {
 
         Customer tmpCustomer = receiveCustomerData(event);
         
+        // Setting the customer's new username
         tmpCustomer.setUsername(custUsernameTextField.getText());
-        tmpCustomer.setPassword(custPasswordField.getText());
         
-        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]*@[a-zA-Z]{1,}\\.[a-zA-Z]{2,3}$");
-        Matcher emailMatcher = emailPattern.matcher(custEmailTextField.getText());
-        boolean matchFound = emailMatcher.find();
-
-        if (matchFound) {
-            tmpCustomer.setEmail(custEmailTextField.getText());
-        } else {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("Email is incorrect");
-            alert.show();
+        // Setting teh customer's new password
+        if (custPasswordField.getText() != null) {
+            tmpCustomer.setPassword(custPasswordField.getText());
         }
 
+        // Setting the customer's new contact number
         tmpCustomer.setContact(custContactTextField.getText());
 
-        for (User customer: store.getCustomers()) {
-            if (customer.getUsername().toLowerCase().equals(tmpCustomer.getUsername()) || 
-                customer.getEmail().toLowerCase().equals(tmpCustomer.getEmail())) {
+        ArrayList<User> customerList = store.getCustomers();
+
+        for (User customer: customerList) {
+            if (customer.getEmail().toLowerCase().equals(tmpCustomer.getEmail())) {
                 store.removeCustomer(customer);
                 store.addCustomer(tmpCustomer);
             }
         }
-
+        
         Log log = new Log(LocalDateTime.now(), tmpCustomer.getEmail(), "Profile Changed successfully");
         store.addLog(log);
 
@@ -523,7 +518,6 @@ public class CustomerPageController implements Initializable {
 
         // Initializing the Profile page
         custUsernameTextField.setText(tmpCustomer.getUsername());
-        custPasswordField.setText(tmpCustomer.getPassword());
         custEmailTextField.setText(tmpCustomer.getEmail());
         custContactTextField.setText(tmpCustomer.getContact());
     }
