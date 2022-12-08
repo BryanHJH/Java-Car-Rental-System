@@ -475,13 +475,9 @@ public class CustomerPageController implements Initializable {
                 }
                 break;
             case "damaged":
-                if (selectedBooking.getBookingStatus().toLowerCase().equals("pending")) {
-                    selectedBooking.setBookingStatus("Paid");
-                } else {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setContentText("You do not need to pay anymore.");
-                    alert.show();
-                }
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setContentText("Please pay at the counter at the physical store.");
+                alert.show();
                 break;
         }
 
